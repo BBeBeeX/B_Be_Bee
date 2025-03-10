@@ -1,0 +1,28 @@
+display_name: b_be_bee
+packager: Tienisto
+packagerEmail: dev.tien.donam@gmail.com
+url: https://b_be_bee.com
+buildArch: x86_64
+license: MIT
+
+icon: assets/img/logo-512.png
+
+requires:
+  - libappindicator
+  - xdg-user-dirs
+
+keywords:
+  - Sharing
+  - LAN
+  - Files
+
+generic_name: An open source cross-platform alternative to AirDrop
+summary: Share files easily with b_be_bee
+group: Applications/Utilities
+
+categories:
+  - GTK
+  - FileTransfer
+  - Utility
+
+startup_notify: true
