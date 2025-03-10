@@ -89,7 +89,7 @@ dependencies:
 #  ffmpeg_kit_flutter: ^6.0.3 # 文件格式转换
   ffmpeg_helper:
     git:
-      url: https://github.com/reverssssss/ffmpeg_helper.git
+      url: https://github.com/BBeBeeX/ffmpeg_helper.git
       ref: main
 
 
