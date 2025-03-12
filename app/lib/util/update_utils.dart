@@ -58,10 +58,6 @@ class UpdateUtils{
         }
       }
 
-      await UpdateAskDialog.open(
-          Routerino.navigatorKey.currentContext!,
-          '版本 $githubVersion', model?.body ??'');
-
     }catch(e){
       container.read(commonLoggerProvider.notifier).addLog('get latest version error: ${e.toString()}');
     }

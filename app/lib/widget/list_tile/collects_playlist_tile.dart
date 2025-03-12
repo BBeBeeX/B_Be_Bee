@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
+import '../../config/theme.dart';
 import '../../controller/main_page_controller.dart';
 import '../../gen/strings.g.dart';
 import '../../model/enum/collect_type_enum.dart';
@@ -95,7 +96,7 @@ class CollectsPlaylistTile extends ConsumerWidget {
                 await SelectCollectsOptionsBottomSheet.open(
                     context, ref, playlist.id);
               },
-              child: const Icon(Icons.more_vert),
+              child: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.primary.withOpacity(0.8),),
             )
           : null: null ,
       onTap: () async {

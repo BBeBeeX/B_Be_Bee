@@ -45,7 +45,7 @@ class AboutPage extends StatelessWidget {
           Text(t.aboutPage.author, style: const TextStyle(fontWeight: FontWeight.bold)),
           Text.rich(_buildContributor(
             label: 'Revers. (@Revers.)',
-            primaryColor: primaryColor,
+            primaryColor: Theme.of(context).colorScheme.primary,
           )),
           const SizedBox(height: 20),
 
@@ -105,7 +105,7 @@ InlineSpan _buildContributor({required String label, required Color primaryColor
     // Only github name
     return TextSpan(
       text: '$newLineStr$label',
-      style: TextStyle(color: primaryColor),
+      style: TextStyle(color: Theme.of(Routerino.context).colorScheme.primary),
       recognizer: TapGestureRecognizer()
         ..onTap = () async {
           await launchUrl(Uri.parse('https://github.com/${label.substring(1)}'), mode: LaunchMode.externalApplication);

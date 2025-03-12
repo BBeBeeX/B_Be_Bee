@@ -96,7 +96,7 @@ class SettingsPage extends ConsumerWidget {
             // ),
             ButtonEntry(
               label: t.settingsPage.general.language,
-              buttonLabel: settings.locale.humanName ??
+              buttonLabel: settings.locale?.humanName ??
                   t.settingsPage.general.languageOptions.system,
               onTap: () async => controller.onToggleLLocale(context),
             ),

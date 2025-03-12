@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/theme.dart';
 import '../../controller/playlist_controller.dart';
 import '../../model/dto/player/player_position_data.dart';
 import '../../provider/seek_dragging_provider.dart';
@@ -43,8 +44,8 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget{
                     children: [
                       Text(
                         TimeUtils.formatDuration(position),
-                        style: const TextStyle(
-                            color: Colors.white70),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                       ),
                       StreamBuilder<String>(
                         stream: CustomAudioHandler.instance
@@ -54,16 +55,16 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget{
                               .data ?? '';
                           return Text(
                             qualityValue,
-                            style: const TextStyle(
-                                color: Colors.white70),
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                           );
                         },
                       ),
 
                       Text(
                         TimeUtils.formatDuration(duration),
-                        style: const TextStyle(
-                            color: Colors.white70),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                       ),
                     ],
                   ),
@@ -76,15 +77,15 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget{
               children: [
                 Text(
                   TimeUtils.formatDuration(position),
-                  style: const TextStyle(
-                      color: Colors.white70),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                 ),
                 _progressBar(context, ref, position, duration, false),
 
                 Text(
                   TimeUtils.formatDuration(duration),
-                  style: const TextStyle(
-                      color: Colors.white70),
+                  style:  TextStyle(
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                 ),
               ],
             );
@@ -99,17 +100,16 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget{
        width: isColumn?null:MediaQuery.of(context).size.width / 3-100,
       decoration: BoxDecoration(
         border: Border.all(
-            color: Colors.white.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
             width: 1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: SliderTheme(
         data: SliderTheme.of(context).copyWith(
           trackHeight: 4,
-          thumbColor: Colors.white,
-          activeTrackColor: Colors.white,
-          inactiveTrackColor: Colors.white
-              .withOpacity(0.3),
+          thumbColor: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+          activeTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+          inactiveTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
         ),
         child: _CustomSlider(
           value: position.inSeconds.toDouble() > duration.inSeconds.toDouble() ? duration.inSeconds.toDouble() : position.inSeconds.toDouble(),
@@ -150,8 +150,8 @@ class _CustomSlider extends ConsumerWidget {
         data: SliderThemeData(
           trackHeight: 8.0, // 设置进度条的高度
           thumbShape: SliderComponentShape.noThumb, // 去掉滑块（点）
-          activeTrackColor: Colors.white.withOpacity(0.8), // 已播放部分的颜色，半透明白色
-          inactiveTrackColor: Colors.white.withOpacity(0.3), // 未播放部分的颜色，半透明白色
+          activeTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.8), // 已播放部分的颜色，半透明白色
+          inactiveTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.3), // 未播放部分的颜色，半透明白色
           overlayShape: SliderComponentShape.noOverlay, // 去掉滑块按下时的圈圈
           thumbColor: Colors.transparent, // 去掉滑块的颜色
           // trackShape: RectangularSliderTrackShape(), // 设置矩形边框
@@ -163,8 +163,8 @@ class _CustomSlider extends ConsumerWidget {
         data: SliderThemeData(
           trackHeight: 2.0, // 设置进度条的高度
           thumbShape: SliderComponentShape.noOverlay, // 去掉滑块（点）
-          activeTrackColor: Colors.white.withOpacity(1), // 已播放部分的颜色，半透明白色
-          inactiveTrackColor: Colors.white.withOpacity(0.3), // 未播放部分的颜色，半透明白色
+          activeTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.9), // 已播放部分的颜色，半透明白色
+          inactiveTrackColor: Theme.of(context).colorScheme.primary.withOpacity(0.3), // 未播放部分的颜色，半透明白色
           overlayShape: SliderComponentShape.noThumb, // 去掉滑块按下时的圈圈
           thumbColor: Colors.transparent, // 去掉滑块的颜色
           // trackShape: RectangularSliderTrackShape(), // 设置矩形边框

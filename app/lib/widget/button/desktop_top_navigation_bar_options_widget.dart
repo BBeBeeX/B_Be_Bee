@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../config/theme.dart';
 import '../../gen/strings.g.dart';
 import '../../util/shortcut_utils.dart';
 
@@ -10,7 +11,7 @@ class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton<String>(
-      icon: Icon(Icons.more_horiz_outlined, color: Colors.grey.shade300),
+      icon: Icon(Icons.more_horiz_outlined, color: Theme.of(context).colorScheme.primary.withOpacity(0.9)),
       onSelected: (subValue) async {
         await ShortcutUtils.handleShortcut(context,ref,subValue);
       },
@@ -22,7 +23,7 @@ class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
               offset: const Offset(100, -10),
               child: ListTile(
                 title: Text(t.general.files),
-                trailing: Icon(Icons.keyboard_arrow_right, size: 15, color: Colors.grey.shade300),
+                trailing: Icon(Icons.keyboard_arrow_right, size: 15, color: Theme.of(context).colorScheme.primary.withOpacity(0.9)),
               ),
               onSelected: (subValue) async {
                 await ShortcutUtils.handleShortcut(context,ref,subValue);

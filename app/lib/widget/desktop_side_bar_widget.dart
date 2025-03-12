@@ -1,3 +1,4 @@
+import 'package:b_be_bee_app/config/theme.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +37,7 @@ class DesktopSideBarWidget extends ConsumerWidget {
                   child: Row(
                     children: [
                       Assets.img.logo512.image(
-                        color: Colors.grey[400],
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
                         width: 50,
                         height: 50,
                       ),
@@ -45,7 +46,7 @@ class DesktopSideBarWidget extends ConsumerWidget {
                       if(isOpenSideBar)
                       Text(
                         t.widget.library,
-                        style: TextStyle(color: Colors.grey[400], fontSize: 18, fontWeight: FontWeight.w600),
+                        style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.8), fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),

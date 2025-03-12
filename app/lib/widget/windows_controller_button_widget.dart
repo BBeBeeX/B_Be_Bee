@@ -1,3 +1,4 @@
+import 'package:b_be_bee_app/config/theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,7 @@ class WindowControlButtons extends ConsumerWidget {
 
     final buttonColors = WindowButtonColors(
         // iconNormal:  Theme.of(context).cardColor,
-        iconNormal:  Colors.white,
+        iconNormal:  Theme.of(context).colorScheme.primary,
         mouseOver:  Theme.of(context).cardColor,
         mouseDown:  Colors.grey,);
 

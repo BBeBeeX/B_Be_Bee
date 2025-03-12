@@ -71,6 +71,9 @@ class BiliSearchApi{
       return list;
     }
 
+    await Future.microtask(() {
+      container.read(commonLoggerProvider.notifier).addLog('getSearchVideosLen: ${list.length} ${list}');
+    });
     return list;
   }
 

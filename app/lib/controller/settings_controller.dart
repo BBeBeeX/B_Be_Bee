@@ -69,7 +69,7 @@ class SettingsController extends StateNotifier<SettingsState> {
   }
 
   Future<void> setLocale(AppLocale? locale) async {
-    state = state.copyWith(locale: locale ?? AppLocale.en);
+    state = state.copyWith(locale: locale);
     await HiveHelper.setLocale(locale);
   }
 

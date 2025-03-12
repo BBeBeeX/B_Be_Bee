@@ -2,6 +2,7 @@ import 'package:b_be_bee_app/controller/download_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/model/dao/download_state.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +22,7 @@ class DownloadManagerPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.downloadPage.title),
+          automaticallyImplyLeading: checkPlatformIsDesktop()?false: true
       ),
       body: ListView.builder(
         itemCount: downloadState.tasks.length,

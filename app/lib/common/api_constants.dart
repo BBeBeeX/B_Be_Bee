@@ -118,7 +118,8 @@ class ApiConstants {
   ///分类搜索
   ///test video: https://api.bilibili.com/x/web-interface/search/type?keyword=你好&search_type=video&page=5&page_size=45
   ///test bangumi: https://api.bilibili.com/x/web-interface/search/type?keyword=三国&search_type=media_bangumi&page=1&page_size=45
-  static const String searchWithType = '$apiBase/x/web-interface/search/type';
+  static const String searchWithType = '$apiBase/x/web-interface/wbi/search/type';
+  // static const String searchWithType = '$apiBase/x/web-interface/search/type';
 
   static const String getSubtitle = '$apiBase/x/player/wbi/v2';
 

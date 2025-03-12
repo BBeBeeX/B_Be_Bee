@@ -90,7 +90,6 @@ class PlaylistPage extends ConsumerWidget {
                           iconSize: 20,
                           onPressed: () async {
                             await BatchOperationBottomSheet.open(
-                                context,
                                 playlist.currentPlaylist,
                                 playlist.playlistId,
                                 controller.removeSongs

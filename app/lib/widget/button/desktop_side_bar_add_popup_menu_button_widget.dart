@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
+import '../../config/theme.dart';
 import '../../gen/strings.g.dart';
 import '../../pages/download_manager_page.dart';
 import '../../pages/local_audio_browser_page.dart';
@@ -13,7 +14,7 @@ class DesktopSideBarAddPopupMenuButtonWidget extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.add),
+      icon:  Icon(Icons.add,color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
       onSelected: (value) async {
         if (value == 'add') {
           await InputNewCollectsDialog.open(context, ref);

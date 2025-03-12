@@ -24,6 +24,7 @@ import '../gen/strings.g.dart';
 import '../model/dao/collect_playlist.dart';
 import '../provider/image_color_provider.dart';
 import '../util/audio_handler.dart';
+import '../util/native/platform_check.dart';
 import '../widget/desktop_main_area_widget.dart';
 import '../widget/loading_widget.dart';
 
@@ -109,10 +110,11 @@ class CollectsPlaylistPage extends ConsumerWidget {
               pinned: true,
               elevation: 0,
               backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
+    automaticallyImplyLeading: checkPlatformIsDesktop()?false: true,
+              // leading: IconButton(
+              //   icon: const Icon(Icons.arrow_back),
+              //   onPressed: () => Navigator.of(context).pop(),
+              // ),
               title: Text(collectPlaylist.title),
               actions: [
                 if(collectPlaylist.collectCurrentType != CollectTypeEnum.local)
@@ -223,9 +225,9 @@ class CollectsPlaylistPage extends ConsumerWidget {
                         const SizedBox(width: 8),
                         Text(
                           info?.upper?.name ?? t.general.unknownUser,
-                          style: const TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                         ),
-                        const Icon(Icons.chevron_right, color: Colors.grey),
+                        Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                       ],
                     ),
                   ),
@@ -233,13 +235,13 @@ class CollectsPlaylistPage extends ConsumerWidget {
                 // if(param.type == CollectTypeEnum.local)
                   Row(
                     children: [
-                      Icon(Icons.headphones, color: Colors.grey,),
+                      Icon(Icons.headphones, color: Theme.of(context).colorScheme.primary.withOpacity(0.7),),
                       const SizedBox(width: 8),
                       Text(
                         info?.songs?.isNotEmpty == true
                             ? listenTime
                             : t.utils.toMinute(minute: 0)
-                        , style: const TextStyle(color: Colors.grey),
+                        , style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
                       ),
                     ],
                   ),
@@ -262,14 +264,14 @@ class CollectsPlaylistPage extends ConsumerWidget {
         children: [
 
           if( collectPlaylist.collectCurrentType != CollectTypeEnum.local)
-            _buildActionButton(Icons.playlist_add, t.general.addTo, () async {
+            _buildActionButton(context,Icons.playlist_add, t.general.addTo, () async {
               await SelectListAudioInfoToAdditionBottomSheet.open(
                   context, ref, vm.collectPlaylist?.songs??[],vm.collectPlaylist?.id??'');
             }),
 
 
           isFav
-              ? _buildActionButton(Icons.favorite, t.general.cancelCollection, () async {
+              ? _buildActionButton(context,Icons.favorite, t.general.cancelCollection, () async {
             await CollectsDeleteConfirmDialog.open(
                 context, ref, vm.collectPlaylist?.title ??'', vm.collectPlaylist?.id??'');
             if(collectPlaylist.collectCurrentType == CollectTypeEnum.local){
@@ -277,7 +279,7 @@ class CollectsPlaylistPage extends ConsumerWidget {
             }
           }, iconColor: Colors.red
           )
-              : _buildActionButton(Icons.favorite_border, t.general.favorite, () async {
+              : _buildActionButton(context,Icons.favorite_border, t.general.favorite, () async {
             if (vm.collectPlaylist?.songs?.isNotEmpty ?? false) {
               final collectPlaylistId = await ref.read(
                   collectsProvider.notifier)
@@ -301,7 +303,7 @@ class CollectsPlaylistPage extends ConsumerWidget {
           }
           ),
 
-          _buildActionButton(Icons.download, t.general.download, () async {
+          _buildActionButton(context,Icons.download, t.general.download, () async {
             final collectPlaylistId = await ref.read(
                 collectsProvider.notifier)
                 .createPlaylist(
@@ -327,16 +329,16 @@ class CollectsPlaylistPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionButton(IconData icon, String label,
+  Widget _buildActionButton(BuildContext context,IconData icon, String label,
       VoidCallback onPressed,{Color? iconColor,double? iconSize = 24}) {
     return InkWell(
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20),
-      splashColor: Colors.grey.withOpacity(0.2),
+      splashColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -404,7 +406,6 @@ class CollectsPlaylistPage extends ConsumerWidget {
             onPressed: () async {
               if (vm.collectPlaylist?.songs != null) {
                 await BatchOperationBottomSheet.open(
-                    context,
                     vm.collectPlaylist?.songs??[],
                     vm.collectPlaylist?.id??'',
                     collectPlaylist.collectCurrentType == CollectTypeEnum.local ? ref

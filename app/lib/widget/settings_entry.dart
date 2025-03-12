@@ -62,9 +62,9 @@ class BooleanEntry extends StatelessWidget {
                 value: value,
                 onChanged: onChanged,
 
-                activeTrackColor: theme.colorScheme.secondary,
+                activeTrackColor: theme.colorScheme.secondary.withOpacity(0.6),
                 activeColor: theme.colorScheme.onSecondary,
-                inactiveThumbColor: theme.colorScheme.outline,
+                inactiveThumbColor: theme.colorScheme.secondary.withOpacity(0.6),
                 inactiveTrackColor: theme.colorScheme.surface,
               ),
             ),
@@ -92,7 +92,7 @@ class ButtonEntry extends StatelessWidget {
       label: label,
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+          backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
           foregroundColor: Theme.of(context).colorScheme.onSurface,
         ),
@@ -127,7 +127,7 @@ class EditableTextEntry extends StatelessWidget {
       label: label,
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+          backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
           foregroundColor: Theme.of(context).colorScheme.onSurface,
         ),

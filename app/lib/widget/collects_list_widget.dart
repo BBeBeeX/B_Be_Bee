@@ -72,7 +72,7 @@ class CollectsListWidget extends ConsumerWidget {
                           ),
                         )
                       : IconButton(
-                          icon: const Icon(Icons.search),
+                          icon:  Icon(Icons.search,color: Theme.of(context).colorScheme.primary.withOpacity(0.8),),
                           onPressed: () {
                             ref.read(collectsPageProvider.notifier).toggleSearch();
                           },

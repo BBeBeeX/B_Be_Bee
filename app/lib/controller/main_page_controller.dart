@@ -100,14 +100,18 @@ class MainPageController extends StateNotifier<MainPageState> {
           ...state.historyList.sublist(0, state.currentIndex + 1),
           newPage
         ],
-        currentIndex: max(state.historyList.length - 1,state.currentIndex+1),
+        currentIndex: state.currentIndex+1,
       );
     } else {
       state = state.copyWith(
         historyList: [...state.historyList, newPage],
-        currentIndex: max(state.historyList.length - 1,state.currentIndex+1),
+        currentIndex: state.currentIndex+1,
       );
     }
+  }
+
+  bool isSearchPage(){
+    return state.currentPages[state.currentIndex].key.toString().contains('SearchPage') ;
   }
 
   void goBack() {

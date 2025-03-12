@@ -45,17 +45,19 @@ class RouterObserver extends RouterinoObserver {
 
     if (isDesktop) {
       final routeName = route.settings.name;
-      print('routeName: $routeName');
-      print('arguments: ${route.settings.arguments}\n');
 
       if (routeName == 'SettingsPage') {
         pushToLocalNavigator(const SettingsPage());
         Future.microtask(() => route.navigator?.removeRoute(route));
         return;
       } else if (routeName == 'SearchPage') {
-        pushToLocalNavigator(const SearchPage());
-        Future.microtask(() => route.navigator?.removeRoute(route));
-        return;
+        if(ref!=null && ref!.read(mainPageProvider.notifier).isSearchPage()){
+          return;
+        }else{
+          pushToLocalNavigator(const SearchPage());
+          Future.microtask(() => route.navigator?.removeRoute(route));
+          return;
+        }
       } else if (routeName == 'LocalAudioBrowserPage') {
         pushToLocalNavigator(const LocalAudioBrowserPage());
         Future.microtask(() => route.navigator?.removeRoute(route));

@@ -28,11 +28,11 @@ class CollectsListWidgetSortPopupMenuButtonWidget extends ConsumerWidget {
               visible: !isSearching,
               child: Text(
                 collectsStateSortMode.label,
-                style: TextStyle(color: Colors.grey[400]),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
               ),
             ),
             SizedBox(width: 4,),
-            Icon(Icons.format_list_bulleted,color: Colors.grey[400],size: 20,),
+            Icon(Icons.format_list_bulleted,color: Theme.of(context).colorScheme.primary.withOpacity(0.8),size: 20,),
           ],
         ),
       ),

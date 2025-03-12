@@ -19,7 +19,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+      color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: borderRadius),
       child: DropdownButton<T>(
         value: value,

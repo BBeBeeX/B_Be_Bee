@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/theme.dart';
 import '../../controller/playlist_controller.dart';
 import '../../model/state/playlist_state.dart';
 import '../../util/audio_handler.dart';
@@ -28,7 +29,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget{
           // 播放模式
           IconButton(
             icon: Icon(playlist.repeatMode.icon,size: isColumn ? 24 : 20 ,),
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
             onPressed: () async {
               await playlistController.cycleRepeatMode();
             },
@@ -39,7 +40,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget{
             children: [
               IconButton(
                 icon:  Icon(Icons.skip_previous, size: isColumn ? 36 : 24),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
                 onPressed: () async =>
                     playlistController.skipToPrevious(
                         isCutSong: true),
@@ -59,7 +60,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget{
                           : Icons.play_circle_filled,
                       size: isColumn ? 72 : 36,
                     ),
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
                     onPressed: ref
                         .read(
                         playlistControllerProvider.notifier)
@@ -71,7 +72,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget{
               const SizedBox(width: 16),
               IconButton(
                 icon:  Icon(Icons.skip_next, size: isColumn ? 36 : 24 ),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
                 onPressed: () async =>
                     playlistController.skipToNext(
                         isCutSong: true),
@@ -83,7 +84,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget{
           if(isColumn)
           IconButton(
               icon: Icon(Icons.queue_music,size: 36),
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
               onPressed: () async =>
               await OpenPlaylistBottomSheet.open(context)
           ),

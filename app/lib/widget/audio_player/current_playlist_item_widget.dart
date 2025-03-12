@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../config/theme.dart';
 import '../../controller/collects_controller.dart';
 import '../../model/state/playlist_state.dart';
 import '../img/network_image.dart';
@@ -56,7 +57,7 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
                 Text(
                   playlist.currentSong?.title??'',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: isBottom ? 16.0 : 24.0,
                   ),
@@ -66,8 +67,8 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
                 ),
                 Text(
                   playlist.currentSong?.upper.name??'',
-                  style: const TextStyle(
-                    color: Colors.white70,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.left,
@@ -86,9 +87,9 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
               color: Colors.red,
             )
                 :
-            const Icon(
+             Icon(
               Icons.favorite_outline,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
             ),
 
             onPressed: () async {

@@ -68,7 +68,7 @@ class SettingsState {
   ///通用
   final ThemeMode theme;
   final ColorModeEnum colorMode;
-  final AppLocale locale;
+  final AppLocale? locale;
   final bool minimizeToTray; //最小化到系统托盘
   final bool saveWindowPlacement;
   final bool autoStart;
@@ -126,7 +126,7 @@ class SettingsState {
   SettingsState({
     this.theme = ThemeMode.dark,
     this.colorMode = ColorModeEnum.system,
-    this.locale = AppLocale.zhCn,
+    this.locale,
     this.minimizeToTray = true,
     this.saveWindowPlacement = true,
     this.autoStart = true,

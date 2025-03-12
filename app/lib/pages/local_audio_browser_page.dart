@@ -7,6 +7,7 @@ import 'package:path/path.dart' as path;
 import 'package:routerino/routerino.dart';
 import '../controller/local_audio_browser_controller.dart';
 import '../gen/strings.g.dart';
+import '../util/native/platform_check.dart';
 import '../widget/button/local_audio_browser_page_delete_folder_popup_menu_button_widget.dart';
 import 'folder_contents_page.dart';
 
@@ -33,7 +34,9 @@ class LocalAudioBrowserPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+
         title: Text(t.localPage.title),
+          automaticallyImplyLeading: checkPlatformIsDesktop()?false: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -98,15 +101,6 @@ class LocalAudioBrowserPage extends ConsumerWidget {
               trailing: folderInfo.canDelete ? LocalAudioBrowserPageDeleteFolderPopupMenuButtonWidget(removeFolderPath: folderInfo.path,) : null,
               onTap: () async {
                 await ref.read(localAudioBrowserProvider.notifier).toCollectPage(context, Directory(folderInfo.path));
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => FolderContentsPage(
-                //       folder: Directory(folderInfo.path),
-                //     ),
-                //   ),
-                // );
               },
             ),
           );

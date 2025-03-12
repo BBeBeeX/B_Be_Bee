@@ -18,6 +18,7 @@ import '../provider/logging/common_logs_provider.dart';
 import '../util/ffmpeg_utils.dart';
 import '../util/native/directories.dart';
 import '../util/native/permission_helper.dart';
+import '../widget/dialogs/loading_dialog.dart';
 
 class FolderInfo {
   final String path;
@@ -120,8 +121,8 @@ class LocalAudioBrowserController extends StateNotifier<LocalAudioBrowserState> 
   }
 
   Future<void> toCollectPage(BuildContext context,Directory folder) async {
+    UpdateAskDialog.open();
     try {
-      state = state.copyWith(isLoading: true);
       final audioList = await folder.list().toList();
 
       final files = audioList.where((entity) {
@@ -146,22 +147,24 @@ class LocalAudioBrowserController extends StateNotifier<LocalAudioBrowserState> 
         final validAudioList = audioList.whereType<AudioInfo>().toList();
 
         if(validAudioList.isNotEmpty){
-          state = state.copyWith(isLoading: false);
+          Routerino.context.pop();
 
           await context.push(() => CollectsPlaylistPage(
             collectPlaylist: CollectPlaylist(
               id: 'local_audios_$folderPath',
-                title: folderPath,
-                cover: validAudioList
-                    .map((song) => song.coverLocalUrl)
-                    .firstWhere((cover) => cover.isNotEmpty,orElse:()=> '') ,
-                songIds: validAudioList.map((song) => song.id).toList(),
-                songs: validAudioList,
-                createTime: DateTime.now().second,
-                collectCurrentType:CollectTypeEnum.localAudios,
-                collectSourceType:CollectTypeEnum.localAudios,
+              title: folderPath,
+              cover: validAudioList
+                  .map((song) => song.coverLocalUrl)
+                  .firstWhere((cover) => cover.isNotEmpty, orElse: () => ''),
+              songIds: validAudioList.map((song) => song.id).toList(),
+              songs: validAudioList,
+              createTime: DateTime.now().second,
+              collectCurrentType: CollectTypeEnum.localAudios,
+              collectSourceType: CollectTypeEnum.localAudios,
             ),
           ));
+
+          return;
         }else {
           await ToastUtil.show(t.localPage.noAudioFiles);
         }
@@ -169,8 +172,7 @@ class LocalAudioBrowserController extends StateNotifier<LocalAudioBrowserState> 
     } catch (e) {
       print('load local audio error: $e');
     }
-    state = state.copyWith(isLoading: false);
-
+    Routerino.context.pop();
   }
 
   bool _isAudioFile(String path) {
