@@ -406,7 +406,7 @@ class DownloadController extends StateNotifier<DownloadState> {
       await _deleteFile(imageSavePath);
       await _ensureDirectoryExists(imageSavePath);
 
-      final imageBits = await RhttpUtils().downloadImage( url: imagePath, savePath: imageSavePath);
+      final imageBits = await RhttpUtils.downloadFile( url: imagePath, savePath: imageSavePath);
 
       if(imageBits != null){
         await _updateTask(task.id, status: DownloadStatusEnum.imageSuccess);

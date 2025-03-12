@@ -175,12 +175,20 @@ class RhttpUtils {
     _activeTokens.remove(id);
   }
 
-  Future<Uint8List?> downloadImage({
+  static Future<Uint8List?> downloadFile({
     required String url,
-    required String savePath
+    required String savePath,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
   })async{
     try {
-      final response = await _client.getBytes(url);
+      container.read(commonLoggerProvider.notifier).addLog('start download file $url\n'
+          'savePath: $savePath');
+
+      final response = await _client.getBytes(url
+      ,onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken
+      );
 
       if (response.statusCode == HttpStatus.ok ) {
         // 文件内容流
@@ -188,21 +196,24 @@ class RhttpUtils {
         await file.writeAsBytes(response.body);
 
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('download image success, save path:$savePath');
+          container.read(commonLoggerProvider.notifier).addLog('download file $url success, save path:$savePath');
         });
         return response.body;
       } else {
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('download image fail, code:${response.statusCode}');
+          container.read(commonLoggerProvider.notifier).addLog('download file $url fail, code:${response.statusCode}');
         });
       }
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('download image fail, Request error: $e');
+        container.read(commonLoggerProvider.notifier).addLog('download file $url fail, Request error: $e');
       });
     }
     return null;
   }
+
+
+
 
   // 关闭rhttp流
   void cancelRequests(String requestId) {

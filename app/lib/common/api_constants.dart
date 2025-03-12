@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String githubLatestRelease =
-      'https://api.github.com/repos/lucinhu/bili_you/releases/latest';
+      'https://api.github.com/repos/BBeBeeX/B_Be_Bee/releases/latest';
 
   static const String bilibiliBase = 'https://www.bilibili.com';
 

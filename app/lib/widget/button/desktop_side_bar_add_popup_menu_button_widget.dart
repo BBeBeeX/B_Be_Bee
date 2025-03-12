@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routerino/routerino.dart';
 
-import '../../controller/main_page_controller.dart';
 import '../../gen/strings.g.dart';
 import '../../pages/download_manager_page.dart';
 import '../../pages/local_audio_browser_page.dart';
@@ -20,15 +20,9 @@ class DesktopSideBarAddPopupMenuButtonWidget extends ConsumerWidget{
         } else if (value == 'clipboard') {
           await ClipboardUtil.getClipboard(context, ref);
         } else if(value == 'local'){
-          await ref.read(mainPageProvider.notifier).pushPage(
-              LocalAudioBrowserPage()
-          );
-
+          await context.push(()=>LocalAudioBrowserPage());
         } else if(value == 'download'){
-          await ref.read(mainPageProvider.notifier).pushPage(
-              DownloadManagerPage()
-          );
-
+          await context.push(()=>DownloadManagerPage());
         }
       },
       itemBuilder: (BuildContext context) {

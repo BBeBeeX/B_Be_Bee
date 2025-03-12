@@ -1,9 +1,12 @@
 import 'package:b_be_bee_app/config/init.dart';
+import 'package:b_be_bee_app/controller/bili/bili_upper_page_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/observer/route_observer.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routerino/routerino.dart';
 
 import '../common/api/bili/bili_collects_api.dart';
 import '../model/dao/collect_playlist.dart';
@@ -105,16 +108,13 @@ class HomePageRecommendController extends StateNotifier<HomePageRecommendState> 
   Future<void> toCollectPage(BuildContext context) async {
     switch(params.type){
       case 'bili_season':
-        await ref.read(mainPageProvider.notifier).pushPage(
-            CollectsPlaylistPage(
-              collectPlaylist: CollectPlaylist(
-                  id: 'bili_season_${params.id}',
-                  title: params.title,
-                  collectCurrentType: CollectTypeEnum.biliSeason,
-                  collectSourceType: CollectTypeEnum.biliSeason,
-                onlineId: params.id
-              ),
-            )
+        await context.pushToPlaylist( CollectPlaylist(
+              id: 'bili_season_${params.id}',
+              title: params.title,
+              collectCurrentType: CollectTypeEnum.biliSeason,
+              collectSourceType: CollectTypeEnum.biliSeason,
+              onlineId: params.id
+          )
         );
         break;
     }

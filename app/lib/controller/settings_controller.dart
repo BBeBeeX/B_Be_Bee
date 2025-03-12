@@ -48,6 +48,9 @@ class SettingsController extends StateNotifier<SettingsState> {
           downloadQuality:HiveHelper.getDownloadQuality(),
           downloadFileFormat: HiveHelper.getDownloadFileFormat(),
 
+          isAutoUpdate: HiveHelper.isAutoUpdate(),
+          isUpdateRemind: HiveHelper.isUpdateRemind(),
+
           userAgent: HiveHelper.getUserAgent(),
 
           advancedSettings:HiveHelper.getAdvancedSettingsEnabled(),
@@ -178,6 +181,21 @@ class SettingsController extends StateNotifier<SettingsState> {
   Future<void> setUserAgent(String userAgent) async {
     state = state.copyWith(userAgent: userAgent);
     await HiveHelper.setUserAgent(userAgent);
+  }
+
+  Future<void> onToggleAutoUpdate() async {
+    state = state.copyWith(isAutoUpdate: !state.isAutoUpdate,);
+    await HiveHelper.setIsAutoUpdate(state.isAutoUpdate);
+
+    if (state.isAutoUpdate) {
+      state = state.copyWith(isUpdateRemind: false);
+      await HiveHelper.setIsUpdateRemind(false);
+    }
+  }
+
+  Future<void> onToggleUpdateRemind() async {
+    state = state.copyWith(isUpdateRemind: !state.isUpdateRemind,);
+    await HiveHelper.setIsUpdateRemind(state.isUpdateRemind);
   }
 
   Future<void> setAdvancedSettings(bool advancedSettings) async {

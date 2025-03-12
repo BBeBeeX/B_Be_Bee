@@ -133,8 +133,14 @@
     "general": {
       "title": "通用",
       "language": "语言",
+      "brightness": "亮度",
       "languageOptions": {
         "system": "跟随系统"
+      },
+      "brightnessOptions": {
+        "system": "跟随系统",
+        "light": "亮色",
+        "dark": "暗色"
       },
       "saveWindowPlacement": "退出时保存窗口位置",
       "saveWindowPlacementWindows": "离开时保存窗口位置",
@@ -143,7 +149,9 @@
       "launchMinimized": "启动时最小化到任务栏",
       "enableMessageBar": "是否开启消息栏",
       "autoSyncPlaylist": "自动同步歌单(同步本地歌单和原始歌单)",
-      "animations": "动画效果"
+      "animations": "动画效果",
+      "isAutoUpdate": "应用自动更新",
+      "isUpdateRemind": "应用更新提醒"
     },
     "play": {
       "title": "播放",

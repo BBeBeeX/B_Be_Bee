@@ -133,8 +133,14 @@
     "general": {
       "title": "General",
       "language": "Language",
+      "brightness": "Brightness",
       "languageOptions": {
         "system": "Follow System"
+      },
+      "brightnessOptions": {
+        "system": "Follow System",
+        "light": "Light",
+        "dark": "Dark"
       },
       "saveWindowPlacement": "Save window position on exit",
       "saveWindowPlacementWindows": "Save window position when leaving",
@@ -143,7 +149,9 @@
       "launchMinimized": "Launch minimized to taskbar",
       "enableMessageBar": "Enable message bar",
       "autoSyncPlaylist": "Auto-sync playlist (sync local and original playlists)",
-      "animations": "Animations"
+      "animations": "Animations",
+      "isAutoUpdate": "Automatic application updates",
+      "isUpdateRemind": "Application update reminder"
     },
     "play": {
       "title": "Playback",

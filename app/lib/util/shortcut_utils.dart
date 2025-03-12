@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:b_be_bee_app/controller/bili/bili_upper_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routerino/routerino.dart';
 
 import '../controller/collects_controller.dart';
 import '../controller/main_page_controller.dart';
@@ -49,7 +51,7 @@ class ShortcutUtils {
         await ref.read(playlistControllerProvider.notifier).subVolume();
         break;
       case 'setting':
-        await ref.read(mainPageProvider.notifier).pushPage(const SettingsPage(hasBackIcon:false));
+        await context.push(()=>const SettingsPage(hasBackIcon:false));
         break;
       case 'about':
         break;

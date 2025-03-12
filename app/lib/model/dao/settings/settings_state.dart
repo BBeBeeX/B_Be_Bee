@@ -97,6 +97,9 @@ class SettingsState {
 
   /// 均衡器
 
+  /// update
+  final bool isAutoUpdate;
+  final bool isUpdateRemind;
 
   /// 删除所有已下载内容
   /// 清除缓存 cookie 图片cache collects
@@ -115,17 +118,19 @@ class SettingsState {
   /// license
   /// 技术原理
 
+
+
   final bool advancedSettings;
 
   // 构造函数
   SettingsState({
-    this.theme = ThemeMode.system,
+    this.theme = ThemeMode.dark,
     this.colorMode = ColorModeEnum.system,
     this.locale = AppLocale.zhCn,
     this.minimizeToTray = true,
     this.saveWindowPlacement = true,
     this.autoStart = true,
-    this.autoStartLaunchHidden = false,
+    this.autoStartLaunchHidden = true,
     this.autoSyncToLocal = true,
 
     this.destination = '',
@@ -141,8 +146,10 @@ class SettingsState {
     this.downloadQuality = AudioQuality.hiRes,
     this.downloadFileFormat = DownloadFileFormatEnum.mp4,
 
-
     this.userAgent = Constants.defaultUserAgent,
+
+    this.isAutoUpdate = true,
+    this.isUpdateRemind = false,
 
     this.advancedSettings = false,
   });
@@ -171,6 +178,9 @@ class SettingsState {
     AudioQuality? downloadQuality,
     DownloadFileFormatEnum? downloadFileFormat,
 
+    bool? isAutoUpdate,
+    bool? isUpdateRemind,
+
     String? userAgent,
 
     bool? advancedSettings,
@@ -197,6 +207,9 @@ class SettingsState {
       audioQuality: audioQuality ?? this.audioQuality,
       downloadQuality: downloadQuality ?? this.downloadQuality,
       downloadFileFormat: downloadFileFormat?? this.downloadFileFormat,
+
+      isAutoUpdate: isAutoUpdate??this.isAutoUpdate,
+      isUpdateRemind: isUpdateRemind?? this.isUpdateRemind,
 
       userAgent: userAgent?? this.userAgent,
 

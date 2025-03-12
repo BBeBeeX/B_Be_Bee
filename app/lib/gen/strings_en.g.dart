@@ -498,8 +498,7 @@ class TranslationsAboutPageEn {
   // Translations
   String get title => 'About b_be_bee';
   List<String> get description => [
-        'b_be_bee is a free, open_source app that allows you to securely share files and messages with nearby devices over your local network without needing an internet connection.',
-        'This app is available on Android, iOS, macOS, Windows and Linux. You can find all download options on the official homepage.',
+        'Unite Your Music, Anywhere, Anytime—Stream, Save, and Enjoy Without Limits!',
       ];
   String get author => 'Author';
   String get contributors => 'Contributors';
@@ -551,7 +550,10 @@ class TranslationsSettingsPageGeneralEn {
   // Translations
   String get title => 'General';
   String get language => 'Language';
+  String get brightness => 'Brightness';
   late final TranslationsSettingsPageGeneralLanguageOptionsEn languageOptions = TranslationsSettingsPageGeneralLanguageOptionsEn.internal(_root);
+  late final TranslationsSettingsPageGeneralBrightnessOptionsEn brightnessOptions =
+      TranslationsSettingsPageGeneralBrightnessOptionsEn.internal(_root);
   String get saveWindowPlacement => 'Save window position on exit';
   String get saveWindowPlacementWindows => 'Save window position when leaving';
   String get minimizeToTray => 'Minimize to system tray on close';
@@ -560,6 +562,8 @@ class TranslationsSettingsPageGeneralEn {
   String get enableMessageBar => 'Enable message bar';
   String get autoSyncPlaylist => 'Auto-sync playlist (sync local and original playlists)';
   String get animations => 'Animations';
+  String get isAutoUpdate => 'Automatic application updates';
+  String get isUpdateRemind => 'Application update reminder';
 }
 
 // Path: settingsPage.play
@@ -962,4 +966,16 @@ class TranslationsSettingsPageGeneralLanguageOptionsEn {
 
   // Translations
   String get system => 'Follow System';
+}
+
+// Path: settingsPage.general.brightnessOptions
+class TranslationsSettingsPageGeneralBrightnessOptionsEn {
+  TranslationsSettingsPageGeneralBrightnessOptionsEn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+  String get system => 'Follow System';
+  String get light => 'Light';
+  String get dark => 'Dark';
 }

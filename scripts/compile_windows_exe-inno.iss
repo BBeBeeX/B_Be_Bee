@@ -7,7 +7,7 @@
 #define MyAppVersion "0.0.1"
 #define MyAppPublisher "B_Be_Bee_X"
 #define MyAppURL "https://github.com/BBeBeeX/B_Be_Bee"
-#define MyAppExeName "B_Be_Bee.exe"
+#define MyAppExeName "b_be_bee_app.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.

@@ -892,7 +892,11 @@ class _TranslationsSettingsPageGeneralZhCn extends TranslationsSettingsPageGener
   @override
   String get language => '语言';
   @override
+  String get brightness => '亮度';
+  @override
   late final _TranslationsSettingsPageGeneralLanguageOptionsZhCn languageOptions = _TranslationsSettingsPageGeneralLanguageOptionsZhCn._(_root);
+  @override
+  late final _TranslationsSettingsPageGeneralBrightnessOptionsZhCn brightnessOptions = _TranslationsSettingsPageGeneralBrightnessOptionsZhCn._(_root);
   @override
   String get saveWindowPlacement => '退出时保存窗口位置';
   @override
@@ -909,6 +913,10 @@ class _TranslationsSettingsPageGeneralZhCn extends TranslationsSettingsPageGener
   String get autoSyncPlaylist => '自动同步歌单(同步本地歌单和原始歌单)';
   @override
   String get animations => '动画效果';
+  @override
+  String get isAutoUpdate => '应用自动更新';
+  @override
+  String get isUpdateRemind => '应用更新提醒';
 }
 
 // Path: settingsPage.play
@@ -1650,4 +1658,21 @@ class _TranslationsSettingsPageGeneralLanguageOptionsZhCn extends TranslationsSe
   // Translations
   @override
   String get system => '跟随系统';
+}
+
+// Path: settingsPage.general.brightnessOptions
+class _TranslationsSettingsPageGeneralBrightnessOptionsZhCn extends TranslationsSettingsPageGeneralBrightnessOptionsEn {
+  _TranslationsSettingsPageGeneralBrightnessOptionsZhCn._(TranslationsZhCn root)
+      : this._root = root,
+        super.internal(root);
+
+  final TranslationsZhCn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get system => '跟随系统';
+  @override
+  String get light => '亮色';
+  @override
+  String get dark => '暗色';
 }

@@ -27,7 +27,7 @@ import 'package:logging/logging.dart';
 import 'package:rhttp/rhttp.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../util/webview_utils.dart';
+import '../util/update_utils.dart';
 
 
 
@@ -124,6 +124,8 @@ Future<void> postInit(Ref ref) async {
   //   // If we received a share intent, then don't clear it, otherwise the shared file will be lost.
   //   ref.global.dispatchAsync(ClearCacheAction()); // ignore: unawaited_futures
   // }
+
+  UpdateUtils.getLatestVersion(ref);
 }
 
 

@@ -31,7 +31,6 @@ class AccountEntryWidget extends ConsumerWidget{
         onSelected: (value) async {
           if (value == 'bili') {
             if (biliUserState.isLogin) {
-              await ref.read(mainPageProvider.notifier).popAll();
               await ref.read(mainPageProvider.notifier).changeTab(
                   MainTabEnum.settings);
             }else{

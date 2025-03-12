@@ -50,6 +50,8 @@ const _advancedSettingsKey = 'bbb_advanced_settings';
 const _autoStart = 'bbb_autoStart';
 const _autoStartLaunchHidden = 'bbb_autoStartLaunchHidden';
 const _autoSyncToLocal = 'bbb_autoSyncToLocal';
+const _isAutoUpdate = 'bbb_isAutoUpdate';
+const _isUpdateRemind = 'bbb_isUpdateRemind';
 
 const _windowOffsetX = 'bbb_window_offset_x';
 const _windowOffsetY = 'bbb_window_offset_y';
@@ -353,6 +355,24 @@ class HiveHelper {
 
   static Future<void> setAutoStartLaunchHidden(bool autoStartLaunchHidden) async {
     await _box.put(_autoStartLaunchHidden, autoStartLaunchHidden);
+  }
+
+  static bool isAutoUpdate(){
+    final isAutoUpdate =  _box.get(_isAutoUpdate,defaultValue: true);
+    return isAutoUpdate;
+  }
+
+  static Future<void> setIsAutoUpdate(bool isAutoUpdate) async {
+    await _box.put(_isAutoUpdate, isAutoUpdate);
+  }
+
+  static bool isUpdateRemind(){
+    final isUpdateRemind =  _box.get(_isUpdateRemind,defaultValue: true);
+    return isUpdateRemind;
+  }
+
+  static Future<void> setIsUpdateRemind(bool isUpdateRemind) async {
+    await _box.put(_isUpdateRemind, isUpdateRemind);
   }
 
   static bool? getAdvancedSettingsEnabled() {

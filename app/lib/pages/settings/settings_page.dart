@@ -65,25 +65,25 @@ class SettingsPage extends ConsumerWidget {
         SettingsSection(
           title: t.settingsPage.general.title,
           children: [
-            // _SettingsEntry(
-            //   label: t.settingsPage.general.brightness,
-            //   child: CustomDropdownButton<ThemeMode>(
-            //     value: settings.theme,
-            //     items: ThemeMode.values.map((theme) {
-            //       return DropdownMenuItem(
-            //         value: theme,
-            //         alignment: Alignment.center,
-            //         child: Text(theme.humanName),
-            //       );
-            //     }).toList(),
-            //     onChanged: (theme) async => controller.setTheme(theme),
-            //   ),
-            // ),
-            // _SettingsEntry(
+            SettingsEntry(
+              label: t.settingsPage.general.brightness,
+              child: CustomDropdownButton<ThemeMode>(
+                value: settings.theme,
+                items: ThemeMode.values.map((theme) {
+                  return DropdownMenuItem(
+                    value: theme,
+                    alignment: Alignment.center,
+                    child: Text(theme.humanName),
+                  );
+                }).toList(),
+                onChanged: (theme) async => controller.setTheme(theme),
+              ),
+            ),
+            // SettingsEntry(
             //   label: t.settingsTab.general.color,
-            //   child: CustomDropdownButton<ColorMode>(
+            //   child: CustomDropdownButton<ColorModeEnum>(
             //     value: settings.colorMode,
-            //     items: ColorMode.values.map((colorMode) {
+            //     items: ColorModeEnum.values.map((colorMode) {
             //       return DropdownMenuItem(
             //         value: colorMode,
             //         alignment: Alignment.center,
@@ -164,6 +164,26 @@ class SettingsPage extends ConsumerWidget {
               onChanged: (b) async {
                 await controller.setEnableAnimations(b);
               },
+            ),
+            BooleanEntry(
+              label: t.settingsPage.general.isAutoUpdate,
+              value: settings.isAutoUpdate,
+              onChanged: (_) async => controller.onToggleAutoUpdate(),
+            ),
+            Visibility(
+              visible: !settings.isAutoUpdate,
+              maintainAnimation: true,
+              maintainState: true,
+              child: AnimatedOpacity(
+                opacity: !settings.isAutoUpdate ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 500),
+                child: BooleanEntry(
+                  label: t.settingsPage.general.isUpdateRemind,
+                  value: settings.isUpdateRemind,
+                  onChanged: (_) =>
+                      controller.onToggleUpdateRemind(),
+                ),
+              ),
             ),
           ],
         ),
@@ -313,6 +333,18 @@ class SettingsPage extends ConsumerWidget {
   }
 }
 
+extension on ThemeMode {
+  String get humanName {
+    switch (this) {
+      case ThemeMode.system:
+        return t.settingsPage.general.brightnessOptions.system;
+      case ThemeMode.light:
+        return t.settingsPage.general.brightnessOptions.light;
+      case ThemeMode.dark:
+        return t.settingsPage.general.brightnessOptions.dark;
+    }
+  }
+}
 
 
 

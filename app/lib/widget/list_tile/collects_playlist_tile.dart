@@ -1,5 +1,6 @@
 import 'package:b_be_bee_app/controller/collects_playlist_page_controller.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/observer/route_observer.dart';
 import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_collects_options_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
@@ -98,10 +99,8 @@ class CollectsPlaylistTile extends ConsumerWidget {
             )
           : null: null ,
       onTap: () async {
-        await ref.read(mainPageProvider.notifier).pushPage(
-            CollectsPlaylistPage(
-              collectPlaylist: playlist,
-            )
+        await context.pushToPlaylist(
+           playlist,
         );
       },
     );

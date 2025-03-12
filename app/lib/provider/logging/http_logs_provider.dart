@@ -2,6 +2,10 @@ import 'package:b_be_bee_app/common/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
+import '../../model/enum/log_level.dart';
+import '../../model/pojo/log_entry.dart';
+import '../../util/logs_utils.dart';
+
 final _logger = Logger('HTTP');
 
 
@@ -37,6 +41,7 @@ class HttpLogsController extends StateNotifier<List<LogEntry>> {
     }
 
     final newLog = LogEntry(timestamp: timestamp, log: log);
+    LogsUtils.writeLogToFile(newLog);
     state.add(newLog);
 
     if (state.length > Constants.httpLogsMaxLogs) {
@@ -54,19 +59,4 @@ class HttpLogsController extends StateNotifier<List<LogEntry>> {
 }
 
 
-enum LogLevel {
-  info,
-  warning,
-}
 
-class LogEntry {
-  final DateTime timestamp;
-  final String log;
-
-  LogEntry({required this.timestamp, required this.log});
-
-  @override
-  String toString() {
-    return 'LogEntry(timestamp: ${timestamp.toIso8601String()}, log: "$log")';
-  }
-}

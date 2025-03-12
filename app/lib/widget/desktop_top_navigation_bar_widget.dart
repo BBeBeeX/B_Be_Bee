@@ -1,4 +1,3 @@
-import 'package:b_be_bee_app/model/enum/main_tab_enum.dart';
 import 'package:b_be_bee_app/widget/windows_controller_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +12,8 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainPageState = ref.watch(mainPageProvider);
+    final pageState = ref.watch(mainPageProvider);
+    final pageController = ref.read(mainPageProvider.notifier);
 
     return SafeArea(
           child: DragToMoveArea(
@@ -34,15 +34,15 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                             SizedBox(width: 10,),
                             DesktopTopNavigationBarOptionsWidget(),
                             IconButton(
-                              icon:  Icon(Icons.arrow_back,color: mainPageState.canGoBack ? Colors.white : Colors.grey.shade800 ,size: 30,),
+                              icon:  Icon(Icons.arrow_back,color: pageState.canGoBack ? Colors.white : Colors.grey.shade800 ,size: 30,),
                               onPressed: () async {
-                                await ref.read(mainPageProvider.notifier).goBack();
+                                pageController.goBack();
                               },
                             ),
                             IconButton(
-                              icon:  Icon(Icons.arrow_forward,color: mainPageState.canGoForward ? Colors.white : Colors.grey.shade800 ,size: 30,),
+                              icon:  Icon(Icons.arrow_forward,color: pageState.canGoForward ? Colors.white : Colors.grey.shade800 ,size: 30,),
                               onPressed: ()  async {
-                                await ref.read(mainPageProvider.notifier).goForward();
+                                pageController.goForward();
                               },
                             ),
                           ],
@@ -59,8 +59,7 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                                 icon: Icon(Icons.home, size: 30,),
                                 color: Colors.white,
                                 onPressed: () async {
-                                  await ref.read(mainPageProvider.notifier).popAll();
-                                  await ref.read(mainPageProvider.notifier).changeTab(MainTabEnum.home);
+                                  pageController.goHome();
                                 },
                               ),
                             ),
