@@ -18,6 +18,7 @@ import '../widget/desktop_bottom_bar_widget.dart';
 import '../widget/desktop_main_area_widget.dart';
 import '../widget/desktop_side_bar_widget.dart';
 import '../widget/desktop_top_navigation_bar_widget.dart';
+import '../widget/music_player_widget.dart';
 
 class MainPage extends ConsumerWidget {
 
@@ -45,31 +46,35 @@ class MainPage extends ConsumerWidget {
                 ],
               ),
             ),
-            bottomNavigationBar:   NavigationBar(
-              labelBehavior:
-              NavigationDestinationLabelBehavior.onlyShowSelected,
-              backgroundColor: Colors.transparent,
-              selectedIndex: state.currentTab.index,
-              onDestinationSelected: (index) {
-                final tab = MainTabEnum.values[index];
-                state.controller.jumpToPage(tab.index);
-              },
-              destinations: MainTabEnum.values.map((tab) {
-                return NavigationDestination(
-                  icon: Icon(tab.icon),
-                  label: tab.label,
-                );
-              }).toList(),
-            ),
+        //     bottomNavigationBar:
+        // Column(
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: [
+        //     MusicPlayerWidget(),
+        //     NavigationBar(
+        //       labelBehavior:
+        //       NavigationDestinationLabelBehavior.onlyShowSelected,
+        //       backgroundColor: Colors.transparent,
+        //       selectedIndex: state.currentTab.index,
+        //       onDestinationSelected: (index) {
+        //         final tab = MainTabEnum.values[index];
+        //         state.controller.jumpToPage(tab.index);
+        //       },
+        //       destinations: MainTabEnum.values.map((tab) {
+        //         return NavigationDestination(
+        //           icon: Icon(tab.icon),
+        //           label: tab.label,
+        //         );
+        //       }).toList(),
+        //     ),
+        //     ]),
 
-            // bottomNavigationBar: BottomNavigationBarWidget(
-            //   onTabChanged: (tab) async {
-            //     await ref.read(mainPageProvider.notifier)
-            //         .popAll();
-            //     await ref.read(mainPageProvider.notifier)
-            //         .changeTab(tab);
-            //   },
-            // ),
+            bottomNavigationBar: BottomNavigationBarWidget(
+              onTabChanged: (tab) async {
+                await ref.read(mainPageProvider.notifier)
+                    .changeTab(tab);
+              },
+            ),
 
           );
         }else{

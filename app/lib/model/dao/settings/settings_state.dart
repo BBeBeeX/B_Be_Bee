@@ -90,6 +90,10 @@ class SettingsState {
   final int fadeInOutTime; // 淡入淡出时间
   final bool isSingleTrack; // 单声道音频： 左右扬声器播放相同的音频
   final AudioQuality audioQuality; // 播放音质
+  final bool isEnableLoudnessEnhancer;//声音增强
+  final double loudnessEnhancerValue;
+  final bool isEnableEqualizer;
+  final List<double> equalizerValue;
 
   ///网络
   final String userAgent;
@@ -145,6 +149,12 @@ class SettingsState {
     this.audioQuality = AudioQuality.hiRes,
     this.downloadQuality = AudioQuality.hiRes,
     this.downloadFileFormat = DownloadFileFormatEnum.mp4,
+    this.isEnableLoudnessEnhancer = false,
+    this.loudnessEnhancerValue = 0,
+    this.isEnableEqualizer = false,
+    this.equalizerValue = const [0,0,0,0,0],
+
+
 
     this.userAgent = Constants.defaultUserAgent,
 
@@ -181,6 +191,11 @@ class SettingsState {
     bool? isAutoUpdate,
     bool? isUpdateRemind,
 
+    bool? isEnableLoudnessEnhancer,
+    double? loudnessEnhancerValue,
+    bool? isEnableEqualizer,
+    List<double>? equalizerValue,
+
     String? userAgent,
 
     bool? advancedSettings,
@@ -210,6 +225,11 @@ class SettingsState {
 
       isAutoUpdate: isAutoUpdate??this.isAutoUpdate,
       isUpdateRemind: isUpdateRemind?? this.isUpdateRemind,
+
+      isEnableLoudnessEnhancer: isEnableLoudnessEnhancer??this.isEnableLoudnessEnhancer,
+      loudnessEnhancerValue:loudnessEnhancerValue??this.loudnessEnhancerValue,
+      isEnableEqualizer:isEnableEqualizer??this.isEnableEqualizer,
+      equalizerValue:equalizerValue??this.equalizerValue,
 
       userAgent: userAgent?? this.userAgent,
 

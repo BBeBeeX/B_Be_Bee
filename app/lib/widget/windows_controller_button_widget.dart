@@ -12,8 +12,8 @@ class WindowControlButtons extends ConsumerWidget {
     final buttonColors = WindowButtonColors(
         // iconNormal:  Theme.of(context).cardColor,
         iconNormal:  Theme.of(context).colorScheme.primary,
-        mouseOver:  Theme.of(context).cardColor,
-        mouseDown:  Colors.grey,);
+        mouseOver:  Colors.grey.withOpacity(0.3),
+        mouseDown:  Colors.grey.withOpacity(0.8),);
 
     return Row(
       mainAxisSize: MainAxisSize.min,

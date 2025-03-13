@@ -22,6 +22,9 @@ class SettingsController extends StateNotifier<SettingsState> {
     _loadFromStorage();
   }
 
+
+
+
   Future<void> _loadFromStorage() async {
     final destinationPath =  path.join((await getApplicationDocumentsDirectory()).path,'b_be_bee');
 
@@ -50,6 +53,11 @@ class SettingsController extends StateNotifier<SettingsState> {
 
           isAutoUpdate: HiveHelper.isAutoUpdate(),
           isUpdateRemind: HiveHelper.isUpdateRemind(),
+
+        isEnableLoudnessEnhancer:HiveHelper.isEnableLoudnessEnhancer(),
+        loudnessEnhancerValue:HiveHelper.getLoudnessEnhancerValue(),
+        isEnableEqualizer:HiveHelper.isEnableEqualizer(),
+        equalizerValue:HiveHelper.getEnableEqualizerValue(),
 
           userAgent: HiveHelper.getUserAgent(),
 
@@ -177,6 +185,30 @@ class SettingsController extends StateNotifier<SettingsState> {
     state = state.copyWith(downloadFileFormat: downloadFileFormat);
     await HiveHelper.setDownloadFileFormat(downloadFileFormat);
   }
+
+  Future<void> toggleEnableLoudnessEnhancer() async {
+    state = state.copyWith(isEnableLoudnessEnhancer: !state.isEnableLoudnessEnhancer);
+    await HiveHelper.setEnableLoudnessEnhancer(state.isEnableLoudnessEnhancer);
+  }
+
+  Future<void> setLoudnessEnhancerValue(double loudnessEnhancerValue) async {
+    state = state.copyWith(loudnessEnhancerValue: loudnessEnhancerValue);
+    await HiveHelper.setLoudnessEnhancerValue(loudnessEnhancerValue);
+  }
+
+  Future<void> toggleEnableEqualizer() async {
+    state = state.copyWith(isEnableEqualizer: !state.isEnableEqualizer);
+    await HiveHelper.setIsEnableEqualizer(state.isEnableEqualizer);
+  }
+
+  Future<void> setEqualizerValue(List<double> equalizerValue) async {
+    state = state.copyWith(equalizerValue: equalizerValue);
+    await HiveHelper.setEqualizerValue(equalizerValue);
+  }
+
+
+
+
 
   Future<void> setUserAgent(String userAgent) async {
     state = state.copyWith(userAgent: userAgent);

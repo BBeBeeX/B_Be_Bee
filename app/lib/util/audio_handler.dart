@@ -36,12 +36,96 @@ class CustomAudioHandler extends BaseAudioHandler {
     _initialize();
   }
 
+  static final _equalizer = checkPlatform([TargetPlatform.android])?AndroidEqualizer():null;
+  static final _loudnessEnhancer = checkPlatform([TargetPlatform.android])?AndroidLoudnessEnhancer():null;
+  static final AudioPlayer _player = checkPlatform([TargetPlatform.android])?AudioPlayer(
+    audioPipeline: AudioPipeline(
+      androidAudioEffects: [
+        _loudnessEnhancer!,
+        _equalizer!,
+      ],
+    ),
+  ):AudioPlayer();
+  static AudioPlayer get player => _player;
+
   static setRef(WidgetRef ref){
     _ref = ref;
     enableMessageBar = ref.watch(settingsProvider).enableMessageBar;
     enableAnimations = ref.watch(settingsProvider).enableAnimations;
     fadeInOutTime = ref.watch(settingsProvider).fadeInOutTime;
     currentVolume = ref.watch(playlistControllerProvider).volume;
+    final settingValue = ref.read(settingsProvider);
+
+    if(_loudnessEnhancer!=null){
+      _loudnessEnhancer!.setEnabled(settingValue.isEnableLoudnessEnhancer);
+      _loudnessEnhancer!.setTargetGain(settingValue.loudnessEnhancerValue);
+
+      ref.listen<bool>(
+        settingsProvider.select((state) => state.isEnableLoudnessEnhancer),
+            (previous, next) {
+          Future.microtask(() async {
+            container.read(commonLoggerProvider.notifier).addLog('isEnableLoudnessEnhancer change: $previous -> $next');
+          });
+          _loudnessEnhancer!.setEnabled(settingValue.isEnableLoudnessEnhancer);
+          },
+      );
+
+      ref.listen<double>(
+        settingsProvider.select((state) => state.loudnessEnhancerValue),
+            (previous, next) {
+          Future.microtask(() async {
+            container.read(commonLoggerProvider.notifier).addLog('loudnessEnhancerValue change: $previous -> $next');
+          });
+          _loudnessEnhancer!.setTargetGain(settingValue.loudnessEnhancerValue);
+        },
+      );
+    }
+
+    if(_equalizer!=null){
+      _equalizer!.setEnabled(settingValue.isEnableEqualizer);
+      initEqualizer(settingValue.equalizerValue);
+
+      ref.listen<bool>(
+        settingsProvider.select((state) => state.isEnableEqualizer),
+            (previous, next) {
+          Future.microtask(() async {
+            container.read(commonLoggerProvider.notifier).addLog('isEnableEqualizer change: $previous -> $next');
+          });
+          _equalizer!.setEnabled(settingValue.isEnableEqualizer);
+        },
+      );
+
+      ref.listen<List<double>>(
+        settingsProvider.select((state) => state.equalizerValue),
+            (previous, next) {
+          Future.microtask(() async {
+            container.read(commonLoggerProvider.notifier).addLog('equalizerValue change: $previous -> $next');
+          });
+          initEqualizer(settingValue.equalizerValue);
+        },
+      );
+    }
+  }
+
+  static Future<void> initEqualizer(List<double> list) async {
+    final bands = await _equalizer!.parameters;
+
+    if (list.length != bands.bands.length) {
+      await Future.microtask(() async {
+        container.read(commonLoggerProvider.notifier).addLog('settings equlizer value(${list.length}) is nat match equalizer bands length(${bands.bands.length})');
+      });
+      return;
+    }
+
+    for (int i = 0; i < bands.bands.length; i++) {
+      final band = bands.bands[i];
+
+      final gain = list[i].clamp(bands.minDecibels, bands.maxDecibels);
+      band.setGain(gain);
+      Future.microtask(() async {
+        container.read(commonLoggerProvider.notifier).addLog('set ${band.centerFrequency}Hz -> ${gain} dB');
+      });
+    }
   }
 
   static CustomAudioHandler? _instance;
@@ -71,8 +155,7 @@ class CustomAudioHandler extends BaseAudioHandler {
     return _instance!;
   }
 
-  static final AudioPlayer _player = AudioPlayer();
-  static AudioPlayer get player => _player;
+
 
   late StreamSubscription<PlaybackEvent> _playbackEventSubscription;
   late StreamSubscription<Duration?> _durationSubscription;

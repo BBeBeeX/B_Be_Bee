@@ -3,6 +3,7 @@ import 'package:b_be_bee_app/config/init_error.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/main_page.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/widget/watcher/life_cycle_watcher.dart';
 import 'package:b_be_bee_app/widget/watcher/shortcut_watcher.dart';
 import 'package:b_be_bee_app/widget/watcher/tray_watcher.dart';
@@ -68,7 +69,9 @@ class b_be_beeApp extends ConsumerWidget {
                 child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onPanStart: (details) async {
-                      await windowManager.startDragging();
+                      if(checkPlatformIsDesktop()){
+                        await windowManager.startDragging();
+                      }
                     },
                       child: MaterialApp(
                         title: t.appName,

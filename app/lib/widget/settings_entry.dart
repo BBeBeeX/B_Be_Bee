@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../config/theme.dart';
-import 'dialogs/changeSettingsDestinationPathDialog.dart';
+import 'dialogs/change_settings_destination_path_dialog.dart';
 
 
 class SettingsEntry extends StatelessWidget {

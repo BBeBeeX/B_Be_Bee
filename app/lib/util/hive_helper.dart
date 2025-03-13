@@ -52,6 +52,10 @@ const _autoStartLaunchHidden = 'bbb_autoStartLaunchHidden';
 const _autoSyncToLocal = 'bbb_autoSyncToLocal';
 const _isAutoUpdate = 'bbb_isAutoUpdate';
 const _isUpdateRemind = 'bbb_isUpdateRemind';
+const _isEnableLoudnessEnhancer = 'bbb_is_enable_loudness_enhancer';
+const _loudnessEnhancerValue = 'bbb_loudness_enhancer_value';
+const _isEnableEqulizer = 'bbb_is_enable_equlizer';
+const _enableEqulizerValue = 'bbb_enable_equlizer_value';
 
 const _windowOffsetX = 'bbb_window_offset_x';
 const _windowOffsetY = 'bbb_window_offset_y';
@@ -357,7 +361,7 @@ class HiveHelper {
     await _box.put(_autoStartLaunchHidden, autoStartLaunchHidden);
   }
 
-  static bool isAutoUpdate(){
+  static bool? isAutoUpdate(){
     final isAutoUpdate =  _box.get(_isAutoUpdate,defaultValue: true);
     return isAutoUpdate;
   }
@@ -366,7 +370,7 @@ class HiveHelper {
     await _box.put(_isAutoUpdate, isAutoUpdate);
   }
 
-  static bool isUpdateRemind(){
+  static bool? isUpdateRemind(){
     final isUpdateRemind =  _box.get(_isUpdateRemind,defaultValue: true);
     return isUpdateRemind;
   }
@@ -374,6 +378,51 @@ class HiveHelper {
   static Future<void> setIsUpdateRemind(bool isUpdateRemind) async {
     await _box.put(_isUpdateRemind, isUpdateRemind);
   }
+
+  static bool? isEnableLoudnessEnhancer(){
+    final isEnableLoudnessEnhancer =  _box.get(_isEnableLoudnessEnhancer);
+    print('isEnableLoudnessEnhancer: $isEnableLoudnessEnhancer');
+    return isEnableLoudnessEnhancer;
+  }
+
+  static Future<void> setEnableLoudnessEnhancer(bool isEnableLoudnessEnhancer) async {
+    print('isEnableLoudnessEnhancer: $isEnableLoudnessEnhancer');
+    await _box.put(_isEnableLoudnessEnhancer, isEnableLoudnessEnhancer);
+  }
+
+  static double? getLoudnessEnhancerValue(){
+    final getLoudnessEnhancerValue = _box.get(_loudnessEnhancerValue);
+    print('getLoudnessEnhancerValue: $getLoudnessEnhancerValue');
+    return  getLoudnessEnhancerValue;
+  }
+
+  static Future<void> setLoudnessEnhancerValue(double loudnessEnhancerValue) async {
+    print('getLoudnessEnhancerValue: $loudnessEnhancerValue');
+    await _box.put(_loudnessEnhancerValue, loudnessEnhancerValue);
+  }
+
+  static bool? isEnableEqualizer(){
+    return _box.get(_isEnableEqulizer);
+  }
+
+  static Future<void> setIsEnableEqualizer(bool isEnableEqualizer) async {
+    await _box.put(_isEnableEqulizer, isEnableEqualizer);
+  }
+
+  static List<double>? getEnableEqualizerValue(){
+    final dynamicList = _box.get(_enableEqulizerValue);
+
+    if (dynamicList == null) {
+      return null;
+    }
+
+    return dynamicList.cast<double>();
+  }
+
+  static Future<void> setEqualizerValue(List<double> enableEqualizerValue) async {
+    await _box.put(_enableEqulizerValue, enableEqualizerValue);
+  }
+
 
   static bool? getAdvancedSettingsEnabled() {
     return _box.get(_advancedSettingsKey);
