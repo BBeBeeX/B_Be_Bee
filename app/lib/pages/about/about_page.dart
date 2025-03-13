@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:routerino/routerino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../util/native/platform_check.dart';
+import '../../util/version_utils.dart';
+
 final _translatorWithGithubRegex = RegExp(r'(.+) \(@([\w\-_]+)\)');
 
 class AboutPage extends StatelessWidget {
@@ -16,20 +19,30 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     return Scaffold(
       appBar: AppBar(
         title: Text(t.aboutPage.title),
+          automaticallyImplyLeading: checkPlatformIsDesktop()?false: true
       ),
       body: ResponsiveListView(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         children: [
           const SizedBox(height: 20),
           const b_be_beeLogo(withText: true),
+          FutureBuilder<String>(
+            future: VersionUtils.getVersionToString(),
+            builder: (context, snapshot) {
+              return Text(
+                '${t.aboutPage.currentVersion} ${snapshot.data ?? t.aboutPage.loading}',
+                textAlign: TextAlign.center,
+              );
+            },
+          ),
           Text(
             '© ${DateTime.now().year} Revers.',
             textAlign: TextAlign.center,
           ),
+
           const SizedBox(height: 10),
           // Center(
           //   child: TextButton(

@@ -3,7 +3,11 @@ import 'package:package_info_plus/package_info_plus.dart';
 class VersionUtils{
   static Future<String> getVersionToString() async {
     final info = await getVersion();
-    return '${info.version} (${info.buildNumber})';
+    if(info.buildNumber.isNotEmpty){
+      return '${info.version} (${info.buildNumber})';
+    }else{
+      return info.version;
+    }
   }
 
   static Future<PackageInfo> getVersion() async {

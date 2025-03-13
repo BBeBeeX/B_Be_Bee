@@ -674,7 +674,13 @@
     "author": "Author",
     "contributors": "Contributors",
     "packagers": "Packagers",
-    "translators": "Translators"
+    "translators": "Translators",
+    "loading":  "Loading...",
+    "currentVersion":  "Current version:",
+    "newVersionUpdate":  "New Version Update",
+    "isNewestVersion":  "It's already the latest version",
+    "newVersion":  "New version",
+    "updatine": "Updating..."
   },
   "changelogPage": {
     "title": "Changelog"

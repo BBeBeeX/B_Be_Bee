@@ -504,6 +504,12 @@ class TranslationsAboutPageEn {
   String get contributors => 'Contributors';
   String get packagers => 'Packagers';
   String get translators => 'Translators';
+  String get loading => 'Loading...';
+  String get currentVersion => 'Current version:';
+  String get newVersionUpdate => 'New Version Update';
+  String get isNewestVersion => 'It\'s already the latest version';
+  String get newVersion => 'New version';
+  String get updatine => 'Updating...';
 }
 
 // Path: changelogPage

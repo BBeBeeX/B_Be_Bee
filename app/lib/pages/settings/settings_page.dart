@@ -7,6 +7,7 @@ import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:b_be_bee_app/pages/about/about_page.dart';
 import 'package:b_be_bee_app/pages/settings/language_page.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
+import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:b_be_bee_app/widget/custom_dropdown_button.dart';
 import 'package:b_be_bee_app/widget/dialogs/changeSettingsDestinationPathDialog.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
 import '../../controller/bili/bili_user_provider.dart';
+import '../../util/update_utils.dart';
 import '../../widget/account_entry_widget.dart';
 import '../../widget/settings_entry.dart';
 
@@ -309,6 +311,22 @@ class SettingsPage extends ConsumerWidget {
               buttonLabel: t.general.open,
               onTap: () async {
                 await context.push(() => const AboutPage());
+              },
+            ),
+            FutureBuilder<(int,String)>(
+              future: UpdateUtils.isNewestVersion(),
+              builder: (context, snapshot) {
+                final isNewest = snapshot.data!.$1 <= 1  ? true : false;
+                return ButtonEntry(
+                  label: t.aboutPage.newVersionUpdate,
+                  buttonLabel: isNewest ? t.aboutPage.isNewestVersion : '${t.aboutPage.newVersion} ${snapshot.data!.$2}',
+                  onTap: () async {
+                    if(!isNewest){
+                      await ToastUtil.show(t.aboutPage.updatine);
+                      UpdateUtils.getLatestVersion(null,isActive: true);
+                    }
+                  },
+                );
               },
             ),
           ],

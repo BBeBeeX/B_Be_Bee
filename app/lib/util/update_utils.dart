@@ -30,31 +30,41 @@ class UpdateUtils{
     model = await GithubApi.requestLatestRelease();
   }
 
-  static Future<void> getLatestVersion(Ref ref) async {
+  static Future<(int,String)> isNewestVersion()async{
+    if(model == null){
+      await getGithubDetail();
+    }
+    final githubVersion = model?.tagName?.replaceFirst('v', '');
+
+    PackageInfo version = await VersionUtils.getVersion();
+    final localVersion = version.version;
+
+    final compare = VersionUtils.toCompare(githubVersion!, localVersion);
+    return (compare,githubVersion);
+  }
+
+  static Future<void> getLatestVersion(Ref? ref,{bool isActive = false}) async {
     UpdateUtils.ref ??= ref;
 
     try{
-      if(model == null){
-        await getGithubDetail();
-      }
-      final githubVersion = model?.tagName?.replaceFirst('v', '');
+      final (compare,githubVersion) = await isNewestVersion();
 
-      PackageInfo version = await VersionUtils.getVersion();
-      final localVersion = version.version;
-
-      final compare = VersionUtils.toCompare(githubVersion!, localVersion);
-
-      if(ref.read(settingsProvider).isAutoUpdate){
+      if(isActive){
         if(compare >= 1){
           await onlineUpdate(true);
         }
       }else{
-        if(compare == 2 && ref.read(settingsProvider).isUpdateRemind ){
+        if(ref!.read(settingsProvider).isAutoUpdate){
+          if(compare >= 1){
+            await onlineUpdate(true);
+          }
+        }else{
+          if(compare == 2 && ref.read(settingsProvider).isUpdateRemind ){
 
             await UpdateAskDialog.open(
                 Routerino.navigatorKey.currentContext!,
                 '版本 $githubVersion', model?.body ??'');
-
+          }
         }
       }
 

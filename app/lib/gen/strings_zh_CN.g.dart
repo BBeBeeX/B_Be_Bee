@@ -827,6 +827,18 @@ class _TranslationsAboutPageZhCn extends TranslationsAboutPageEn {
   String get packagers => '打包者';
   @override
   String get translators => '翻译者';
+  @override
+  String get loading => '加载中...';
+  @override
+  String get currentVersion => '当前版本:';
+  @override
+  String get newVersionUpdate => '新版更新';
+  @override
+  String get isNewestVersion => '已是最新版本';
+  @override
+  String get newVersion => '新版本';
+  @override
+  String get updatine => '正在更新...';
 }
 
 // Path: changelogPage
