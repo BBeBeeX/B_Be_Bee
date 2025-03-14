@@ -11,8 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
 import '../controller/download_installation_package_controller.dart';
-import '../v1/pages/login/common/api/github_api.dart';
-import '../v1/pages/login/common/api/github_releases_item.dart';
+import '../common/api/github_api.dart';
+import '../model/dto/github_releases_item.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../widget/dialogs/install_dialog.dart';
 import '../widget/dialogs/update_ask_dialog.dart';
