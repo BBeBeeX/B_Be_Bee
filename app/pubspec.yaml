@@ -78,7 +78,11 @@ dependencies:
   flutter_riverpod: ^2.6.1
 
   # 播放器
-  just_audio: ^0.9.43
+  just_audio:
+    git:
+      url: https://github.com/ryanheise/just_audio.git
+      ref: visualizer
+      path: just_audio
 #  just_audio_windows: ^0.2.2
   just_audio_media_kit: ^2.0.6
   audio_service: ^0.18.17
@@ -118,6 +122,11 @@ dependency_overrides:
     git:
       url: https://github.com/localsend/permission_handler_windows_noop.git
       ref: 2dadd8afbf81e0e3e4791d7144e689555e58f649
+  just_audio_platform_interface:
+    git:
+      url: https://github.com/ryanheise/just_audio.git
+      ref: visualizer
+      path: just_audio_platform_interface
 
 
 flutter:

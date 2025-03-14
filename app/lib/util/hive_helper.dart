@@ -1,21 +1,20 @@
-
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/bili/bili_user.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/dao/download_state.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/model/enum/color_mode_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
-import 'package:b_be_bee_app/model/dao/download_state.dart';
 import 'package:b_be_bee_app/provider/window_dimensions_provider.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/adapters.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import '../model/dao/play_statistics.dart';
 import '../model/dao/upper.dart';
@@ -56,6 +55,7 @@ const _isEnableLoudnessEnhancer = 'bbb_is_enable_loudness_enhancer';
 const _loudnessEnhancerValue = 'bbb_loudness_enhancer_value';
 const _isEnableEqulizer = 'bbb_is_enable_equlizer';
 const _enableEqulizerValue = 'bbb_enable_equlizer_value';
+const _isEnableAudioVisual = 'bbb_enable_audio_visual';
 
 const _windowOffsetX = 'bbb_window_offset_x';
 const _windowOffsetY = 'bbb_window_offset_y';
@@ -90,18 +90,16 @@ class HiveHelper {
   static late Box<AudioInfo> _audiosBox;
   static late Box<PlayStatistics> _statisticsBox;
 
-
-
   static Future<void> init() async {
-
-    String docPath = path.join((await getApplicationDocumentsDirectory()).path, 'b_be_bee');
+    String docPath =
+        path.join((await getApplicationDocumentsDirectory()).path, 'b_be_bee');
     Hive
       ..init(docPath)
       ..registerAdapter(CollectPlaylistAdapter()) //1
       ..registerAdapter(DownloadStatusEnumAdapter()) //2
       ..registerAdapter(DownloadStateAdapter()) //3
       ..registerAdapter(DownloadTaskAdapter()) //4
-      ..registerAdapter(UpperAdapter())//5
+      ..registerAdapter(UpperAdapter()) //5
       ..registerAdapter(AudioSourceTypeEnumAdapter()) //6
       ..registerAdapter(RepeatModeEnumAdapter()) //7
       ..registerAdapter(AudioPlayItemImplAdapter()) //8
@@ -109,8 +107,6 @@ class HiveHelper {
       ..registerAdapter(AudioQualityAdapter()) //10
       ..registerAdapter(CollectTypeEnumAdapter()) //11
       ..registerAdapter(PlayStatisticsAdapter()); //17
-
-
 
     _box = await Hive.openBox(_commonBoxName);
     _collectsBox = await Hive.openBox<CollectPlaylist>(_collectsBoxName);
@@ -193,7 +189,8 @@ class HiveHelper {
       await LocaleSettings.useDeviceLocale();
       return null;
     } else {
-      final local = AppLocale.values.firstWhere((locale) => locale.languageTag == value);
+      final local =
+          AppLocale.values.firstWhere((locale) => locale.languageTag == value);
       await LocaleSettings.setLocaleRaw(local.languageCode);
       return local;
     }
@@ -258,7 +255,6 @@ class HiveHelper {
   static Future<void> setDownloadCover(bool downloadCover) async {
     await _box.put(_downloadCover, downloadCover);
   }
-
 
   static bool? getDownloadByMobile() {
     return _box.get(_downloadByMobileKey);
@@ -336,13 +332,14 @@ class HiveHelper {
     return _box.get(_downloadFileFormat);
   }
 
-  static Future<void> setDownloadFileFormat(DownloadFileFormatEnum? downloadFileFormat) async {
-      await _box.put(_downloadFileFormat, downloadFileFormat);
+  static Future<void> setDownloadFileFormat(
+      DownloadFileFormatEnum? downloadFileFormat) async {
+    await _box.put(_downloadFileFormat, downloadFileFormat);
   }
 
   static Future<bool?> getAutoStart() async {
-    final isAutoStart =  _box.get(_autoStart);
-    if(isAutoStart == null || isAutoStart){
+    final isAutoStart = _box.get(_autoStart);
+    if (isAutoStart == null || isAutoStart) {
       await enableAutoStart(startHidden: getAutoStartLaunchHidden());
     }
     return isAutoStart;
@@ -353,16 +350,17 @@ class HiveHelper {
   }
 
   static bool getAutoStartLaunchHidden() {
-    final isHidden =  _box.get(_autoStartLaunchHidden,defaultValue: false);
+    final isHidden = _box.get(_autoStartLaunchHidden, defaultValue: false);
     return isHidden;
   }
 
-  static Future<void> setAutoStartLaunchHidden(bool autoStartLaunchHidden) async {
+  static Future<void> setAutoStartLaunchHidden(
+      bool autoStartLaunchHidden) async {
     await _box.put(_autoStartLaunchHidden, autoStartLaunchHidden);
   }
 
-  static bool? isAutoUpdate(){
-    final isAutoUpdate =  _box.get(_isAutoUpdate,defaultValue: true);
+  static bool? isAutoUpdate() {
+    final isAutoUpdate = _box.get(_isAutoUpdate, defaultValue: true);
     return isAutoUpdate;
   }
 
@@ -370,8 +368,8 @@ class HiveHelper {
     await _box.put(_isAutoUpdate, isAutoUpdate);
   }
 
-  static bool? isUpdateRemind(){
-    final isUpdateRemind =  _box.get(_isUpdateRemind,defaultValue: true);
+  static bool? isUpdateRemind() {
+    final isUpdateRemind = _box.get(_isUpdateRemind, defaultValue: true);
     return isUpdateRemind;
   }
 
@@ -379,29 +377,31 @@ class HiveHelper {
     await _box.put(_isUpdateRemind, isUpdateRemind);
   }
 
-  static bool? isEnableLoudnessEnhancer(){
-    final isEnableLoudnessEnhancer =  _box.get(_isEnableLoudnessEnhancer);
+  static bool? isEnableLoudnessEnhancer() {
+    final isEnableLoudnessEnhancer = _box.get(_isEnableLoudnessEnhancer);
     print('isEnableLoudnessEnhancer: $isEnableLoudnessEnhancer');
     return isEnableLoudnessEnhancer;
   }
 
-  static Future<void> setEnableLoudnessEnhancer(bool isEnableLoudnessEnhancer) async {
+  static Future<void> setEnableLoudnessEnhancer(
+      bool isEnableLoudnessEnhancer) async {
     print('isEnableLoudnessEnhancer: $isEnableLoudnessEnhancer');
     await _box.put(_isEnableLoudnessEnhancer, isEnableLoudnessEnhancer);
   }
 
-  static double? getLoudnessEnhancerValue(){
+  static double? getLoudnessEnhancerValue() {
     final getLoudnessEnhancerValue = _box.get(_loudnessEnhancerValue);
     print('getLoudnessEnhancerValue: $getLoudnessEnhancerValue');
-    return  getLoudnessEnhancerValue;
+    return getLoudnessEnhancerValue;
   }
 
-  static Future<void> setLoudnessEnhancerValue(double loudnessEnhancerValue) async {
+  static Future<void> setLoudnessEnhancerValue(
+      double loudnessEnhancerValue) async {
     print('getLoudnessEnhancerValue: $loudnessEnhancerValue');
     await _box.put(_loudnessEnhancerValue, loudnessEnhancerValue);
   }
 
-  static bool? isEnableEqualizer(){
+  static bool? isEnableEqualizer() {
     return _box.get(_isEnableEqulizer);
   }
 
@@ -409,7 +409,7 @@ class HiveHelper {
     await _box.put(_isEnableEqulizer, isEnableEqualizer);
   }
 
-  static List<double>? getEnableEqualizerValue(){
+  static List<double>? getEnableEqualizerValue() {
     final dynamicList = _box.get(_enableEqulizerValue);
 
     if (dynamicList == null) {
@@ -419,10 +419,18 @@ class HiveHelper {
     return dynamicList.cast<double>();
   }
 
-  static Future<void> setEqualizerValue(List<double> enableEqualizerValue) async {
+  static Future<void> setEqualizerValue(
+      List<double> enableEqualizerValue) async {
     await _box.put(_enableEqulizerValue, enableEqualizerValue);
   }
 
+  static bool? isEnableAudioVisual() {
+    return _box.get(_isEnableAudioVisual);
+  }
+
+  static Future<void> setIsEnableAudioVisual(bool isEnableAudioVisual) async {
+    await _box.put(_isEnableAudioVisual, isEnableAudioVisual);
+  }
 
   static bool? getAdvancedSettingsEnabled() {
     return _box.get(_advancedSettingsKey);
@@ -440,10 +448,8 @@ class HiveHelper {
     await _box.put(_autoSyncToLocal, autoSyncToLocal);
   }
 
-
-
   static bool getIsMuted() {
-    return _box.get(_playlistIsMuted,defaultValue:false) ;
+    return _box.get(_playlistIsMuted, defaultValue: false);
   }
 
   static Future<void> setIsMuted(bool isMuted) async {
@@ -451,7 +457,7 @@ class HiveHelper {
   }
 
   static double getVolume() {
-    return _box.get(_playlistVolume,defaultValue: 1.0);
+    return _box.get(_playlistVolume, defaultValue: 1.0);
   }
 
   static Future<void> setVolume(double volume) async {
@@ -513,17 +519,15 @@ class HiveHelper {
     return _box.get(_playlistCurrentIndex, defaultValue: 0);
   }
 
-
-
   /// collects playlist 收藏夹
   static Future<void> saveCollectsPlaylist(CollectPlaylist playlist) async {
     await _collectsBox.put(playlist.id, playlist);
   }
 
   static CollectPlaylist? getCollectsPlaylist(String id) {
-    try{
+    try {
       return _collectsBox.get(id);
-    }catch(e){
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -535,7 +539,8 @@ class HiveHelper {
     return ids
         .map((id) => _collectsBox.get(id))
         .whereType<CollectPlaylist>()
-        .map((playlist) => playlist.copyWith(songs: HiveHelper.getAudioInfoList(playlist.songIds)))
+        .map((playlist) => playlist.copyWith(
+            songs: HiveHelper.getAudioInfoList(playlist.songIds)))
         .toList();
   }
 
@@ -543,7 +548,7 @@ class HiveHelper {
     await _collectsBox.delete(id);
   }
 
-  static Future<void> setCollectsPlaylistIds(List<String> ids) async{
+  static Future<void> setCollectsPlaylistIds(List<String> ids) async {
     await _box.put('ids', ids);
   }
 
@@ -551,10 +556,8 @@ class HiveHelper {
     return _box.get('ids');
   }
 
-
   /// audios
-  static AudioInfo? _getAudioFromCacheOrBox(String id)  {
-
+  static AudioInfo? _getAudioFromCacheOrBox(String id) {
     if (_audiosCache.containsKey(id)) {
       return _audiosCache[id];
     }
@@ -576,15 +579,18 @@ class HiveHelper {
 
   // 保存单个音频
   static Future<void> saveAudioInfo(AudioInfo audioInfo) async {
-    await _saveAudioToAll( audioInfo);
+    await _saveAudioToAll(audioInfo);
   }
 
   // 不存在时 或 hive中当前类型不为 local 时保存
   static Future<void> saveAudioInfoIfNotExists(AudioInfo audioInfo) async {
-
-    if (!_audiosCache.containsKey(audioInfo.id) || _getAudioFromCacheOrBox(audioInfo.id)?.audioCurrentType != AudioSourceTypeEnum.local) {
-      if (!_audiosBox.containsKey(audioInfo.id) || _audiosBox.get(audioInfo.id)?.audioCurrentType != AudioSourceTypeEnum.local) {
-        await _saveAudioToAll( audioInfo);
+    if (!_audiosCache.containsKey(audioInfo.id) ||
+        _getAudioFromCacheOrBox(audioInfo.id)?.audioCurrentType !=
+            AudioSourceTypeEnum.local) {
+      if (!_audiosBox.containsKey(audioInfo.id) ||
+          _audiosBox.get(audioInfo.id)?.audioCurrentType !=
+              AudioSourceTypeEnum.local) {
+        await _saveAudioToAll(audioInfo);
       }
     }
   }
@@ -602,12 +608,16 @@ class HiveHelper {
   }
 
   // 批量保存音频,不存在时保存
-  static Future<void> saveAudioInfoListIfNotExists(List<AudioInfo> audioList) async {
-
+  static Future<void> saveAudioInfoListIfNotExists(
+      List<AudioInfo> audioList) async {
     for (var audio in audioList) {
-      if (!_audiosCache.containsKey(audio.id) || _getAudioFromCacheOrBox(audio.id)?.audioCurrentType != AudioSourceTypeEnum.local) {
-        if (!_audiosBox.containsKey(audio.id) || _audiosBox.get(audio.id)?.audioCurrentType != AudioSourceTypeEnum.local) {
-          await _saveAudioToAll( audio);
+      if (!_audiosCache.containsKey(audio.id) ||
+          _getAudioFromCacheOrBox(audio.id)?.audioCurrentType !=
+              AudioSourceTypeEnum.local) {
+        if (!_audiosBox.containsKey(audio.id) ||
+            _audiosBox.get(audio.id)?.audioCurrentType !=
+                AudioSourceTypeEnum.local) {
+          await _saveAudioToAll(audio);
         }
       }
     }
@@ -620,7 +630,7 @@ class HiveHelper {
 
   // 获取多个音频
   static List<AudioInfo> getAudioInfoList(List<String> ids) {
-    final results =  ids.map((id) => _getAudioFromCacheOrBox(id));
+    final results = ids.map((id) => _getAudioFromCacheOrBox(id));
     return results.whereType<AudioInfo>().toList();
   }
 
@@ -650,7 +660,7 @@ class HiveHelper {
   }
 
   // 获取所有音频
-  static List<AudioInfo> getAllAudioInfo()  {
+  static List<AudioInfo> getAllAudioInfo() {
     final allAudios = _audiosBox.values.toList();
 
     for (var audio in allAudios) {
@@ -659,7 +669,6 @@ class HiveHelper {
 
     return allAudios;
   }
-
 
   /// Bili
   static String? getBiliRefreshToken() {
@@ -670,11 +679,11 @@ class HiveHelper {
     await _box.put(_biliRefreshToken, token);
   }
 
-  static int getBiliRefreshTokenLastTime(){
-    return _box.get(_biliRefreshTokenLastTime,defaultValue: 0);
+  static int getBiliRefreshTokenLastTime() {
+    return _box.get(_biliRefreshTokenLastTime, defaultValue: 0);
   }
 
-  static Future<void> setBiliRefreshTokenLastTime(int timestamp)async{
+  static Future<void> setBiliRefreshTokenLastTime(int timestamp) async {
     await _box.put(_biliRefreshTokenLastTime, timestamp);
   }
 
@@ -683,7 +692,8 @@ class HiveHelper {
     String username = _box.get(_biliUsername, defaultValue: '');
     int userLevel = _box.get(_biliUserLevel, defaultValue: 0);
     String avatarUrl = _box.get(_biliAvatarUrl, defaultValue: '');
-    BiliVipLabelEnum vip = BiliVipLabelEnum.values[_box.get(_biliVip, defaultValue: 0)];
+    BiliVipLabelEnum vip =
+        BiliVipLabelEnum.values[_box.get(_biliVip, defaultValue: 0)];
 
     return BiliUser(
       isLogin: isLogin,
@@ -727,23 +737,22 @@ class HiveHelper {
     return stats;
   }
 
-  static Future<void> setStatistics(PlayStatistics playStatistics) async{
+  static Future<void> setStatistics(PlayStatistics playStatistics) async {
     await _statisticsBox.put(playStatistics.id, playStatistics);
   }
 
-  static Future<void> clearStatisticsById(String id)async{
+  static Future<void> clearStatisticsById(String id) async {
     await _statisticsBox.delete(id);
   }
 
   /// download
-  static DownloadState? getDownloadState(){
+  static DownloadState? getDownloadState() {
     return _box.get(_downloadState);
   }
 
   static Future<void> setDownloadState(DownloadState downloadState) async {
     await _box.put(_downloadState, downloadState);
   }
-
 
   /// clean
   static Future<void> clearSettings() async {
@@ -759,8 +768,7 @@ class HiveHelper {
     await _audiosBox.clear();
   }
 
-  static Future<void> clearStatistics()async{
+  static Future<void> clearStatistics() async {
     await _statisticsBox.clear();
   }
 }
-

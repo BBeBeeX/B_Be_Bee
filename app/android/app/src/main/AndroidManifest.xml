@@ -21,6 +21,8 @@
 
     <!-- ringtone -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!-- audio visualizer -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:label="b_be_bee"

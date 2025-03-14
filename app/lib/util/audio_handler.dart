@@ -21,7 +21,6 @@ import 'package:rxdart/rxdart.dart';
 import '../model/dto/player/player_audio_data.dart';
 import 'native/platform_check.dart';
 
-
 class CustomAudioHandler extends BaseAudioHandler {
   static WidgetRef? _ref;
   static bool enableAnimations = true;
@@ -29,67 +28,80 @@ class CustomAudioHandler extends BaseAudioHandler {
   static int fadeInOutTime = 0;
   static bool hasFadeInOut = true;
   static double currentVolume = 1;
+  static bool enableAudioVisual = false;
 
-  CustomAudioHandler._privateConstructor(){
+  CustomAudioHandler._privateConstructor() {
     _setupEventSubscriptions();
     updatePlaybackState();
     _initialize();
   }
 
-  static final _equalizer = checkPlatform([TargetPlatform.android])?AndroidEqualizer():null;
-  static final _loudnessEnhancer = checkPlatform([TargetPlatform.android])?AndroidLoudnessEnhancer():null;
-  static final AudioPlayer _player = checkPlatform([TargetPlatform.android])?AudioPlayer(
-    audioPipeline: AudioPipeline(
-      androidAudioEffects: [
-        _loudnessEnhancer!,
-        _equalizer!,
-      ],
-    ),
-  ):AudioPlayer();
+  static final _equalizer =
+      checkPlatform([TargetPlatform.android]) ? AndroidEqualizer() : null;
+  static final _loudnessEnhancer = checkPlatform([TargetPlatform.android])
+      ? AndroidLoudnessEnhancer()
+      : null;
+  static final AudioPlayer _player = checkPlatform([TargetPlatform.android])
+      ? AudioPlayer(
+          audioPipeline: AudioPipeline(
+            androidAudioEffects: [
+              _loudnessEnhancer!,
+              _equalizer!,
+            ],
+          ),
+        )
+      : AudioPlayer();
   static AudioPlayer get player => _player;
 
-  static setRef(WidgetRef ref){
+  static setRef(WidgetRef ref) {
     _ref = ref;
     enableMessageBar = ref.watch(settingsProvider).enableMessageBar;
     enableAnimations = ref.watch(settingsProvider).enableAnimations;
     fadeInOutTime = ref.watch(settingsProvider).fadeInOutTime;
+    enableAudioVisual = ref.watch(settingsProvider).isEnableAudioVisual;
     currentVolume = ref.watch(playlistControllerProvider).volume;
     final settingValue = ref.read(settingsProvider);
 
-    if(_loudnessEnhancer!=null){
+    if (_loudnessEnhancer != null) {
       _loudnessEnhancer!.setEnabled(settingValue.isEnableLoudnessEnhancer);
       _loudnessEnhancer!.setTargetGain(settingValue.loudnessEnhancerValue);
 
       ref.listen<bool>(
         settingsProvider.select((state) => state.isEnableLoudnessEnhancer),
-            (previous, next) {
+        (previous, next) {
           Future.microtask(() async {
-            container.read(commonLoggerProvider.notifier).addLog('isEnableLoudnessEnhancer change: $previous -> $next');
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('isEnableLoudnessEnhancer change: $previous -> $next');
           });
           _loudnessEnhancer!.setEnabled(settingValue.isEnableLoudnessEnhancer);
-          },
+        },
       );
 
       ref.listen<double>(
         settingsProvider.select((state) => state.loudnessEnhancerValue),
-            (previous, next) {
+        (previous, next) {
           Future.microtask(() async {
-            container.read(commonLoggerProvider.notifier).addLog('loudnessEnhancerValue change: $previous -> $next');
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('loudnessEnhancerValue change: $previous -> $next');
           });
           _loudnessEnhancer!.setTargetGain(settingValue.loudnessEnhancerValue);
         },
       );
     }
 
-    if(_equalizer!=null){
+    if (_equalizer != null) {
       _equalizer!.setEnabled(settingValue.isEnableEqualizer);
       initEqualizer(settingValue.equalizerValue);
 
       ref.listen<bool>(
         settingsProvider.select((state) => state.isEnableEqualizer),
-            (previous, next) {
+        (previous, next) {
           Future.microtask(() async {
-            container.read(commonLoggerProvider.notifier).addLog('isEnableEqualizer change: $previous -> $next');
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('isEnableEqualizer change: $previous -> $next');
           });
           _equalizer!.setEnabled(settingValue.isEnableEqualizer);
         },
@@ -97,9 +109,11 @@ class CustomAudioHandler extends BaseAudioHandler {
 
       ref.listen<List<double>>(
         settingsProvider.select((state) => state.equalizerValue),
-            (previous, next) {
+        (previous, next) {
           Future.microtask(() async {
-            container.read(commonLoggerProvider.notifier).addLog('equalizerValue change: $previous -> $next');
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('equalizerValue change: $previous -> $next');
           });
           initEqualizer(settingValue.equalizerValue);
         },
@@ -112,7 +126,8 @@ class CustomAudioHandler extends BaseAudioHandler {
 
     if (list.length != bands.bands.length) {
       await Future.microtask(() async {
-        container.read(commonLoggerProvider.notifier).addLog('settings equlizer value(${list.length}) is nat match equalizer bands length(${bands.bands.length})');
+        container.read(commonLoggerProvider.notifier).addLog(
+            'settings equlizer value(${list.length}) is nat match equalizer bands length(${bands.bands.length})');
       });
       return;
     }
@@ -123,7 +138,9 @@ class CustomAudioHandler extends BaseAudioHandler {
       final gain = list[i].clamp(bands.minDecibels, bands.maxDecibels);
       band.setGain(gain);
       Future.microtask(() async {
-        container.read(commonLoggerProvider.notifier).addLog('set ${band.centerFrequency}Hz -> ${gain} dB');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('set ${band.centerFrequency}Hz -> ${gain} dB');
       });
     }
   }
@@ -150,37 +167,37 @@ class CustomAudioHandler extends BaseAudioHandler {
 
   static CustomAudioHandler get instance {
     if (_instance == null) {
-      throw Exception('CustomAudioHandler not initialized. Please initialize it first.');
+      throw Exception(
+          'CustomAudioHandler not initialized. Please initialize it first.');
     }
     return _instance!;
   }
-
-
 
   late StreamSubscription<PlaybackEvent> _playbackEventSubscription;
   late StreamSubscription<Duration?> _durationSubscription;
   late StreamSubscription<int?> _currentIndexSubscription;
   late StreamSubscription<SequenceState?> _sequenceStateSubscription;
 
-
   Stream<PlayerPositionData> get positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PlayerPositionData>(
         _player.positionStream,
         _player.bufferedPositionStream,
         _player.durationStream,
-            (position, bufferedPosition, duration) =>
-                PlayerPositionData(position, bufferedPosition, duration ?? Duration.zero),
+        (position, bufferedPosition, duration) => PlayerPositionData(
+            position, bufferedPosition, duration ?? Duration.zero),
       );
 
-  Stream<String>? get qualityDataStream =>
-      _instance?.mediaItem.map((item) => item!.extras?['quality'].toString() ?? '').distinct();
+  Stream<String>? get qualityDataStream => _instance?.mediaItem
+      .map((item) => item!.extras?['quality'].toString() ?? '')
+      .distinct();
 
   Stream<PlayerAudioData> get audioDataStream =>
       Rx.combineLatest2<bool, String, PlayerAudioData>(
-          _player.playingStream,
-          _instance!.mediaItem.map((item) => item!.extras?['id'].toString() ?? '').distinct(),
-            (isPlaying, audioId) =>
-                PlayerAudioData(isPlaying, audioId),
+        _player.playingStream,
+        _instance!.mediaItem
+            .map((item) => item!.extras?['id'].toString() ?? '')
+            .distinct(),
+        (isPlaying, audioId) => PlayerAudioData(isPlaying, audioId),
       );
 
   final processingStateMap = {
@@ -200,7 +217,9 @@ class CustomAudioHandler extends BaseAudioHandler {
       updatePlaybackState();
     } catch (e, stackTrace) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error handling playback event: $e\n$stackTrace');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error handling playback event: $e\n$stackTrace');
       });
     }
   }
@@ -218,7 +237,9 @@ class CustomAudioHandler extends BaseAudioHandler {
       }
     } catch (e, stackTrace) {
       Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error handling duration change: $e\n$stackTrace');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error handling duration change: $e\n$stackTrace');
       });
     }
   }
@@ -231,22 +252,37 @@ class CustomAudioHandler extends BaseAudioHandler {
       }
     } catch (e, stackTrace) {
       Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error handling playback event: $e\n$stackTrace');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error handling playback event: $e\n$stackTrace');
       });
     }
   }
 
-  void _handleRemainingTime(Duration? position){
-    if(!hasFadeInOut){
+  void _handleRemainingTime(Duration? position) {
+    if (!hasFadeInOut) {
       final duration = _player.duration;
       if (duration != null) {
         final remainingTime = duration.inSeconds - position!.inSeconds;
 
         if (remainingTime <= fadeInOutTime && remainingTime > 0) {
-          fadeOut( Duration(seconds: fadeInOutTime));
+          fadeOut(Duration(seconds: fadeInOutTime));
           hasFadeInOut = true;
         }
       }
+    }
+  }
+
+  Future<void> _handleVisualizer(PlayerState? state) async {
+    if (state != null &&
+        state.playing &&
+        state.processingState != ProcessingState.idle &&
+        state.processingState != ProcessingState.completed &&
+        enableAudioVisual) {
+      await _player.startVisualizer(
+          enableWaveform: true, enableFft: true, captureRate: 25000);
+    } else {
+      await _player.stopVisualizer();
     }
   }
 
@@ -259,6 +295,8 @@ class CustomAudioHandler extends BaseAudioHandler {
         _player.currentIndexStream.listen(_handleCurrentSongIndexChanged);
 
     _player.positionStream.listen(_handleRemainingTime);
+
+    _player.playerStateStream.listen(_handleVisualizer);
   }
 
   void updatePlaybackState({bool isLoading = false}) {
@@ -293,20 +331,20 @@ class CustomAudioHandler extends BaseAudioHandler {
         if (event.begin) {
           switch (event.type) {
             case AudioInterruptionType.duck:
-               _player.setVolume(currentVolume/2);
+              _player.setVolume(currentVolume / 2);
               break;
             case AudioInterruptionType.pause:
             case AudioInterruptionType.unknown:
-               _player.pause();
+              _player.pause();
               break;
           }
         } else {
           switch (event.type) {
             case AudioInterruptionType.duck:
-               _player.setVolume(currentVolume);
+              _player.setVolume(currentVolume);
               break;
             case AudioInterruptionType.pause:
-               _player.play();
+              _player.play();
               break;
             case AudioInterruptionType.unknown:
               break;
@@ -315,7 +353,9 @@ class CustomAudioHandler extends BaseAudioHandler {
       });
     } catch (e, stackTrace) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error initializing audio session: $e\n$stackTrace');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error initializing audio session: $e\n$stackTrace');
       });
     }
   }
@@ -342,10 +382,10 @@ class CustomAudioHandler extends BaseAudioHandler {
   Future<void> seek(Duration position) => _player.seek(position);
 
   Future<void> togglePlay() async {
-    if(_player.playing){
-       stop();
-    }else{
-       play();
+    if (_player.playing) {
+      stop();
+    } else {
+      play();
     }
   }
 
@@ -359,11 +399,14 @@ class CustomAudioHandler extends BaseAudioHandler {
     customEvent.add('skipToPrevious');
   }
 
-  Future<bool> setAudio(String url, AudioInfo audioInfo, AudioSourceTypeEnum type,String quality,bool play) async {
+  Future<bool> setAudio(String url, AudioInfo audioInfo,
+      AudioSourceTypeEnum type, String quality, bool play) async {
     AudioSource? audioSource;
 
     await Future.microtask(() {
-      container.read(commonLoggerProvider.notifier).addLog('play audio: $audioInfo');
+      container
+          .read(commonLoggerProvider.notifier)
+          .addLog('play audio: $audioInfo');
     });
 
     try {
@@ -389,60 +432,61 @@ class CustomAudioHandler extends BaseAudioHandler {
           ? Uri.parse(audioInfo.coverWebUrl)
           : Uri.parse('file://${audioInfo.coverLocalUrl}');
 
-      if(CustomAudioHandler.enableMessageBar){
-        if(CustomAudioHandler.enableAnimations){
+      if (CustomAudioHandler.enableMessageBar) {
+        if (CustomAudioHandler.enableAnimations) {
           MediaItem item = MediaItem(
-            id: audioInfo.id,
-            title: audioInfo.title,
-            artist: audioInfo.upper.name,
-            duration:  Duration(seconds: audioInfo.duration),
-            artUri: artUri,
-          extras: {'quality':quality,
-            'id':audioInfo.id,}
-          );
+              id: audioInfo.id,
+              title: audioInfo.title,
+              artist: audioInfo.upper.name,
+              duration: Duration(seconds: audioInfo.duration),
+              artUri: artUri,
+              extras: {
+                'quality': quality,
+                'id': audioInfo.id,
+              });
           instance.mediaItem.add(item);
-        }else{
+        } else {
           MediaItem item = MediaItem(
-            id: audioInfo.id,
-            title: audioInfo.title,
-            artist: audioInfo.upper.name,
-            duration:  Duration(seconds: audioInfo.duration),
-              extras: {'quality':quality,
-              'id':audioInfo.id,}
-
-          );
+              id: audioInfo.id,
+              title: audioInfo.title,
+              artist: audioInfo.upper.name,
+              duration: Duration(seconds: audioInfo.duration),
+              extras: {
+                'quality': quality,
+                'id': audioInfo.id,
+              });
           instance.mediaItem.add(item);
         }
-      }else{
-      }
+      } else {}
 
       await _player.setAudioSource(audioSource);
-      if(play){
+      if (play) {
         await fadeIn(Duration(seconds: fadeInOutTime));
       }
       return true;
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error loading music in player: $e\n');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error loading music in player: $e\n');
       });
       return false;
     }
   }
 
-  Future<void> fadeIn( Duration duration) async {
-     _player.play();
+  Future<void> fadeIn(Duration duration) async {
+    _player.play();
 
-    if(fadeInOutTime == 0) return;
+    if (fadeInOutTime == 0) return;
     hasFadeInOut = false;
 
     print('fade in currentVolume: $currentVolume');
 
-
     await _player.setVolume(0);
 
-     int steps = duration.inMilliseconds ~/ 100;
-     double step = currentVolume / steps;
-     int delay = (duration.inMilliseconds / steps).ceil();
+    int steps = duration.inMilliseconds ~/ 100;
+    double step = currentVolume / steps;
+    int delay = (duration.inMilliseconds / steps).ceil();
 
     for (int i = 0; i <= steps; i++) {
       double volume = step * i;
@@ -451,11 +495,10 @@ class CustomAudioHandler extends BaseAudioHandler {
       await Future.delayed(Duration(milliseconds: delay));
     }
     await _player.setVolume(currentVolume);
-
   }
 
   Future<void> fadeOut(Duration duration) async {
-    if(fadeInOutTime == 0) return;
+    if (fadeInOutTime == 0) return;
 
     int steps = duration.inMilliseconds ~/ 100;
     double step = currentVolume / steps;
@@ -467,6 +510,6 @@ class CustomAudioHandler extends BaseAudioHandler {
 
       await Future.delayed(Duration(milliseconds: delay));
     }
-     await _player.setVolume(currentVolume);
+    await _player.setVolume(currentVolume);
   }
 }

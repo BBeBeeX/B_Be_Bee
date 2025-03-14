@@ -23,7 +23,8 @@ import '../../widget/slider_overlay_widget.dart';
 class SettingsPage extends ConsumerWidget {
   final bool hasBackIcon;
 
-  const SettingsPage({super.key,
+  const SettingsPage({
+    super.key,
     this.hasBackIcon = true,
   });
 
@@ -60,16 +61,14 @@ class SettingsPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: ResponsiveListView(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if(hasBackIcon && !checkPlatformIsDesktop())
+              if (hasBackIcon && !checkPlatformIsDesktop())
                 IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
@@ -81,17 +80,13 @@ class SettingsPage extends ConsumerWidget {
                   padding: const EdgeInsets.only(left: 8),
                   child: Text(
                     t.settingsPage.title,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge,
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
             ],
           ),
-
           SettingsSection(
             title: t.settingsPage.general.title,
             children: [
@@ -211,8 +206,7 @@ class SettingsPage extends ConsumerWidget {
                   child: BooleanEntry(
                     label: t.settingsPage.general.isUpdateRemind,
                     value: settings.isUpdateRemind,
-                    onChanged: (_) =>
-                        controller.onToggleUpdateRemind(),
+                    onChanged: (_) => controller.onToggleUpdateRemind(),
                   ),
                 ),
               ),
@@ -253,14 +247,14 @@ class SettingsPage extends ConsumerWidget {
                   },
                 ),
               ),
-              if(checkPlatform([TargetPlatform.android]))
+              if (checkPlatform([TargetPlatform.android]))
                 BooleanEntry(
                   label: '是否开启响度增强',
                   value: settings.isEnableLoudnessEnhancer,
                   onChanged: (_) async =>
-                      controller.toggleEnableLoudnessEnhancer(),
+                      controller.onToggleEnableLoudnessEnhancer(),
                 ),
-              if(checkPlatform([TargetPlatform.android]))
+              if (checkPlatform([TargetPlatform.android]))
                 Visibility(
                   visible: settings.isEnableLoudnessEnhancer,
                   maintainAnimation: true,
@@ -270,24 +264,22 @@ class SettingsPage extends ConsumerWidget {
                       duration: const Duration(milliseconds: 500),
                       child: ButtonEntry(
                         label: '响度增强值',
-                        buttonLabel: settings.loudnessEnhancerValue.toStringAsFixed(2),
+                        buttonLabel:
+                            settings.loudnessEnhancerValue.toStringAsFixed(2),
                         onTap: () async {
                           if (overlayEntry == null) {
                             showSliderOverlay(context);
                           }
                         },
-                      )
-                  ),
+                      )),
                 ),
-
-              if(checkPlatform([TargetPlatform.android]))
+              if (checkPlatform([TargetPlatform.android]))
                 BooleanEntry(
                   label: '是否开启动态效果器',
                   value: settings.isEnableEqualizer,
-                  onChanged: (_) async =>
-                      controller.toggleEnableEqualizer(),
+                  onChanged: (_) async => controller.onToggleEnableEqualizer(),
                 ),
-              if(checkPlatform([TargetPlatform.android]))
+              if (checkPlatform([TargetPlatform.android]))
                 Visibility(
                   visible: settings.isEnableEqualizer,
                   maintainAnimation: true,
@@ -301,8 +293,17 @@ class SettingsPage extends ConsumerWidget {
                         onTap: () async {
                           await SettingsEqualizerControlWidget.show(context);
                         },
-                      )
-                  ),
+                      )),
+                ),
+              if (checkPlatform([
+                TargetPlatform.android,
+                TargetPlatform.iOS,
+              ]))
+                BooleanEntry(
+                  label: '是否开启音频可视化',
+                  value: settings.isEnableAudioVisual,
+                  onChanged: (_) async =>
+                      controller.onToggleEnableAudioVisual(),
                 ),
             ],
           ),
@@ -340,7 +341,6 @@ class SettingsPage extends ConsumerWidget {
                 value: settings.isDownloadByMobile,
                 onChanged: controller.setIsDownloadByMobile,
               ),
-
               if (settings.advancedSettings)
                 SettingsEntry(
                   label: t.settingsPage.download.downloadFileFormat,
@@ -361,8 +361,7 @@ class SettingsPage extends ConsumerWidget {
                 EditableTextEntry(
                     label: t.settingsPage.download.downloadDestination,
                     value: settings.destination,
-                    onChanged: (str) async => controller.setDestination(str)
-                )
+                    onChanged: (str) async => controller.setDestination(str))
             ],
           ),
           SettingsSection(
@@ -373,16 +372,12 @@ class SettingsPage extends ConsumerWidget {
                 EditableTextEntry(
                     label: 'User-agent',
                     value: settings.userAgent,
-                    onChanged: (str) async => controller.setUserAgent(str)
-                ),
+                    onChanged: (str) async => controller.setUserAgent(str)),
             ],
           ),
           const SizedBox(height: 16),
           AccountEntryWidget(),
-
           const SizedBox(height: 16),
-
-
           SettingsSection(
             title: t.settingsPage.other.title,
             padding: const EdgeInsets.only(bottom: 0),
@@ -402,8 +397,9 @@ class SettingsPage extends ConsumerWidget {
 
                   return ButtonEntry(
                     label: t.aboutPage.newVersionUpdate,
-                    buttonLabel: isNewest ? t.aboutPage.isNewestVersion : '${t
-                        .aboutPage.newVersion} $newVersion',
+                    buttonLabel: isNewest
+                        ? t.aboutPage.isNewestVersion
+                        : '${t.aboutPage.newVersion} $newVersion',
                     onTap: () async {
                       if (!isNewest) {
                         await ToastUtil.show(t.aboutPage.updatine);
@@ -435,8 +431,6 @@ class SettingsPage extends ConsumerWidget {
   }
 }
 
-
-
 extension on ThemeMode {
   String get humanName {
     switch (this) {
@@ -449,7 +443,3 @@ extension on ThemeMode {
     }
   }
 }
-
-
-
-

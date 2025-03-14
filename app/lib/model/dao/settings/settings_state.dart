@@ -72,7 +72,7 @@ class SettingsState {
   final bool minimizeToTray; //最小化到系统托盘
   final bool saveWindowPlacement;
   final bool autoStart;
-  final bool autoStartLaunchHidden;//静默自启：只启动托盘服务
+  final bool autoStartLaunchHidden; //静默自启：只启动托盘服务
   final bool enableMessageBar;
   final bool enableAnimations;
   final bool autoSyncToLocal; // 是否自动同步收藏夹
@@ -85,19 +85,20 @@ class SettingsState {
   final AudioQuality downloadQuality; // 下载音质
   final DownloadFileFormatEnum downloadFileFormat;
 
-
   ///播放
   final int fadeInOutTime; // 淡入淡出时间
   final bool isSingleTrack; // 单声道音频： 左右扬声器播放相同的音频
   final AudioQuality audioQuality; // 播放音质
-  final bool isEnableLoudnessEnhancer;//声音增强
+  final bool isEnableLoudnessEnhancer; //声音增强
   final double loudnessEnhancerValue;
   final bool isEnableEqualizer;
   final List<double> equalizerValue;
+  //fft 支持 android/ios/macOS
+  //waveform 支持 android/ios
+  final bool isEnableAudioVisual;
 
   ///网络
   final String userAgent;
-
 
   /// 均衡器
 
@@ -122,8 +123,6 @@ class SettingsState {
   /// license
   /// 技术原理
 
-
-
   final bool advancedSettings;
 
   // 构造函数
@@ -136,14 +135,12 @@ class SettingsState {
     this.autoStart = true,
     this.autoStartLaunchHidden = true,
     this.autoSyncToLocal = true,
-
     this.destination = '',
     this.isDownloadLyrics = true,
     this.isDownloadCover = true,
     this.isDownloadByMobile = false,
     this.enableMessageBar = true,
     this.enableAnimations = true,
-
     this.fadeInOutTime = 0,
     this.isSingleTrack = false,
     this.audioQuality = AudioQuality.hiRes,
@@ -152,15 +149,11 @@ class SettingsState {
     this.isEnableLoudnessEnhancer = false,
     this.loudnessEnhancerValue = 0,
     this.isEnableEqualizer = false,
-    this.equalizerValue = const [0,0,0,0,0],
-
-
-
+    this.equalizerValue = const [0, 0, 0, 0, 0],
+    this.isEnableAudioVisual = false,
     this.userAgent = Constants.defaultUserAgent,
-
     this.isAutoUpdate = true,
     this.isUpdateRemind = false,
-
     this.advancedSettings = false,
   });
 
@@ -174,30 +167,25 @@ class SettingsState {
     bool? autoStart,
     bool? autoStartLaunchHidden,
     bool? autoSyncToLocal,
-
     String? destination,
     bool? isDownloadLyrics,
     bool? isDownloadCover,
     bool? isDownloadByMobile,
     bool? enableMessageBar,
     bool? enableAnimations,
-
     int? fadeInOutTime,
     bool? isSingleTrack,
     AudioQuality? audioQuality,
     AudioQuality? downloadQuality,
     DownloadFileFormatEnum? downloadFileFormat,
-
     bool? isAutoUpdate,
     bool? isUpdateRemind,
-
     bool? isEnableLoudnessEnhancer,
     double? loudnessEnhancerValue,
     bool? isEnableEqualizer,
     List<double>? equalizerValue,
-
+    bool? isEnableAudioVisual,
     String? userAgent,
-
     bool? advancedSettings,
   }) {
     return SettingsState(
@@ -205,40 +193,38 @@ class SettingsState {
       colorMode: colorMode ?? this.colorMode,
       locale: locale ?? this.locale,
       minimizeToTray: minimizeToTray ?? this.minimizeToTray,
-      saveWindowPlacement: saveWindowPlacement?? this.saveWindowPlacement,
+      saveWindowPlacement: saveWindowPlacement ?? this.saveWindowPlacement,
       autoStart: autoStart ?? this.autoStart,
-      autoStartLaunchHidden: autoStartLaunchHidden ?? this.autoStartLaunchHidden,
-      autoSyncToLocal:autoSyncToLocal??this.autoSyncToLocal,
-
+      autoStartLaunchHidden:
+          autoStartLaunchHidden ?? this.autoStartLaunchHidden,
+      autoSyncToLocal: autoSyncToLocal ?? this.autoSyncToLocal,
       destination: destination ?? this.destination,
-      isDownloadLyrics:isDownloadLyrics??this.isDownloadLyrics,
-      isDownloadCover:isDownloadCover??this.isDownloadCover,
+      isDownloadLyrics: isDownloadLyrics ?? this.isDownloadLyrics,
+      isDownloadCover: isDownloadCover ?? this.isDownloadCover,
       isDownloadByMobile: isDownloadByMobile ?? this.isDownloadByMobile,
-      enableMessageBar:enableMessageBar ?? this.enableMessageBar,
+      enableMessageBar: enableMessageBar ?? this.enableMessageBar,
       enableAnimations: enableAnimations ?? this.enableAnimations,
-
       fadeInOutTime: fadeInOutTime ?? this.fadeInOutTime,
       isSingleTrack: isSingleTrack ?? this.isSingleTrack,
       audioQuality: audioQuality ?? this.audioQuality,
       downloadQuality: downloadQuality ?? this.downloadQuality,
-      downloadFileFormat: downloadFileFormat?? this.downloadFileFormat,
-
-      isAutoUpdate: isAutoUpdate??this.isAutoUpdate,
-      isUpdateRemind: isUpdateRemind?? this.isUpdateRemind,
-
-      isEnableLoudnessEnhancer: isEnableLoudnessEnhancer??this.isEnableLoudnessEnhancer,
-      loudnessEnhancerValue:loudnessEnhancerValue??this.loudnessEnhancerValue,
-      isEnableEqualizer:isEnableEqualizer??this.isEnableEqualizer,
-      equalizerValue:equalizerValue??this.equalizerValue,
-
-      userAgent: userAgent?? this.userAgent,
-
+      downloadFileFormat: downloadFileFormat ?? this.downloadFileFormat,
+      isAutoUpdate: isAutoUpdate ?? this.isAutoUpdate,
+      isUpdateRemind: isUpdateRemind ?? this.isUpdateRemind,
+      isEnableLoudnessEnhancer:
+          isEnableLoudnessEnhancer ?? this.isEnableLoudnessEnhancer,
+      loudnessEnhancerValue:
+          loudnessEnhancerValue ?? this.loudnessEnhancerValue,
+      isEnableEqualizer: isEnableEqualizer ?? this.isEnableEqualizer,
+      equalizerValue: equalizerValue ?? this.equalizerValue,
+      isEnableAudioVisual: isEnableAudioVisual ?? this.isEnableAudioVisual,
+      userAgent: userAgent ?? this.userAgent,
       advancedSettings: advancedSettings ?? this.advancedSettings,
     );
   }
 
   // 初始化方法（默认构造函数）
-  factory SettingsState.initial()  {
+  factory SettingsState.initial() {
     return SettingsState();
   }
 }
