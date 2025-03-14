@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/config/river_pod.dart';
-import 'package:b_be_bee_app/controller/settings_controller.dart';
 import 'package:b_be_bee_app/provider/animation_provider.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/provider/logging/http_logs_provider.dart';
@@ -29,17 +28,17 @@ import 'package:window_manager/window_manager.dart';
 
 import '../util/update_utils.dart';
 
-
-
 final _logger = Logger('Init');
 
-late final ProviderContainer container ;
+late final ProviderContainer container;
 bool startHidden = false;
 
 Future<void> preInit(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  initLogger(args.contains('-v') || args.contains('--verbose') ? Level.ALL : Level.INFO);
+  initLogger(args.contains('-v') || args.contains('--verbose')
+      ? Level.ALL
+      : Level.INFO);
 
   await Rhttp.init();
 
@@ -61,7 +60,8 @@ Future<void> preInit(List<String> args) async {
       // keep this app hidden
       startHidden = true;
     } else if (defaultTargetPlatform == TargetPlatform.macOS) {
-      startHidden = await isLaunchedAsLoginItem() && await getLaunchAtLoginMinimized();
+      startHidden =
+          await isLaunchedAsLoginItem() && await getLaunchAtLoginMinimized();
     }
 
     if (defaultTargetPlatform == TargetPlatform.macOS) {
@@ -74,37 +74,35 @@ Future<void> preInit(List<String> args) async {
   setDefaultRouteTransition();
   await FFMpegHelper.instance.initialize();
 
-   container = ProviderContainer(
-    observers: kDebugMode ? [CustomProviderObserver()] : [],
-    overrides: [
-      tvProvider.overrideWithValue(await checkIfTv()),
-      sleepProvider.overrideWith((ref) {
-        return SleepController()..state = false;
-      }),
-      commonLoggerProvider.overrideWith((ref){
-      return CommonLogsController()..state = [];
-      }),
-      httpLogsProvider.overrideWith((ref){
-        return HttpLogsController()..state = [];
-      }),
-  ]
-  );
+  container = ProviderContainer(
+      observers: kDebugMode ? [CustomProviderObserver()] : [],
+      overrides: [
+        tvProvider.overrideWithValue(await checkIfTv()),
+        sleepProvider.overrideWith((ref) {
+          return SleepController()..state = false;
+        }),
+        commonLoggerProvider.overrideWith((ref) {
+          return CommonLogsController()..state = [];
+        }),
+        httpLogsProvider.overrideWith((ref) {
+          return HttpLogsController()..state = [];
+        }),
+      ]);
   await AudioService.init(
     builder: () => CustomAudioHandler.initialize(),
     config: AudioServiceConfig(
       androidNotificationChannelId: Constants.channelId,
       androidNotificationChannelName: Constants.channelName,
       androidNotificationOngoing: true,
+      androidNotificationIcon: 'drawable/ic_notification',
       // androidNotificationClickStartsActivity: true,
       // androidStopForegroundOnPause: false,
     ),
   );
 }
 
-
 /// Will be called when home page has been initialized
 Future<void> postInit(Ref ref) async {
-
   if (checkPlatformIsDesktop()) {
     await WindowDimensionsController().initDimensionsConfiguration();
   }
@@ -127,5 +125,3 @@ Future<void> postInit(Ref ref) async {
 
   UpdateUtils.getLatestVersion(ref);
 }
-
-
