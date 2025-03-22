@@ -18,10 +18,7 @@ import 'package:window_manager/window_manager.dart';
 import 'controller/settings_controller.dart';
 import 'observer/route_observer.dart';
 
-
-
 Future<void> main(List<String> args) async {
-
   try {
     await preInit(args);
   } catch (e, stackTrace) {
@@ -33,14 +30,11 @@ Future<void> main(List<String> args) async {
   }
 
   runApp(ProviderScope(
-
     parent: container,
     child: TranslationProvider(
       child: const b_be_beeApp(),
     ),
   ));
-
-
 }
 
 class b_be_beeApp extends ConsumerWidget {
@@ -53,48 +47,44 @@ class b_be_beeApp extends ConsumerWidget {
 
     return ProviderScope(
         child: TrayWatcher(
-          child: WindowWatcher(
-            child: LifeCycleWatcher(
-              onChangedState: (AppLifecycleState state) {
-                switch (state) {
-                  case AppLifecycleState.resumed:
-                    break;
-                  case AppLifecycleState.detached:
-                    break;
-                  default:
-                    break;
-                }
-              },
-              child: ShortcutWatcher(
-                child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onPanStart: (details) async {
-                      if(checkPlatformIsDesktop()){
-                        await windowManager.startDragging();
-                      }
-                    },
-                      child: MaterialApp(
-                        title: t.appName,
-                        locale: TranslationProvider
-                            .of(context)
-                            .flutterLocale,
-                        supportedLocales: AppLocaleUtils.supportedLocales,
-                        localizationsDelegates: GlobalMaterialLocalizations
-                            .delegates,
-                        debugShowCheckedModeBanner: false,
-                        theme: FlexThemeData.light(scheme: FlexScheme.greys),
-                        darkTheme: FlexThemeData.dark(scheme: FlexScheme.greys),
-                        themeMode: ref.watch(settingsProvider).theme,
-                        navigatorKey: globalNavigationKey,
-                        navigatorObservers: [RouterObserver()],
-                        home: RouterinoHome(
-                          builder: () => const MainPage(),
-                        ),
-                      ),
-                    )
-                ),
+      child: WindowWatcher(
+        child: LifeCycleWatcher(
+          onChangedState: (AppLifecycleState state) {
+            switch (state) {
+              case AppLifecycleState.resumed:
+                break;
+              case AppLifecycleState.detached:
+                break;
+              default:
+                break;
+            }
+          },
+          child: ShortcutWatcher(
+              child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onPanStart: (details) async {
+              if (checkPlatformIsDesktop()) {
+                await windowManager.startDragging();
+              }
+            },
+            child: MaterialApp(
+              title: t.appName,
+              locale: TranslationProvider.of(context).flutterLocale,
+              supportedLocales: AppLocaleUtils.supportedLocales,
+              localizationsDelegates: GlobalMaterialLocalizations.delegates,
+              debugShowCheckedModeBanner: false,
+              theme: FlexThemeData.light(scheme: FlexScheme.greys),
+              darkTheme: FlexThemeData.dark(scheme: FlexScheme.greys),
+              themeMode: ref.watch(settingsProvider).theme,
+              navigatorKey: globalNavigationKey,
+              navigatorObservers: [RouterObserver()],
+              home: RouterinoHome(
+                builder: () => const MainPage(),
               ),
             ),
-        ));
+          )),
+        ),
+      ),
+    ));
   }
 }

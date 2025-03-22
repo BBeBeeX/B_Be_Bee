@@ -125,7 +125,7 @@ class CustomAudioHandler extends BaseAudioHandler {
     final bands = await _equalizer!.parameters;
 
     if (list.length != bands.bands.length) {
-      await Future.microtask(() async {
+      Future.microtask(() async {
         container.read(commonLoggerProvider.notifier).addLog(
             'settings equlizer value(${list.length}) is nat match equalizer bands length(${bands.bands.length})');
       });
@@ -137,24 +137,13 @@ class CustomAudioHandler extends BaseAudioHandler {
 
       final gain = list[i].clamp(bands.minDecibels, bands.maxDecibels);
       band.setGain(gain);
-      Future.microtask(() async {
-        container
-            .read(commonLoggerProvider.notifier)
-            .addLog('set ${band.centerFrequency}Hz -> ${gain} dB');
-      });
     }
   }
 
   static CustomAudioHandler? _instance;
 
   static CustomAudioHandler initialize() {
-    JustAudioMediaKit.ensureInitialized(
-      linux: true,
-      windows: true,
-      android: false,
-      iOS: false,
-      macOS: false,
-    );
+    JustAudioMediaKit.ensureInitialized();
 
     if (_instance == null) {
       _instance = CustomAudioHandler._privateConstructor();
@@ -274,15 +263,16 @@ class CustomAudioHandler extends BaseAudioHandler {
   }
 
   Future<void> _handleVisualizer(PlayerState? state) async {
-    if (state != null &&
-        state.playing &&
-        state.processingState != ProcessingState.idle &&
-        state.processingState != ProcessingState.completed &&
-        enableAudioVisual) {
-      await _player.startVisualizer(
-          enableWaveform: true, enableFft: true, captureRate: 25000);
-    } else {
-      await _player.stopVisualizer();
+    if (enableAudioVisual) {
+      if (state != null &&
+          state.playing &&
+          state.processingState != ProcessingState.idle &&
+          state.processingState != ProcessingState.completed) {
+        await _player.startVisualizer(
+            enableWaveform: true, enableFft: true, captureRate: 25000);
+      } else {
+        await _player.stopVisualizer();
+      }
     }
   }
 
@@ -296,7 +286,10 @@ class CustomAudioHandler extends BaseAudioHandler {
 
     _player.positionStream.listen(_handleRemainingTime);
 
-    _player.playerStateStream.listen(_handleVisualizer);
+    if (checkPlatform(
+        [TargetPlatform.iOS, TargetPlatform.android, TargetPlatform.macOS])) {
+      _player.playerStateStream.listen(_handleVisualizer);
+    }
   }
 
   void updatePlaybackState({bool isLoading = false}) {

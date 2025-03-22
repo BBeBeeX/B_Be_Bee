@@ -80,11 +80,16 @@ dependencies:
   # 播放器
   just_audio:
     git:
-      url: https://github.com/ryanheise/just_audio.git
+#      url: https://github.com/ryanheise/just_audio.git
+      url: https://github.com/BBeBeeX/just_audio.git
       ref: visualizer
       path: just_audio
-#  just_audio_windows: ^0.2.2
-  just_audio_media_kit: ^2.0.6
+  just_audio_media_kit:
+    git:
+      url: https://github.com/BBeBeeX/just_audio_media_kit.git
+      ref: main
+  media_kit: ^1.1.11
+
   audio_service: ^0.18.17
   media_kit_libs_linux: 1.1.3
   media_kit_libs_windows_audio: 1.0.9

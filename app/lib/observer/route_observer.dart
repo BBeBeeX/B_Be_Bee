@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:b_be_bee_app/pages/settings/settings_page.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:routerino/routerino.dart';
 
 import '../controller/main_page_controller.dart';
 import '../model/dao/collect_playlist.dart';
+import '../pages/audio_devices_page.dart';
 import '../pages/collects_playlist_page.dart';
 import '../pages/download_manager_page.dart';
 import '../pages/local_audio_browser_page.dart';
@@ -17,10 +16,10 @@ final globalNavigationKey = Routerino.navigatorKey;
 final localNavigationKey = GlobalKey<NavigatorState>();
 
 extension DesktopRouteExtension on BuildContext {
-
   Future<void> pushToPlaylist(CollectPlaylist playlist) async {
     if (checkPlatformIsDesktop()) {
-      RouterObserver().pushToLocalNavigator(CollectsPlaylistPage(collectPlaylist: playlist));
+      RouterObserver().pushToLocalNavigator(
+          CollectsPlaylistPage(collectPlaylist: playlist));
       return;
     } else {
       await push(() => CollectsPlaylistPage(collectPlaylist: playlist));
@@ -42,7 +41,6 @@ class RouterObserver extends RouterinoObserver {
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-
     if (isDesktop) {
       final routeName = route.settings.name;
 
@@ -51,9 +49,10 @@ class RouterObserver extends RouterinoObserver {
         Future.microtask(() => route.navigator?.removeRoute(route));
         return;
       } else if (routeName == 'SearchPage') {
-        if(ref!=null && ref!.read(mainPageProvider.notifier).isSearchPage()){
+        if (ref != null &&
+            ref!.read(mainPageProvider.notifier).isSearchPage()) {
           return;
-        }else{
+        } else {
           pushToLocalNavigator(const SearchPage());
           Future.microtask(() => route.navigator?.removeRoute(route));
           return;
@@ -62,12 +61,16 @@ class RouterObserver extends RouterinoObserver {
         pushToLocalNavigator(const LocalAudioBrowserPage());
         Future.microtask(() => route.navigator?.removeRoute(route));
         return;
-      // } else if (routeName == 'FolderContentsPage') {
-      //   _pushToLocalNavigator(FolderContentsPage(folder: route.settings.arguments as Directory));
-      //   Future.microtask(() => route.navigator?.removeRoute(route));
-      //   return;
+        // } else if (routeName == 'FolderContentsPage') {
+        //   pushToLocalNavigator(FolderContentsPage(folder: route.settings.arguments as Directory));
+        //   Future.microtask(() => route.navigator?.removeRoute(route));
+        //   return;
       } else if (routeName == 'DownloadManagerPage') {
         pushToLocalNavigator(const DownloadManagerPage());
+        Future.microtask(() => route.navigator?.removeRoute(route));
+        return;
+      } else if (routeName == 'AudioDevicesPage') {
+        pushToLocalNavigator(const AudioDevicesPage());
         Future.microtask(() => route.navigator?.removeRoute(route));
         return;
       } else {
@@ -78,10 +81,9 @@ class RouterObserver extends RouterinoObserver {
     }
   }
 
-  void pushToLocalNavigator(Widget page){
-    if(ref!=null){
+  void pushToLocalNavigator(Widget page) {
+    if (ref != null) {
       ref?.read(mainPageProvider.notifier).pushPage(page);
     }
   }
-
 }

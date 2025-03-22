@@ -107,6 +107,22 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
 
     return Column(
       children: [
+        // if (isColumn)
+        //   Container(
+        //     height: 50.0,
+        //     padding: const EdgeInsets.all(1.0),
+        //     width: MediaQuery.sizeOf(context).width,
+        //     child: StreamBuilder<VisualizerFftCapture>(
+        //       stream: AudioCaptureUtils.captureAudioFft(),
+        //       builder: (context, snapshot) {
+        //         if (snapshot.data == null) return const SizedBox();
+        //         return FftVisualizerWidget(
+        //           snapshot.data!,
+        //           color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+        //         );
+        //       },
+        //     ),
+        //   ),
         if (enableAudioVisual && isColumn)
           Container(
             height: 50.0,

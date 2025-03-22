@@ -19,6 +19,7 @@ import '../../widget/account_entry_widget.dart';
 import '../../widget/settings_entry.dart';
 import '../../widget/settings_equalizer_control_widget.dart';
 import '../../widget/slider_overlay_widget.dart';
+import '../audio_devices_page.dart';
 
 class SettingsPage extends ConsumerWidget {
   final bool hasBackIcon;
@@ -125,6 +126,12 @@ class SettingsPage extends ConsumerWidget {
                     t.settingsPage.general.languageOptions.system,
                 onTap: () async => controller.onToggleLLocale(context),
               ),
+              if (checkPlatform([TargetPlatform.windows]))
+                ButtonEntry(
+                  label: '音频输出设备',
+                  buttonLabel: '选择应用程序的音频输出设备',
+                  onTap: () async => context.push(() => AudioDevicesPage()),
+                ),
               if (checkPlatformIsDesktop()) ...[
                 if (settings.advancedSettings &&
                     checkPlatformIsNotWaylandDesktop())

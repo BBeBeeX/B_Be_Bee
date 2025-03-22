@@ -919,14 +919,7 @@
         <entry key="just_audio">
           <value>
             <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-92f07c2045583d80e2ec6d637a9c37b79f29725f/just_audio/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="just_audio_media_kit">
-          <value>
-            <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/just_audio_media_kit-2.0.6/lib" />
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-3566d4ee07cc0c1dad0e974011c344bd4fcd3355/just_audio/lib" />
             </list>
           </value>
         </entry>
@@ -940,7 +933,7 @@
         <entry key="just_audio_web">
           <value>
             <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-92f07c2045583d80e2ec6d637a9c37b79f29725f/just_audio_web/lib" />
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-3566d4ee07cc0c1dad0e974011c344bd4fcd3355/just_audio_web/lib" />
             </list>
           </value>
         </entry>
@@ -1905,9 +1898,9 @@
     <CLASSES>
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/ffmpeg_helper-0def4b4e4ac85ab2477c185eb43f80f9f5bbd4fb//lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/flutter-plugins-58748dae405df5e68a131e4905d48e75d0624be2/packages/pasteboard/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-92f07c2045583d80e2ec6d637a9c37b79f29725f/just_audio/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-3566d4ee07cc0c1dad0e974011c344bd4fcd3355/just_audio/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-3566d4ee07cc0c1dad0e974011c344bd4fcd3355/just_audio_web/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-92f07c2045583d80e2ec6d637a9c37b79f29725f/just_audio_platform_interface/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/just_audio-92f07c2045583d80e2ec6d637a9c37b79f29725f/just_audio_web/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/git/permission_handler_windows_noop-2dadd8afbf81e0e3e4791d7144e689555e58f649//lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/_fe_analyzer_shared-72.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/analyzer-6.7.0/lib" />
@@ -2034,7 +2027,6 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/json2yaml-3.0.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/json_serializable-6.9.0/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/just_audio_media_kit-2.0.6/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.5/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.5/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker_testing-3.0.1/lib" />
