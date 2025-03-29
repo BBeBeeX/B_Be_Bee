@@ -3,23 +3,22 @@ import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:b_be_bee_app/pages/about/about_page.dart';
+import 'package:b_be_bee_app/pages/audio_devices_page.dart';
 import 'package:b_be_bee_app/pages/settings/language_page.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
+import 'package:b_be_bee_app/util/update_utils.dart';
+import 'package:b_be_bee_app/widget/account_entry_widget.dart';
 import 'package:b_be_bee_app/widget/custom_dropdown_button.dart';
 import 'package:b_be_bee_app/widget/label_checkbox.dart';
 import 'package:b_be_bee_app/widget/responsive_list_view.dart';
+import 'package:b_be_bee_app/widget/settings_entry.dart';
+import 'package:b_be_bee_app/widget/settings_equalizer_control_widget.dart';
+import 'package:b_be_bee_app/widget/slider_overlay_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../util/update_utils.dart';
-import '../../widget/account_entry_widget.dart';
-import '../../widget/settings_entry.dart';
-import '../../widget/settings_equalizer_control_widget.dart';
-import '../../widget/slider_overlay_widget.dart';
-import '../audio_devices_page.dart';
 
 class SettingsPage extends ConsumerWidget {
   final bool hasBackIcon;

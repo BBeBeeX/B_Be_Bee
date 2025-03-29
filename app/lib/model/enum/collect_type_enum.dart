@@ -1,6 +1,5 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:hive_ce/hive.dart';
-
-import '../../gen/strings.g.dart';
 
 part 'collect_type_enum.g.dart';
 

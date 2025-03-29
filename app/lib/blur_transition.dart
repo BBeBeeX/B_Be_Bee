@@ -5,10 +5,10 @@ import 'package:flutter/widgets.dart';
 
 class BlurTransition extends AnimatedWidget {
   const BlurTransition({
-    Key? key,
+    super.key,
     required this.sigma,
     this.child,
-  }) : super(key: key, listenable: sigma);
+  }) : super(listenable: sigma);
 
   final Animation<double> sigma;
   final Widget? child;

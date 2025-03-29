@@ -1,9 +1,8 @@
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/widget/music_options_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../model/dao/collect_playlist.dart';
 
 class SelectMusicOptionsBottomSheet {
   static Future<void> open(

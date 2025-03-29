@@ -1,12 +1,9 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/model/state/playlist_state.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
+import 'package:b_be_bee_app/widget/bottom_sheet/open_playlist_bottom_sheet.dart';
 import 'package:flutter/material.dart';
-
-import '../../config/theme.dart';
-import '../../controller/playlist_controller.dart';
-import '../../model/state/playlist_state.dart';
-import '../../util/audio_handler.dart';
-import '../bottom_sheet/open_playlist_bottom_sheet.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CurrentPlaylistControlButtonsWidget extends ConsumerWidget{
   final PlaylistState playlist;

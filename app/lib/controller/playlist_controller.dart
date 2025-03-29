@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:b_be_bee_app/common/api/bili/bili_video_play_api.dart';
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/bili/bili_user_provider.dart';
+import 'package:b_be_bee_app/controller/lyrics_controller.dart';
 import 'package:b_be_bee_app/controller/play_statistics_controller.dart';
 import 'package:b_be_bee_app/controller/settings_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_info.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_item.dart';
@@ -16,15 +18,12 @@ import 'package:b_be_bee_app/model/state/playlist_state.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
+import 'package:b_be_bee_app/util/lyrics_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
-
-import '../gen/strings.g.dart';
-import '../util/lyrics_utils.dart';
-import 'lyrics_controller.dart';
 
 final playlistControllerProvider =
     StateNotifierProvider<PlaylistController, PlaylistState>((ref) {
@@ -97,7 +96,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
 
   Future<void> togglePlay() async {
     if (await Vibration.hasVibrator()) {
-      Vibration.vibrate();
+      Vibration.vibrate(duration: 100);
     }
 
     if (CustomAudioHandler.player.playing) {
@@ -327,7 +326,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   Future<void> skipToNext({bool isCutSong = false}) async {
     if (isCutSong) {
       if (await Vibration.hasVibrator()) {
-        Vibration.vibrate();
+        Vibration.vibrate(duration: 100);
       }
     }
 
@@ -373,7 +372,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   Future<void> skipToPrevious({bool isCutSong = false}) async {
     if (isCutSong) {
       if (await Vibration.hasVibrator()) {
-        Vibration.vibrate();
+        Vibration.vibrate(duration: 100);
       }
     }
 

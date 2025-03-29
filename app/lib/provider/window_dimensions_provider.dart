@@ -1,14 +1,10 @@
-import 'dart:ui';
-
+import 'package:b_be_bee_app/config/init.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screen_retriever/screen_retriever.dart';
-import 'package:window_manager/window_manager.dart';
-
-import '../config/init.dart';
-import 'logging/common_logs_provider.dart';
 
 //TODO 桌面版最小值修改
 const Size _minimalSize = Size(400, 500);

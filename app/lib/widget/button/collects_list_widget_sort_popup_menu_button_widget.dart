@@ -1,10 +1,8 @@
+import 'package:b_be_bee_app/config/theme.dart';
+import 'package:b_be_bee_app/controller/collects_page_controller.dart';
+import 'package:b_be_bee_app/model/enum/sort_method_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../config/theme.dart';
-import '../../controller/collects_page_controller.dart';
-import '../../model/enum/sort_method_enum.dart';
 
 class CollectsListWidgetSortPopupMenuButtonWidget extends ConsumerWidget {
   final bool isSearching;

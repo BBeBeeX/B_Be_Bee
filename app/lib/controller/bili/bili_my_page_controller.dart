@@ -2,6 +2,7 @@ import 'package:b_be_bee_app/common/api/bili/bili_collects_api.dart';
 import 'package:b_be_bee_app/common/api/bili/bili_login_api.dart';
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/bili/bili_user_provider.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/bili/bili_user.dart';
 import 'package:b_be_bee_app/model/dto/collects/collects_list_all_dto.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
@@ -10,8 +11,6 @@ import 'package:b_be_bee_app/util/cookie_util.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../gen/strings.g.dart';
 
 
 class MyBiliPageVm {

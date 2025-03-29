@@ -1,6 +1,5 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
-
-import '../../gen/strings.g.dart';
 
 class SearchResult {
   //bili video: bvid

@@ -1,13 +1,11 @@
 import 'package:b_be_bee_app/controller/download_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
-import 'package:b_be_bee_app/model/dao/download_state.dart';
+import 'package:b_be_bee_app/model/enum/download_status_enum.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../gen/strings.g.dart';
-import '../model/enum/download_status_enum.dart';
 
 class DownloadManagerPage extends ConsumerWidget {
   const DownloadManagerPage({

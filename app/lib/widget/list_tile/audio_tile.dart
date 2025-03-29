@@ -1,14 +1,11 @@
-import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_music_options_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../controller/collects_controller.dart';
-import '../../gen/strings.g.dart';
-import '../../model/dao/collect_playlist.dart';
 
 class AudioTile extends ConsumerWidget {
   final List<AudioInfo> medias;

@@ -1,6 +1,6 @@
+import 'package:b_be_bee_app/model/dao/play_statistics.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../model/dao/play_statistics.dart';
 
 class PlayStatisticsState {
   final Map<String, PlayStatistics> stats;

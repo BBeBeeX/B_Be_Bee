@@ -1,12 +1,9 @@
 
-import 'dart:math';
-
+import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/model/enum/main_tab_enum.dart';
+import 'package:b_be_bee_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../config/init.dart';
-import '../pages/home_page.dart';
 
 class MainPageState {
   final MainTabEnum currentTab;
@@ -23,10 +20,10 @@ class MainPageState {
     required this.controller,
     this.isOpenSideBar = true,
     this.currentIndex = 0,
-    this.historyList = const [MaterialPage(child: const HomePage())],
+    this.historyList = const [MaterialPage(child: HomePage())],
     this.canGoBack = false,
     this.canGoForward = false,
-    this.currentPages = const [MaterialPage(child: const HomePage())],
+    this.currentPages = const [MaterialPage(child: HomePage())],
   });
 
   MainPageState copyWith({

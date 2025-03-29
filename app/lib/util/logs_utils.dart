@@ -1,7 +1,8 @@
 import 'dart:io';
+
+import 'package:b_be_bee_app/model/pojo/log_entry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
-import '../model/pojo/log_entry.dart';
 
 class LogsUtils{
   static Future<void> writeLogToFile(LogEntry logEntry) async {

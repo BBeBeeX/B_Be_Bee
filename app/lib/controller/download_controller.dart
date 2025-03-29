@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:b_be_bee_app/common/api/bili/bili_video_play_api.dart';
@@ -6,32 +5,27 @@ import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/bili/bili_user_provider.dart';
 import 'package:b_be_bee_app/controller/settings_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/download_state.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_info.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_item.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
-import 'package:b_be_bee_app/model/dao/download_state.dart';
+import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
+import 'package:b_be_bee_app/model/enum/download_status_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
+import 'package:b_be_bee_app/util/ffmpeg_utils.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
+import 'package:b_be_bee_app/util/lyrics_utils.dart';
 import 'package:b_be_bee_app/util/native/permission_helper.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
-import 'package:ffmpeg_helper/ffmpeg/args/custom_arg.dart';
-import 'package:ffmpeg_helper/ffmpeg/ffmpeg_command.dart';
-import 'package:ffmpeg_helper/ffmpeg/ffmpeg_input.dart';
 import 'package:ffmpeg_helper/ffmpeg_helper.dart';
-import 'package:ffmpeg_helper/helpers/helper_sessions.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-
-import '../gen/strings.g.dart';
-import '../model/enum/download_file_format_enum.dart';
-import '../model/enum/download_status_enum.dart';
-import '../util/ffmpeg_utils.dart';
-import '../util/lyrics_utils.dart';
 
 // 临时文件 (await getTemporaryDirectory()).path + task.id
 // audio文件 ref.read(settingsProvider).destination, 'audio', '${task.id}.${format.label}

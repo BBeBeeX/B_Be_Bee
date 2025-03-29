@@ -1,14 +1,13 @@
+import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/controller/settings_controller.dart';
+import 'package:b_be_bee_app/model/dto/player/player_position_data.dart';
+import 'package:b_be_bee_app/provider/seek_dragging_provider.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
+import 'package:b_be_bee_app/util/time_utils.dart';
+import 'package:b_be_bee_app/widget/audio_visual/fft_visualizer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-
-import '../../controller/playlist_controller.dart';
-import '../../model/dto/player/player_position_data.dart';
-import '../../provider/seek_dragging_provider.dart';
-import '../../util/audio_handler.dart';
-import '../../util/time_utils.dart';
-import '../audio_visual/fft_visualizer_widget.dart';
 
 class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
   final bool isColumn;

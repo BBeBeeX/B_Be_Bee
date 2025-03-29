@@ -1,13 +1,9 @@
+import 'package:b_be_bee_app/common/api/bili/bili_video_play_api.dart';
+import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dto/lyric_line.dart';
+import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
+import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../common/api/bili/bili_video_play_api.dart';
-import '../controller/audio_player_page_controller.dart';
-import '../controller/lyrics_controller.dart';
-import '../model/dao/audio_info.dart';
-import '../model/dto/lyric_line.dart';
-import '../model/dto/subtitle/bili_subtitle_dto.dart';
-import '../model/enum/audio_source_type_enum.dart';
-import 'hive_helper.dart';
 
 class LyricsUtils {
   static Future<String?> getAudioLyrics(Ref ref,AudioInfo audioInfo)async {

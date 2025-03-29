@@ -1,7 +1,8 @@
-import '../model/dto/lyric_line.dart';
-import '../util/audio_handler.dart';
-import '../util/lyrics_utils.dart';
 import 'dart:async';
+
+import 'package:b_be_bee_app/model/dto/lyric_line.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
+import 'package:b_be_bee_app/util/lyrics_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

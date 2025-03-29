@@ -1,8 +1,7 @@
 import 'package:b_be_bee_app/controller/sleep_time_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../gen/strings.g.dart';
 
 class SleepTimerWidget extends ConsumerWidget {
   @override

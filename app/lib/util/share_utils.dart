@@ -1,20 +1,19 @@
+import 'package:b_be_bee_app/common/api/bili/bili_collects_api.dart';
+import 'package:b_be_bee_app/common/api/bili/bili_upper_api.dart';
+import 'package:b_be_bee_app/common/api/bili/bili_video_play_api.dart';
+import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/dto/share/share_dto.dart';
+import 'package:b_be_bee_app/model/dto/video/audio_info_response.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
+import 'package:b_be_bee_app/model/enum/share_type_enum.dart';
 import 'package:b_be_bee_app/observer/route_observer.dart';
+import 'package:b_be_bee_app/pages/audio_player_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../common/api/bili/bili_collects_api.dart';
-import '../common/api/bili/bili_upper_api.dart';
-import '../common/api/bili/bili_video_play_api.dart';
-import '../controller/collects_controller.dart';
-import '../controller/playlist_controller.dart';
-import '../model/dao/audio_info.dart';
-import '../model/dto/share/share_dto.dart';
-import '../model/dto/video/audio_info_response.dart';
-import '../model/enum/collect_type_enum.dart';
-import '../model/enum/share_type_enum.dart';
-import '../pages/audio_player_page.dart';
 
 class ShareUtils {
   static Future<void> analyzeShareDto(

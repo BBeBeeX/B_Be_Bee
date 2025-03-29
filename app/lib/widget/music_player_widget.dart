@@ -1,14 +1,12 @@
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/pages/audio_player_page.dart';
-import 'package:b_be_bee_app/pages/playlist_page.dart';
 import 'package:b_be_bee_app/provider/image_color_provider.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
+import 'package:b_be_bee_app/widget/bottom_sheet/open_playlist_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'bottom_sheet/open_playlist_bottom_sheet.dart';
 
 
 

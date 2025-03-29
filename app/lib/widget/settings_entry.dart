@@ -1,7 +1,6 @@
+import 'package:b_be_bee_app/config/theme.dart';
+import 'package:b_be_bee_app/widget/dialogs/change_settings_destination_path_dialog.dart';
 import 'package:flutter/material.dart';
-
-import '../config/theme.dart';
-import 'dialogs/change_settings_destination_path_dialog.dart';
 
 
 class SettingsEntry extends StatelessWidget {

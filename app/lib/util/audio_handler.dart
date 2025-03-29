@@ -8,18 +8,17 @@ import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/controller/settings_controller.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dto/player/player_audio_data.dart';
 import 'package:b_be_bee_app/model/dto/player/player_position_data.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/native/permission_helper.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../model/dto/player/player_audio_data.dart';
-import 'native/platform_check.dart';
 
 class CustomAudioHandler extends BaseAudioHandler {
   static WidgetRef? _ref;

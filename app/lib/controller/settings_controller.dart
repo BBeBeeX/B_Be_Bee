@@ -1,9 +1,12 @@
+import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/settings/settings_state.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/model/enum/color_mode_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:b_be_bee_app/pages/settings/language_page.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/native/autostart_helper.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +15,6 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:routerino/routerino.dart';
-
-import '../config/init.dart';
-import '../provider/logging/common_logs_provider.dart';
-import '../util/audio_handler.dart';
 
 final settingsProvider =
     StateNotifierProvider<SettingsController, SettingsState>((ref) {

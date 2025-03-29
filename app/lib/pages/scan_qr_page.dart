@@ -1,13 +1,12 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/dto/share/share_dto.dart';
+import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart' as ml_kit;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart' as mobile_scanner;
 import 'package:routerino/routerino.dart';
-import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart' as ml_kit;
-
-import '../gen/strings.g.dart';
-import '../model/dto/share/share_dto.dart';
-import '../util/toast_util.dart';
 
 class ScanQrPage extends ConsumerStatefulWidget {
   final Future<void> Function(BuildContext context, WidgetRef ref, ShareDto shareDto) onScanComplete;

@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'dart:convert';
+
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class WebviewUtils {
   final InAppWebViewController webViewController;

@@ -1,14 +1,11 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/pages/download_manager_page.dart';
+import 'package:b_be_bee_app/pages/local_audio_browser_page.dart';
+import 'package:b_be_bee_app/util/clipboard_util.dart';
+import 'package:b_be_bee_app/widget/dialogs/input_new_collects_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../config/theme.dart';
-import '../../gen/strings.g.dart';
-import '../../pages/download_manager_page.dart';
-import '../../pages/local_audio_browser_page.dart';
-import '../../util/clipboard_util.dart';
-import '../dialogs/input_new_collects_dialog.dart';
 
 class DesktopSideBarAddPopupMenuButtonWidget extends ConsumerWidget{
   @override

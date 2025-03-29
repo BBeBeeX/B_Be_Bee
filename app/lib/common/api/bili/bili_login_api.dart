@@ -12,14 +12,12 @@ import 'package:b_be_bee_app/model/dto/login/post_sms_require.dart';
 import 'package:b_be_bee_app/model/dto/login_user_info.dart';
 import 'package:b_be_bee_app/model/enum/bili_vip_label_enum.dart';
 import 'package:b_be_bee_app/util/cookie_util.dart';
+import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:html/parser.dart';
 import 'package:rhttp/rhttp.dart';
-
-import '../../../util/hive_helper.dart';
 
 abstract class BiliLoginApi {
   ///获取登录需要的key和hash
@@ -187,7 +185,7 @@ abstract class BiliLoginApi {
     final correspondPath = CookieUtils.getCorrespondPath(timestamp);
     final String refreshToken = await _getRefreshCSRF(correspondPath);
 
-    await _postRefreshCookie(refreshToken,refreshCsrf!);
+    await _postRefreshCookie(refreshToken,refreshCsrf);
   }
 
   //如果需要刷新返回timestamp,否则0

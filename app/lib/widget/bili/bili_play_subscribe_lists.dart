@@ -1,8 +1,10 @@
 
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/bili/bili_my_page_controller.dart';
-import 'package:b_be_bee_app/controller/collects_playlist_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/model/dto/collects/collects_list_all_dto.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/widget/bili/collects_item.dart';
@@ -10,10 +12,6 @@ import 'package:b_be_bee_app/widget/section_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../gen/strings.g.dart';
-import '../../model/dao/collect_playlist.dart';
-import '../../model/enum/collect_type_enum.dart';
 
 class BiliPlaySubscribeLists extends ConsumerWidget {
   const BiliPlaySubscribeLists({super.key});

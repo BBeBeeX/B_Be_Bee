@@ -1,15 +1,12 @@
-import 'dart:io' as dart_http;
-import 'package:b_be_bee_app/controller/bili/bili_upper_page_controller.dart';
+import 'package:b_be_bee_app/common/api_constants.dart';
+import 'package:b_be_bee_app/controller/settings_controller.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
+import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:b_be_bee_app/widget/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../common/api_constants.dart';
-import '../controller/settings_controller.dart';
-import '../../../util/rhttp_utils.dart';
-import '../model/enum/audio_source_type_enum.dart';
 
 class WebviewPage extends ConsumerStatefulWidget {
   final AudioInfo audioInfo;
@@ -32,7 +29,7 @@ class _WebviewPageState extends ConsumerState<WebviewPage> {
 
       RhttpUtils.cookieJar.loadForRequest(uri).then((cookies) async {
         for (var cookie in cookies) {
-          print("Cookie: ${cookie.name} = ${cookie.value}");
+          print('Cookie: ${cookie.name} = ${cookie.value}');
           CookieManager.instance().setCookie(url: WebUri.uri(uri), name: cookie.name, value: cookie.value);
         }
       });
@@ -70,11 +67,11 @@ class _WebviewPageState extends ConsumerState<WebviewPage> {
               _isLoading = false;
             });
 
-            print("url: ${url}");
+            print('url: $url');
 
             List<Cookie> cookies = await CookieManager.instance().getCookies(url: url!);
             for (var cookie in cookies) {
-              print("current-Cookie: ${cookie.name} = ${cookie.value}");
+              print('current-Cookie: ${cookie.name} = ${cookie.value}');
             }
 
           },

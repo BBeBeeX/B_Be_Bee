@@ -1,17 +1,16 @@
 import 'dart:convert';
 
 import 'package:b_be_bee_app/config/init.dart';
+import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/model/dao/upper.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
+import 'package:b_be_bee_app/model/enum/share_type_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
+import 'package:b_be_bee_app/util/share_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../util/share_utils.dart';
-import '../../dao/audio_info.dart';
-import '../../enum/share_type_enum.dart';
 
 part 'share_dto.freezed.dart';
 part 'share_dto.g.dart';
@@ -39,11 +38,11 @@ class ShareDto with _$ShareDto {
       if (json.containsKey('type')) {
         return ShareDto.fromJson(json);
       } else {
-        throw FormatException("Missing required fields in JSON.");
+        throw FormatException('Missing required fields in JSON.');
       }
     } catch (e) {
-      print("Error decoding base64 or JSON: $e");
-      throw FormatException("Missing required fields in JSON.");
+      print('Error decoding base64 or JSON: $e');
+      throw FormatException('Missing required fields in JSON.');
     }
   }
 

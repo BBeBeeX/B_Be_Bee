@@ -1,3 +1,4 @@
+import 'package:b_be_bee_app/common/api/bili/bili_login_api.dart';
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/model/dao/bili/bili_user.dart';
 import 'package:b_be_bee_app/model/enum/bili_vip_label_enum.dart';
@@ -5,8 +6,6 @@ import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../common/api/bili/bili_login_api.dart';
 
 class BiliUserNotifier extends StateNotifier<BiliUser> {
   BiliUserNotifier() : super(const BiliUser()){

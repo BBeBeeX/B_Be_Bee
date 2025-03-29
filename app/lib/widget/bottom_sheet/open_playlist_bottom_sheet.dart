@@ -1,8 +1,7 @@
 
 
+import 'package:b_be_bee_app/pages/playlist_page.dart';
 import 'package:flutter/material.dart';
-
-import '../../pages/playlist_page.dart';
 
 class OpenPlaylistBottomSheet{
   static Future<void> open(BuildContext context) {

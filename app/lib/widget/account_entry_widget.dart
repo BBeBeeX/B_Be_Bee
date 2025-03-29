@@ -1,16 +1,13 @@
-import 'package:b_be_bee_app/controller/bili/bili_upper_page_controller.dart';
+import 'package:b_be_bee_app/controller/bili/bili_user_provider.dart';
+import 'package:b_be_bee_app/controller/main_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/enum/main_tab_enum.dart';
+import 'package:b_be_bee_app/widget/dialogs/bili_login_dialog.dart';
 import 'package:b_be_bee_app/widget/settings_entry.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../controller/bili/bili_user_provider.dart';
-import '../controller/main_page_controller.dart';
-import '../gen/strings.g.dart';
-import '../model/enum/main_tab_enum.dart';
-import 'dialogs/bili_login_dialog.dart';
 
 class AccountEntryWidget extends ConsumerWidget{
   final bool isDesktopTopBar;

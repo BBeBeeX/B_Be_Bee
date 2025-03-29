@@ -1,11 +1,10 @@
 
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/material.dart';
 import 'package:routerino/routerino.dart';
 import 'package:toastification/toastification.dart';
-
-import 'native/platform_check.dart';
 
 
 class ToastUtil {

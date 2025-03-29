@@ -1,16 +1,15 @@
+import 'package:b_be_bee_app/controller/main_page_controller.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/pages/audio_devices_page.dart';
+import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
+import 'package:b_be_bee_app/pages/download_manager_page.dart';
+import 'package:b_be_bee_app/pages/local_audio_browser_page.dart';
+import 'package:b_be_bee_app/pages/search_page.dart';
 import 'package:b_be_bee_app/pages/settings/settings_page.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../controller/main_page_controller.dart';
-import '../model/dao/collect_playlist.dart';
-import '../pages/audio_devices_page.dart';
-import '../pages/collects_playlist_page.dart';
-import '../pages/download_manager_page.dart';
-import '../pages/local_audio_browser_page.dart';
-import '../pages/search_page.dart';
 
 final globalNavigationKey = Routerino.navigatorKey;
 final localNavigationKey = GlobalKey<NavigatorState>();

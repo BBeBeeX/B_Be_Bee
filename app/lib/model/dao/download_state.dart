@@ -1,9 +1,8 @@
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_item.dart';
+import 'package:b_be_bee_app/model/enum/download_status_enum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_ce/hive.dart';
-
-import '../enum/download_status_enum.dart';
 
 part 'download_state.freezed.dart';
 part 'download_state.g.dart';

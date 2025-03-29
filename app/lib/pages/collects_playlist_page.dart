@@ -1,32 +1,31 @@
 import 'package:b_be_bee_app/common/constants.dart';
-import 'package:b_be_bee_app/controller/collects_playlist_page_controller.dart';
+import 'package:b_be_bee_app/config/theme.dart';
 import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/controller/collects_playlist_page_controller.dart';
 import 'package:b_be_bee_app/controller/download_controller.dart';
+import 'package:b_be_bee_app/controller/play_statistics_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/model/enum/sort_method_enum.dart';
-import 'package:b_be_bee_app/pages/collects_playlist_search_page.dart';
 import 'package:b_be_bee_app/pages/bili/bili_upper_page.dart';
+import 'package:b_be_bee_app/pages/collects_playlist_search_page.dart';
+import 'package:b_be_bee_app/provider/image_color_provider.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/util/time_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/batch_operation_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_list_audioInfo_to_addition_bottom_sheet.dart';
+import 'package:b_be_bee_app/widget/desktop_main_area_widget.dart';
 import 'package:b_be_bee_app/widget/dialogs/collects_delete_confirm_dialog.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:b_be_bee_app/widget/list_tile/audio_tile.dart';
+import 'package:b_be_bee_app/widget/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../config/theme.dart';
-import '../controller/play_statistics_controller.dart';
-import '../gen/strings.g.dart';
-import '../model/dao/collect_playlist.dart';
-import '../provider/image_color_provider.dart';
-import '../util/audio_handler.dart';
-import '../util/native/platform_check.dart';
-import '../widget/desktop_main_area_widget.dart';
-import '../widget/loading_widget.dart';
 
 class CollectsPlaylistPage extends ConsumerWidget {
   final CollectPlaylist collectPlaylist;

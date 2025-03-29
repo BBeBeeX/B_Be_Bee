@@ -1,12 +1,11 @@
+import 'package:b_be_bee_app/config/theme.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/dto/video/audio_play_item.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../config/theme.dart';
-import '../../gen/strings.g.dart';
-import '../../model/dto/video/audio_play_item.dart';
-import '../../util/audio_handler.dart';
 
 class AudioQualityBottomSheet {
   static Future<void> open(BuildContext context, WidgetRef ref) {

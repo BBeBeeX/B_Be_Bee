@@ -1,11 +1,10 @@
 import 'package:b_be_bee_app/controller/batch_operation_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_list_audioInfo_to_addition_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../gen/strings.g.dart';
 
 class BatchOperationPage extends ConsumerWidget {
   final List<AudioInfo> audioList;

@@ -1,10 +1,8 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/util/ffmpeg_utils.dart';
+import 'package:b_be_bee_app/widget/loading_widget.dart';
 import 'package:ffmpeg_helper/helpers/helper_progress.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../gen/strings.g.dart';
-import '../../util/ffmpeg_utils.dart';
-import '../loading_widget.dart';
 
 class DownloadFfmpegWindowsDialog {
 

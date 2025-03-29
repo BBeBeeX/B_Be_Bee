@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:b_be_bee_app/common/api/bili/bili_login_api.dart';
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/bili/bili_user_provider.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dto/login/login_qrcode_info.dart';
 import 'package:b_be_bee_app/model/dto/login/post_qrcode_login.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/provider/logging/http_logs_provider.dart';
+import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../gen/strings.g.dart';
-import '../../../util/hive_helper.dart';
 
 class BiliQrCodeLoginVm {
   final LoginQRcodeInfo? qrcodeInfo;

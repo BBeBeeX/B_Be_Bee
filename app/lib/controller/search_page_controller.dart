@@ -1,8 +1,7 @@
+import 'package:b_be_bee_app/model/dto/search_result_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../model/dto/search_result_dto.dart';
 
 final searchTabControllerProvider = Provider.autoDispose((ref) {
   final controller = TabController(length: SearchItemTypeEnum.values.length, vsync: ref.watch(vsyncProvider));

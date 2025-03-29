@@ -1,10 +1,9 @@
 
 import 'package:b_be_bee_app/common/constants.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:b_be_bee_app/widget/label_bage.dart';
 import 'package:flutter/material.dart';
-
-import '../../gen/strings.g.dart';
 
 class UserInfoCard extends StatelessWidget {
   final String bilibiliName;

@@ -1,6 +1,7 @@
 
 import 'package:b_be_bee_app/controller/collects_controller.dart';
 import 'package:b_be_bee_app/controller/download_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/native/permission_helper.dart';
@@ -12,8 +13,6 @@ import 'package:b_be_bee_app/widget/option_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../gen/strings.g.dart';
 
 class CollectsWebOptionsWidget extends ConsumerWidget {
   final String collectPlaylistId;

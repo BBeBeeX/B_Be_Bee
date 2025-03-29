@@ -1,6 +1,8 @@
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/config/init_error.dart';
+import 'package:b_be_bee_app/controller/settings_controller.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/observer/route_observer.dart';
 import 'package:b_be_bee_app/pages/main_page.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
@@ -14,9 +16,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'controller/settings_controller.dart';
-import 'observer/route_observer.dart';
 
 Future<void> main(List<String> args) async {
   try {

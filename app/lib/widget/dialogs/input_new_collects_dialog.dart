@@ -1,9 +1,8 @@
 import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../gen/strings.g.dart';
-import '../../model/enum/collect_type_enum.dart';
 
 class InputNewCollectsDialog {
 

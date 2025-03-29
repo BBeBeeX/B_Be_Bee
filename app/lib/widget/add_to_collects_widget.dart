@@ -1,14 +1,13 @@
 import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
+import 'package:b_be_bee_app/widget/dialogs/input_new_collects_dialog.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../gen/strings.g.dart';
-import '../model/enum/collect_type_enum.dart';
-import 'dialogs/input_new_collects_dialog.dart';
 
 class AddToCollectsWidget extends ConsumerWidget {
   final dynamic song;

@@ -1,15 +1,8 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/pages/bili/login/bili_login_webview.dart';
+import 'package:b_be_bee_app/pages/bili/login/qr_code_login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:b_be_bee_app/controller/bili/login/bili_my_login_page_controller.dart';
-import 'package:b_be_bee_app/controller/bili/login/bili_qr_code_login_controller.dart';
-import 'package:b_be_bee_app/controller/bili/login/bili_sms_login_controller.dart';
-import 'package:b_be_bee_app/controller/bili/login/bili_password_login_controller.dart';
-import 'package:b_be_bee_app/pages/bili/login/qr_code_login_view.dart';
-import 'package:b_be_bee_app/pages/bili/login/sms_login_view.dart';
-import 'package:b_be_bee_app/pages/bili/login/password_login_view.dart';
-
-import '../gen/strings.g.dart';
-import '../pages/bili/login/bili_login_webview.dart';
 
 class BiliLoginDialogWidget extends ConsumerStatefulWidget {
   const BiliLoginDialogWidget({super.key});

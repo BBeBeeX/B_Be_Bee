@@ -1,10 +1,8 @@
 
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/util/shortcut_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../config/theme.dart';
-import '../../gen/strings.g.dart';
-import '../../util/shortcut_utils.dart';
 
 class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
 

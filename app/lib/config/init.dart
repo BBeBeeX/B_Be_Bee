@@ -17,6 +17,7 @@ import 'package:b_be_bee_app/util/native/channel/macos_channel.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/util/native/tray_helper.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
+import 'package:b_be_bee_app/util/update_utils.dart';
 import 'package:ffmpeg_helper/helpers/ffmpeg_helper_class.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -25,8 +26,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:rhttp/rhttp.dart';
 import 'package:window_manager/window_manager.dart';
-
-import '../util/update_utils.dart';
 
 final _logger = Logger('Init');
 

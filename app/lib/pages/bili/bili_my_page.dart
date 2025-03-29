@@ -1,12 +1,12 @@
 
 import 'package:b_be_bee_app/controller/bili/bili_my_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/bili/login/my_bili_login_page.dart';
 import 'package:b_be_bee_app/provider/animation_provider.dart';
 import 'package:b_be_bee_app/widget/big_button.dart';
 import 'package:b_be_bee_app/widget/bili/bili_play_favorite_lists.dart';
-import 'package:b_be_bee_app/widget/bili/play_list_tabs.dart';
 import 'package:b_be_bee_app/widget/bili/bili_play_subscribe_lists.dart';
-import 'package:b_be_bee_app/widget/bili/play_waiting_lists.dart';
+import 'package:b_be_bee_app/widget/bili/play_list_tabs.dart';
 import 'package:b_be_bee_app/widget/bili/user_info_card.dart';
 import 'package:b_be_bee_app/widget/opacity_slideshow.dart';
 import 'package:b_be_bee_app/widget/responsive_builder.dart';
@@ -14,8 +14,6 @@ import 'package:b_be_bee_app/widget/responsive_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../gen/strings.g.dart';
 
 const _horizontalPadding = 15.0;
 

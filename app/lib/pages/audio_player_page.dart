@@ -1,19 +1,18 @@
 import 'dart:ui';
 
 import 'package:b_be_bee_app/common/constants.dart';
+import 'package:b_be_bee_app/controller/audio_player_page_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/widget/audio_player/current_playlist_control_buttons_widget.dart';
+import 'package:b_be_bee_app/widget/audio_player/current_playlist_item_widget.dart';
+import 'package:b_be_bee_app/widget/audio_player/current_playlist_progress_bar_widget.dart';
+import 'package:b_be_bee_app/widget/audio_player/lyrics_page_widget.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_music_options_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../controller/audio_player_page_controller.dart';
-import '../gen/strings.g.dart';
-import '../widget/audio_player/current_playlist_control_buttons_widget.dart';
-import '../widget/audio_player/current_playlist_item_widget.dart';
-import '../widget/audio_player/current_playlist_progress_bar_widget.dart';
-import '../widget/audio_player/lyrics_page_widget.dart';
 
 class AudioPlayerPage extends ConsumerWidget {
   const AudioPlayerPage({super.key});

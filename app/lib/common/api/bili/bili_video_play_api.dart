@@ -1,16 +1,15 @@
 
 
 import 'package:b_be_bee_app/common/api_constants.dart';
+import 'package:b_be_bee_app/model/dto/subtitle/bili_subtitle_dto.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_info_response.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_pagelist.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_info.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_play_item.dart';
+import 'package:b_be_bee_app/model/dto/video/video_play.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:b_be_bee_app/util/subtitle_utils.dart';
-import 'package:b_be_bee_app/model/dto/video/video_play.dart';
-
-import '../../../model/dto/subtitle/bili_subtitle_dto.dart';
 
 
 class BiliVideoPlayApi {

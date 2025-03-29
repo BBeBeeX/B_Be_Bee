@@ -1,13 +1,12 @@
 
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/download_manager_page.dart';
+import 'package:b_be_bee_app/pages/local_audio_browser_page.dart';
 import 'package:b_be_bee_app/pages/settings/settings_page.dart';
+import 'package:b_be_bee_app/widget/collects_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../gen/strings.g.dart';
-import '../widget/collects_list_widget.dart';
-import 'local_audio_browser_page.dart';
 
 class CollectsPage extends ConsumerWidget {
   const CollectsPage({super.key});

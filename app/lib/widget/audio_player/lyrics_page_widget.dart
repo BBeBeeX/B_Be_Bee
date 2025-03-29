@@ -1,8 +1,8 @@
+import 'package:b_be_bee_app/controller/lyrics_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../controller/lyrics_controller.dart';
-import '../../gen/strings.g.dart';
-import '../../util/audio_handler.dart';
 
 class LyricsPageWidget extends ConsumerWidget {
   const LyricsPageWidget({super.key});

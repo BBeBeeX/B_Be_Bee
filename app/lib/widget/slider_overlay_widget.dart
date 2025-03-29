@@ -12,7 +12,7 @@ class SliderOverlayWidget extends ConsumerStatefulWidget {
   final VoidCallback onDismiss;
 
   const SliderOverlayWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     required this.min,
@@ -21,7 +21,7 @@ class SliderOverlayWidget extends ConsumerStatefulWidget {
     required this.onChanged,
     required this.onChangeEnd,
     required this.onDismiss,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<SliderOverlayWidget> createState() => _SliderOverlayWidgetState();

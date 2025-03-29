@@ -1,11 +1,10 @@
 import 'dart:io';
 
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/util/native/permission_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../gen/strings.g.dart';
 
 
 class PermissionDeniedDialog {

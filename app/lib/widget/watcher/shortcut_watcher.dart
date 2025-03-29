@@ -1,15 +1,11 @@
-import 'dart:io';
-
 import 'package:b_be_bee_app/controller/main_page_controller.dart';
 import 'package:b_be_bee_app/model/enum/main_tab_enum.dart';
-import 'package:b_be_bee_app/util/native/platform_check.dart';
+import 'package:b_be_bee_app/util/shortcut_utils.dart';
 import 'package:b_be_bee_app/widget/watcher/window_watcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../util/shortcut_utils.dart';
 
 
 class ShortcutWatcher extends ConsumerWidget {

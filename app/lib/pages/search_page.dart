@@ -1,18 +1,17 @@
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/controller/search_controller.dart';
+import 'package:b_be_bee_app/controller/search_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dto/search_result_dto.dart';
 import 'package:b_be_bee_app/pages/bili/bili_upper_page.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_music_options_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../controller/search_page_controller.dart';
-import '../gen/strings.g.dart';
-import '../util/native/platform_check.dart';
 
 
 

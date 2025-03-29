@@ -1,18 +1,13 @@
+import 'package:b_be_bee_app/common/api/bili/bili_collects_api.dart';
 import 'package:b_be_bee_app/config/init.dart';
-import 'package:b_be_bee_app/controller/bili/bili_upper_page_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/observer/route_observer.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:routerino/routerino.dart';
-
-import '../common/api/bili/bili_collects_api.dart';
-import '../model/dao/collect_playlist.dart';
-import '../model/enum/collect_type_enum.dart';
-import '../pages/collects_playlist_page.dart';
-import 'main_page_controller.dart';
 
 class HomePageRecommendState {
   final List<AudioInfo> audioList; //展示的例子

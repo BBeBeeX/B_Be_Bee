@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:b_be_bee_app/common/api_constants.dart';
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/config/init.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/provider/logging/http_logs_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -13,8 +14,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rhttp/rhttp.dart';
-
-import '../provider/logging/common_logs_provider.dart';
 
 class RhttpUtils {
   static final RhttpUtils _instance = RhttpUtils._internal();

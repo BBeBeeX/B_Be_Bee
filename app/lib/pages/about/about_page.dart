@@ -1,16 +1,14 @@
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/about/debug_page.dart';
 import 'package:b_be_bee_app/pages/about/hive_inspector_page.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
+import 'package:b_be_bee_app/util/version_utils.dart';
 import 'package:b_be_bee_app/widget/logo.dart';
 import 'package:b_be_bee_app/widget/responsive_list_view.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:routerino/routerino.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../util/native/platform_check.dart';
-import '../../util/version_utils.dart';
 
 final _translatorWithGithubRegex = RegExp(r'(.+) \(@([\w\-_]+)\)');
 

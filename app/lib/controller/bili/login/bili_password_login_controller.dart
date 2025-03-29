@@ -3,17 +3,16 @@ import 'dart:developer';
 import 'package:b_be_bee_app/common/api/bili/bili_login_api.dart';
 import 'package:b_be_bee_app/controller/bili/bili_user_provider.dart';
 import 'package:b_be_bee_app/controller/bili/login/bili_my_login_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dto/login/captcha_result.dart';
 import 'package:b_be_bee_app/model/dto/login/post_password_login_response.dart';
 import 'package:b_be_bee_app/model/enum/bili_login_model_enum.dart';
 import 'package:b_be_bee_app/util/bili/bili_captcha_util.dart';
+import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../../gen/strings.g.dart';
-import '../../../util/hive_helper.dart';
 
 class BiliPasswordLoginVm {
   final TextEditingController accountController ;

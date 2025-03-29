@@ -1,14 +1,14 @@
 import 'dart:io';
 
+import 'package:archive/archive.dart';
+import 'package:b_be_bee_app/util/native/permission_helper.dart';
+import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rhttp/rhttp.dart';
 import 'package:open_filex/open_filex.dart';
-import '../util/native/permission_helper.dart';
-import '../util/rhttp_utils.dart';
-import 'package:archive/archive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rhttp/rhttp.dart';
 
 
 final downloadInstallationPackageProvider = StateNotifierProvider<DownloadInstallationPackageController, DownloadState>(
@@ -80,10 +80,10 @@ class DownloadInstallationPackageController extends StateNotifier<DownloadState>
           File(filePath)..createSync(recursive: true)..writeAsBytesSync(file.content);
         }
       }
-      state = state.copyWith(isDownloading: false, text: "Unzip Complete!");
+      state = state.copyWith(isDownloading: false, text: 'Unzip Complete!');
 return true;
     } catch (e) {
-      state = state.copyWith(isDownloading: false, error: "Error Unzipping: $e");
+      state = state.copyWith(isDownloading: false, error: 'Error Unzipping: $e');
       return false;
     }
   }
@@ -104,14 +104,14 @@ return true;
       final batchFilePath = await _createBatchFile(extractDir, appPath, executableName);
       
       // 更新状态
-      state = state.copyWith(text: "Starting update process...");
+      state = state.copyWith(text: 'Starting update process...');
       
       // 运行批处理文件
       await Process.start(batchFilePath, [], mode: ProcessStartMode.detached);
       
       // 退出当前进程
     } catch (e) {
-      state = state.copyWith(error: "Error during update: $e");
+      state = state.copyWith(error: 'Error during update: $e');
     }
   }
   

@@ -1,15 +1,14 @@
+import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/pages/audio_devices_page.dart';
+import 'package:b_be_bee_app/pages/audio_player_page.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
+import 'package:b_be_bee_app/widget/audio_player/current_playlist_control_buttons_widget.dart';
+import 'package:b_be_bee_app/widget/audio_player/current_playlist_item_widget.dart';
+import 'package:b_be_bee_app/widget/audio_player/current_playlist_progress_bar_widget.dart';
+import 'package:b_be_bee_app/widget/bottom_sheet/open_playlist_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../controller/playlist_controller.dart';
-import '../pages/audio_devices_page.dart';
-import '../pages/audio_player_page.dart';
-import '../util/native/platform_check.dart';
-import 'audio_player/current_playlist_control_buttons_widget.dart';
-import 'audio_player/current_playlist_item_widget.dart';
-import 'audio_player/current_playlist_progress_bar_widget.dart';
-import 'bottom_sheet/open_playlist_bottom_sheet.dart';
 
 class DesktopBottomBarWidget extends ConsumerWidget {
   const DesktopBottomBarWidget({super.key});

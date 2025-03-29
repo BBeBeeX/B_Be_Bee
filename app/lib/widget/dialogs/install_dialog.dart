@@ -1,6 +1,6 @@
+import 'package:b_be_bee_app/controller/download_installation_package_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../controller/download_installation_package_controller.dart';
 
 class InstallDialog extends ConsumerWidget {
   final String url;

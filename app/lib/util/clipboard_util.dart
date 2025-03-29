@@ -1,14 +1,12 @@
+import 'package:b_be_bee_app/config/init.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/dto/share/share_dto.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/share_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:routerino/routerino.dart';
-
-import '../config/init.dart';
-import '../gen/strings.g.dart';
-import '../model/dto/share/share_dto.dart';
-import '../provider/logging/common_logs_provider.dart';
 
 class ClipboardUtil{
   static Future<String?> _getClipboardContent() async {

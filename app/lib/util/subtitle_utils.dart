@@ -1,11 +1,9 @@
 import 'dart:isolate';
 
-import 'package:b_be_bee_app/controller/download_controller.dart';
+import 'package:b_be_bee_app/model/dto/lyric_line.dart';
+import 'package:b_be_bee_app/model/dto/subtitle/bili_subtitle_dto.dart';
 import 'package:b_be_bee_app/util/string_utils.dart';
 import 'package:ffmpeg_helper/ffmpeg_helper.dart';
-
-import '../model/dto/lyric_line.dart';
-import '../model/dto/subtitle/bili_subtitle_dto.dart';
 
 class SubtitleUtils{
 

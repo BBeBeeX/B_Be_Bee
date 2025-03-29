@@ -1,9 +1,8 @@
+import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/upper.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_ce/hive.dart';
-
-import '../enum/collect_type_enum.dart';
-import 'audio_info.dart';
 
 part 'collect_playlist.freezed.dart';
 part 'collect_playlist.g.dart';

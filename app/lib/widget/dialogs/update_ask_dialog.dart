@@ -1,7 +1,7 @@
 
+import 'package:b_be_bee_app/util/update_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:routerino/routerino.dart';
-import '../../util/update_utils.dart';
 
 
 class UpdateAskDialog {

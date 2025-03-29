@@ -1,10 +1,9 @@
 import 'package:b_be_bee_app/common/constants.dart';
+import 'package:b_be_bee_app/model/enum/log_level.dart';
+import 'package:b_be_bee_app/model/pojo/log_entry.dart';
+import 'package:b_be_bee_app/util/logs_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-
-import '../../model/enum/log_level.dart';
-import '../../model/pojo/log_entry.dart';
-import '../../util/logs_utils.dart';
 
 final _logger = Logger('HTTP');
 

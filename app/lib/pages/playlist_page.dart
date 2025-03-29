@@ -1,13 +1,12 @@
 import 'package:b_be_bee_app/config/theme.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
+import 'package:b_be_bee_app/controller/playlist_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/batch_operation_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../controller/playlist_page_controller.dart';
-import '../gen/strings.g.dart';
 
 
 class PlaylistPage extends ConsumerWidget {

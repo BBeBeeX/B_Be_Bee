@@ -1,19 +1,13 @@
-import 'dart:math';
-
 import 'package:b_be_bee_app/config/theme.dart';
+import 'package:b_be_bee_app/controller/home_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/search_page.dart';
 import 'package:b_be_bee_app/widget/bili/bili_music_rank_widget.dart';
+import 'package:b_be_bee_app/widget/button/load_share_popup_menu_button_widget.dart';
+import 'package:b_be_bee_app/widget/home_page_recommend_widget.dart';
+import 'package:b_be_bee_app/widget/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:routerino/routerino.dart';
-import '../controller/home_page_controller.dart';
-import '../gen/strings.g.dart';
-import '../util/clipboard_util.dart';
-import '../util/share_utils.dart';
-import '../widget/button/load_share_popup_menu_button_widget.dart';
-import '../widget/home_page_recommend_widget.dart';
-import '../widget/responsive_builder.dart';
-import 'scan_qr_page.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});

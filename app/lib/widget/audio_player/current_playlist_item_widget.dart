@@ -1,10 +1,8 @@
+import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/model/state/playlist_state.dart';
+import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../config/theme.dart';
-import '../../controller/collects_controller.dart';
-import '../../model/state/playlist_state.dart';
-import '../img/network_image.dart';
 
 class CurrentPlaylistItemWidget extends ConsumerWidget {
   final String? coverUrl;

@@ -1,8 +1,7 @@
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/util/ui/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../gen/strings.g.dart';
 
 class CopyableText extends StatelessWidget {
   final TextSpan? prefix;

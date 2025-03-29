@@ -1,5 +1,5 @@
-import '../dao/collect_playlist.dart';
-import '../enum/sort_method_enum.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/enum/sort_method_enum.dart';
 
 
 class CollectsPageState {

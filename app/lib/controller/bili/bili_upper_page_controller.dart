@@ -1,19 +1,18 @@
+import 'package:b_be_bee_app/common/api/bili/bili_collects_api.dart';
 import 'package:b_be_bee_app/common/api/bili/bili_upper_api.dart';
 import 'package:b_be_bee_app/common/api/bili/bili_user_api.dart';
+import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/model/dao/upper.dart';
 import 'package:b_be_bee_app/model/dto/collects/seasons_series/bili_seasons_and_series_dto.dart';
+import 'package:b_be_bee_app/model/dto/collects/seasons_series/bili_seasons_series_archives.dart';
 import 'package:b_be_bee_app/model/dto/user/user_card_response.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
+import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../../common/api/bili/bili_collects_api.dart';
-import '../../model/dao/collect_playlist.dart';
-import '../../model/dto/collects/seasons_series/bili_seasons_series_archives.dart';
-import '../../model/enum/collect_type_enum.dart';
-import '../../pages/collects_playlist_page.dart';
-import '../playlist_controller.dart';
 
 class BiliUpperPageState {
   final bool isLoading;

@@ -3,15 +3,14 @@ import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/bili/bili_my_page.dart';
 import 'package:b_be_bee_app/pages/collects_page.dart';
 import 'package:b_be_bee_app/pages/home_page.dart';
+import 'package:b_be_bee_app/widget/bottom_navigation_bar_widget.dart';
+import 'package:b_be_bee_app/widget/desktop_bottom_bar_widget.dart';
+import 'package:b_be_bee_app/widget/desktop_main_area_widget.dart';
+import 'package:b_be_bee_app/widget/desktop_side_bar_widget.dart';
+import 'package:b_be_bee_app/widget/desktop_top_navigation_bar_widget.dart';
 import 'package:b_be_bee_app/widget/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../widget/bottom_navigation_bar_widget.dart';
-import '../widget/desktop_bottom_bar_widget.dart';
-import '../widget/desktop_main_area_widget.dart';
-import '../widget/desktop_side_bar_widget.dart';
-import '../widget/desktop_top_navigation_bar_widget.dart';
 
 class MainPage extends ConsumerWidget {
   const MainPage();

@@ -1,24 +1,23 @@
 import 'dart:io';
+
+import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/settings_controller.dart';
-import 'package:b_be_bee_app/pages/about/about_page.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
+import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
+import 'package:b_be_bee_app/util/ffmpeg_utils.dart';
+import 'package:b_be_bee_app/util/native/directories.dart';
+import 'package:b_be_bee_app/util/native/permission_helper.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:b_be_bee_app/widget/dialogs/loading_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:routerino/routerino.dart';
-import '../config/init.dart';
-import '../gen/strings.g.dart';
-import '../model/dao/audio_info.dart';
-import '../model/dao/collect_playlist.dart';
-import '../model/enum/collect_type_enum.dart';
-import '../pages/collects_playlist_page.dart';
-import '../provider/logging/common_logs_provider.dart';
-import '../util/ffmpeg_utils.dart';
-import '../util/native/directories.dart';
-import '../util/native/permission_helper.dart';
-import '../widget/dialogs/loading_dialog.dart';
 
 class FolderInfo {
   final String path;

@@ -1,10 +1,8 @@
 import 'package:b_be_bee_app/common/api/bili/bili_login_api.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dto/login/captcha_result.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:gt3_flutter_plugin/gt3_flutter_plugin.dart';
-
-import '../../gen/strings.g.dart';
 
 Future<void> startBiliCaptcha({required Function(CaptchaResultModel captchaResult) onSuccess}) async {
   late CaptchaResultModel captchaResult;

@@ -24,8 +24,8 @@ abstract class BiliUpperApi{
     int currentPage = 1;
     int pageSize = 20;
     bool hasMore = true;
-    List<BiliSeasonsList>? seasons_list =[];
-    List<BiliSeriesList>? series_list = [];
+    List<BiliSeasonsList>? seasonsList =[];
+    List<BiliSeriesList>? seriesList = [];
 
     while(hasMore){
       final response = await RhttpUtils().get(
@@ -38,15 +38,15 @@ abstract class BiliUpperApi{
       );
 
       final dto = BiliSeasonsAndSeriesDto.fromJson(response.bodyToJson).data?.items_lists ?? BiliSeasonsAndSeriesDtoItemsLists();
-      series_list = [...?series_list, ...?dto.series_list];
-      seasons_list = [...?seasons_list, ...?dto.seasons_list];
+      seriesList = [...?seriesList, ...?dto.series_list];
+      seasonsList = [...?seasonsList, ...?dto.seasons_list];
 
-      hasMore = ((dto.page?.total??0) - seasons_list.length - series_list.length) > 0;
+      hasMore = ((dto.page?.total??0) - seasonsList.length - seriesList.length) > 0;
     }
 
     return BiliSeasonsAndSeriesDtoItemsLists(
-        seasons_list:seasons_list,
-      series_list: series_list
+        seasons_list:seasonsList,
+      series_list: seriesList
     );
   }
 

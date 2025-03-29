@@ -1,11 +1,17 @@
+import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/controller/collects_playlist_page_controller.dart';
 import 'package:b_be_bee_app/controller/download_controller.dart';
 import 'package:b_be_bee_app/controller/music_options_controller.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/controller/sleep_time_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/pages/bili/bili_upper_page.dart';
+import 'package:b_be_bee_app/pages/share_audio_page.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/bili/open_bili_util.dart';
-import 'package:b_be_bee_app/util/native/permission_helper.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/audio_quality_bottom_sheet.dart';
@@ -15,15 +21,6 @@ import 'package:b_be_bee_app/widget/sleep_time_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
-import '../config/init.dart';
-import '../controller/collects_playlist_page_controller.dart';
-import '../gen/strings.g.dart';
-import '../model/dao/collect_playlist.dart';
-import '../model/enum/collect_type_enum.dart';
-import '../pages/bili/bili_upper_page.dart';
-import '../pages/share_audio_page.dart';
-import '../provider/logging/common_logs_provider.dart';
 
 class MusicOptionsWidget extends ConsumerWidget {
   final AudioInfo song;

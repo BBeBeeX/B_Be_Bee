@@ -1,16 +1,15 @@
+import 'package:b_be_bee_app/controller/main_page_controller.dart';
+import 'package:b_be_bee_app/controller/search_controller.dart';
+import 'package:b_be_bee_app/controller/search_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/search_page.dart';
+import 'package:b_be_bee_app/widget/account_entry_widget.dart';
+import 'package:b_be_bee_app/widget/button/desktop_top_navigation_bar_options_widget.dart';
 import 'package:b_be_bee_app/widget/windows_controller_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 import 'package:window_manager/window_manager.dart';
-import '../config/theme.dart';
-import '../controller/main_page_controller.dart';
-import '../controller/search_controller.dart';
-import '../controller/search_page_controller.dart';
-import '../gen/strings.g.dart';
-import 'account_entry_widget.dart';
-import 'button/desktop_top_navigation_bar_options_widget.dart';
 
 class DesktopTopNavigationBarWidget extends ConsumerWidget {
   const DesktopTopNavigationBarWidget({super.key});

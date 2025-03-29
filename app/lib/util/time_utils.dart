@@ -1,4 +1,4 @@
-import '../gen/strings.g.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 
 class TimeUtils{
   static String secondsToTimeString(int? seconds) {

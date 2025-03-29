@@ -1,17 +1,12 @@
+import 'package:b_be_bee_app/controller/collects_controller.dart';
+import 'package:b_be_bee_app/controller/collects_page_controller.dart';
+import 'package:b_be_bee_app/controller/main_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/widget/button/collects_list_widget_sort_popup_menu_button_widget.dart';
+import 'package:b_be_bee_app/widget/dialogs/input_new_collects_dialog.dart';
+import 'package:b_be_bee_app/widget/list_tile/collects_playlist_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../config/init.dart';
-import '../config/theme.dart';
-import '../controller/collects_controller.dart';
-import '../controller/collects_page_controller.dart';
-import '../controller/main_page_controller.dart';
-import '../gen/strings.g.dart';
-import '../model/state/collects_page_state.dart';
-import '../provider/logging/common_logs_provider.dart';
-import 'button/collects_list_widget_sort_popup_menu_button_widget.dart';
-import 'dialogs/input_new_collects_dialog.dart';
-import 'list_tile/collects_playlist_tile.dart';
 
 class CollectsListWidget extends ConsumerWidget {
   final bool isSideBar;

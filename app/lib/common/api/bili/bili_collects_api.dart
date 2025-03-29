@@ -2,6 +2,7 @@ import 'package:b_be_bee_app/common/api/bili/bili_user_api.dart';
 import 'package:b_be_bee_app/common/api_constants.dart';
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/model/dao/upper.dart';
 import 'package:b_be_bee_app/model/dto/collects/collects_data_dto.dart';
 import 'package:b_be_bee_app/model/dto/collects/collects_info.dart';
@@ -12,10 +13,8 @@ import 'package:b_be_bee_app/model/dto/collects/created_list.dart';
 import 'package:b_be_bee_app/model/dto/collects/created_list_all.dart';
 import 'package:b_be_bee_app/model/dto/collects/seasons_series/bili_season_response.dart';
 import 'package:b_be_bee_app/model/dto/collects/seasons_series/bili_series_response_dto.dart';
+import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
-
-import '../../../model/dao/collect_playlist.dart';
-import '../../../model/enum/collect_type_enum.dart';
 
 abstract class BiliCollectsApi {
   //获取当前用户创建的所有收藏夹信息

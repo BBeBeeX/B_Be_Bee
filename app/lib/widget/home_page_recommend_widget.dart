@@ -1,11 +1,8 @@
 import 'package:b_be_bee_app/controller/home_page_recommend_controller.dart';
-import 'package:b_be_bee_app/model/dao/audio_info.dart';
-import 'package:b_be_bee_app/widget/img/network_image.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/widget/audio_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../gen/strings.g.dart';
-import 'audio_card_widget.dart';
 
 class HomePageRecommendWidget extends ConsumerWidget {
   final RecommendParams params;

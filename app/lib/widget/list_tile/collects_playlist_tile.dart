@@ -1,17 +1,11 @@
-import 'package:b_be_bee_app/controller/collects_playlist_page_controller.dart';
+import 'package:b_be_bee_app/controller/main_page_controller.dart';
+import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
 import 'package:b_be_bee_app/observer/route_observer.dart';
-import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/select_collects_options_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:routerino/routerino.dart';
-
-import '../../config/theme.dart';
-import '../../controller/main_page_controller.dart';
-import '../../gen/strings.g.dart';
-import '../../model/enum/collect_type_enum.dart';
 
 class CollectsPlaylistTile extends ConsumerWidget {
   final CollectPlaylist playlist;

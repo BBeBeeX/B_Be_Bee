@@ -20,15 +20,15 @@ class BiliSubtitleDto {
   List<SubTitlteItemModel>? subtitles;
 
   factory BiliSubtitleDto.fromJson(Map<String, dynamic> json) => BiliSubtitleDto(
-    aid: json["aid"],
-    bvid: json["bvid"],
-    cid: json["cid"],
-    loginMid: json["login_mid"],
-    loginMidHash: json["login_mid_hash"],
-    isOwner: json["is_owner"],
-    name: json["name"],
-    subtitles: json["subtitle"] != null
-        ? json["subtitle"]["subtitles"]
+    aid: json['aid'],
+    bvid: json['bvid'],
+    cid: json['cid'],
+    loginMid: json['login_mid'],
+    loginMidHash: json['login_mid_hash'],
+    isOwner: json['is_owner'],
+    name: json['name'],
+    subtitles: json['subtitle'] != null
+        ? json['subtitle']['subtitles']
         .map<SubTitlteItemModel>((x) => SubTitlteItemModel.fromJson(x))
         .toList()
         : [],
@@ -66,15 +66,15 @@ class SubTitlteItemModel {
 
   factory SubTitlteItemModel.fromJson(Map<String, dynamic> json) =>
       SubTitlteItemModel(
-        id: json["id"],
-        lan: json["lan"].replaceAll('-', ''),
-        lanDoc: json["lan_doc"],
-        isLock: json["is_lock"],
-        subtitleUrl: json["subtitle_url"],
-        type: json["type"],
-        aiType: json["ai_type"],
-        aiStatus: json["ai_status"],
-        title: json["lan_doc"],
+        id: json['id'],
+        lan: json['lan'].replaceAll('-', ''),
+        lanDoc: json['lan_doc'],
+        isLock: json['is_lock'],
+        subtitleUrl: json['subtitle_url'],
+        type: json['type'],
+        aiType: json['ai_type'],
+        aiStatus: json['ai_status'],
+        title: json['lan_doc'],
         content: '',
         body: [],
       );

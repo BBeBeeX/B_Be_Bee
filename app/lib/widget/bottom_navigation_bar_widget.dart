@@ -1,11 +1,9 @@
+import 'package:b_be_bee_app/controller/main_page_controller.dart';
+import 'package:b_be_bee_app/model/enum/main_tab_enum.dart';
+import 'package:b_be_bee_app/widget/glass_widget.dart';
+import 'package:b_be_bee_app/widget/music_player_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../controller/main_page_controller.dart';
-import '../model/enum/main_tab_enum.dart';
-import 'glass_widget.dart';
-import 'music_player_widget.dart';
 
 
 class BottomNavigationBarWidget extends ConsumerWidget {

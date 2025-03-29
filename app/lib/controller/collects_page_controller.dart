@@ -1,9 +1,9 @@
+import 'package:b_be_bee_app/controller/collects_controller.dart';
 import 'package:b_be_bee_app/controller/play_statistics_controller.dart';
+import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
+import 'package:b_be_bee_app/model/enum/sort_method_enum.dart';
+import 'package:b_be_bee_app/model/state/collects_page_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../model/dao/collect_playlist.dart';
-import '../model/enum/sort_method_enum.dart';
-import '../model/state/collects_page_state.dart';
-import 'collects_controller.dart';
 
 final collectsPageProvider = StateNotifierProvider<CollectsPageController, CollectsPageState>((ref) {
   return CollectsPageController(ref);

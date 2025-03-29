@@ -1,9 +1,8 @@
 import 'package:b_be_bee_app/common/api/bili/bili_search_api.dart';
+import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/model/dto/search_result_dto.dart';
+import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../config/init.dart';
-import '../provider/logging/common_logs_provider.dart';
 
 class SearchState {
   final String query;
@@ -21,13 +20,13 @@ class SearchState {
     Map<SearchItemTypeEnum, bool>? hasMoreMap,
     this.currentType = SearchItemTypeEnum.all,
   }) : 
-    this.typeResults = typeResults ?? {
+    typeResults = typeResults ?? {
       for (var type in SearchItemTypeEnum.values) type: [],
     },
-    this.currentPages = currentPages ?? {
+    currentPages = currentPages ?? {
       for (var type in SearchItemTypeEnum.values) type: 1,
     },
-    this.hasMoreMap = hasMoreMap ?? {
+    hasMoreMap = hasMoreMap ?? {
       for (var type in SearchItemTypeEnum.values) type: true,
     };
 

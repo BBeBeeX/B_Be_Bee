@@ -1,7 +1,8 @@
 import 'dart:math';
+
+import 'package:b_be_bee_app/common/home_page_recommend.dart';
+import 'package:b_be_bee_app/controller/home_page_recommend_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../common/home_page_recommend.dart';
-import 'home_page_recommend_controller.dart';
 
 class HomePageState {
   final List<RecommendParams> recommends;
