@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
@@ -9,18 +7,16 @@ import '../../pages/scan_qr_page.dart';
 import '../../util/clipboard_util.dart';
 import '../../util/share_utils.dart';
 
-class LoadSharePopupMenuButtonWidget extends ConsumerWidget{
-
+class LoadSharePopupMenuButtonWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    return  PopupMenuButton<String>(
+    return PopupMenuButton<String>(
       icon: const Icon(Icons.add),
       onSelected: (value) async {
         if (value == 'scan') {
           await context.push(() => ScanQrPage(
-            onScanComplete: ShareUtils.analyzeShareDto,
-          ));
+                onScanComplete: ShareUtils.analyzeShareDto,
+              ));
         } else if (value == 'clipboard') {
           await ClipboardUtil.getClipboard(context, ref);
         }
@@ -45,5 +41,4 @@ class LoadSharePopupMenuButtonWidget extends ConsumerWidget{
       },
     );
   }
-
 }

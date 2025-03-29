@@ -20,8 +20,14 @@ ShareDto _$ShareDtoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ShareDto {
-  String get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   ShareTypeEnum get type => throw _privateConstructorUsedError;
+  String? get urlCover => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  List<String>? get songListString => throw _privateConstructorUsedError;
+  Upper? get upper => throw _privateConstructorUsedError;
+  int? get duration => throw _privateConstructorUsedError;
+  int? get cid => throw _privateConstructorUsedError;
 
   /// Serializes this ShareDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +44,17 @@ abstract class $ShareDtoCopyWith<$Res> {
   factory $ShareDtoCopyWith(ShareDto value, $Res Function(ShareDto) then) =
       _$ShareDtoCopyWithImpl<$Res, ShareDto>;
   @useResult
-  $Res call({String id, ShareTypeEnum type});
+  $Res call(
+      {String? id,
+      ShareTypeEnum type,
+      String? urlCover,
+      String? title,
+      List<String>? songListString,
+      Upper? upper,
+      int? duration,
+      int? cid});
+
+  $UpperCopyWith<$Res>? get upper;
 }
 
 /// @nodoc
@@ -56,19 +72,63 @@ class _$ShareDtoCopyWithImpl<$Res, $Val extends ShareDto>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? type = null,
+    Object? urlCover = freezed,
+    Object? title = freezed,
+    Object? songListString = freezed,
+    Object? upper = freezed,
+    Object? duration = freezed,
+    Object? cid = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ShareTypeEnum,
+      urlCover: freezed == urlCover
+          ? _value.urlCover
+          : urlCover // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      songListString: freezed == songListString
+          ? _value.songListString
+          : songListString // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      upper: freezed == upper
+          ? _value.upper
+          : upper // ignore: cast_nullable_to_non_nullable
+              as Upper?,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as int?,
+      cid: freezed == cid
+          ? _value.cid
+          : cid // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
+  }
+
+  /// Create a copy of ShareDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UpperCopyWith<$Res>? get upper {
+    if (_value.upper == null) {
+      return null;
+    }
+
+    return $UpperCopyWith<$Res>(_value.upper!, (value) {
+      return _then(_value.copyWith(upper: value) as $Val);
+    });
   }
 }
 
@@ -80,7 +140,18 @@ abstract class _$$ShareDtoImplCopyWith<$Res>
       __$$ShareDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, ShareTypeEnum type});
+  $Res call(
+      {String? id,
+      ShareTypeEnum type,
+      String? urlCover,
+      String? title,
+      List<String>? songListString,
+      Upper? upper,
+      int? duration,
+      int? cid});
+
+  @override
+  $UpperCopyWith<$Res>? get upper;
 }
 
 /// @nodoc
@@ -96,18 +167,48 @@ class __$$ShareDtoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? type = null,
+    Object? urlCover = freezed,
+    Object? title = freezed,
+    Object? songListString = freezed,
+    Object? upper = freezed,
+    Object? duration = freezed,
+    Object? cid = freezed,
   }) {
     return _then(_$ShareDtoImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ShareTypeEnum,
+      urlCover: freezed == urlCover
+          ? _value.urlCover
+          : urlCover // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      songListString: freezed == songListString
+          ? _value._songListString
+          : songListString // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      upper: freezed == upper
+          ? _value.upper
+          : upper // ignore: cast_nullable_to_non_nullable
+              as Upper?,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as int?,
+      cid: freezed == cid
+          ? _value.cid
+          : cid // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -115,19 +216,48 @@ class __$$ShareDtoImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ShareDtoImpl implements _ShareDto {
-  const _$ShareDtoImpl({required this.id, required this.type});
+  const _$ShareDtoImpl(
+      {this.id,
+      required this.type,
+      this.urlCover,
+      this.title,
+      final List<String>? songListString,
+      this.upper,
+      this.duration,
+      this.cid})
+      : _songListString = songListString;
 
   factory _$ShareDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShareDtoImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
   final ShareTypeEnum type;
+  @override
+  final String? urlCover;
+  @override
+  final String? title;
+  final List<String>? _songListString;
+  @override
+  List<String>? get songListString {
+    final value = _songListString;
+    if (value == null) return null;
+    if (_songListString is EqualUnmodifiableListView) return _songListString;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final Upper? upper;
+  @override
+  final int? duration;
+  @override
+  final int? cid;
 
   @override
   String toString() {
-    return 'ShareDto(id: $id, type: $type)';
+    return 'ShareDto(id: $id, type: $type, urlCover: $urlCover, title: $title, songListString: $songListString, upper: $upper, duration: $duration, cid: $cid)';
   }
 
   @override
@@ -136,12 +266,30 @@ class _$ShareDtoImpl implements _ShareDto {
         (other.runtimeType == runtimeType &&
             other is _$ShareDtoImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.urlCover, urlCover) ||
+                other.urlCover == urlCover) &&
+            (identical(other.title, title) || other.title == title) &&
+            const DeepCollectionEquality()
+                .equals(other._songListString, _songListString) &&
+            (identical(other.upper, upper) || other.upper == upper) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration) &&
+            (identical(other.cid, cid) || other.cid == cid));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, type);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      type,
+      urlCover,
+      title,
+      const DeepCollectionEquality().hash(_songListString),
+      upper,
+      duration,
+      cid);
 
   /// Create a copy of ShareDto
   /// with the given fields replaced by the non-null parameter values.
@@ -161,16 +309,34 @@ class _$ShareDtoImpl implements _ShareDto {
 
 abstract class _ShareDto implements ShareDto {
   const factory _ShareDto(
-      {required final String id,
-      required final ShareTypeEnum type}) = _$ShareDtoImpl;
+      {final String? id,
+      required final ShareTypeEnum type,
+      final String? urlCover,
+      final String? title,
+      final List<String>? songListString,
+      final Upper? upper,
+      final int? duration,
+      final int? cid}) = _$ShareDtoImpl;
 
   factory _ShareDto.fromJson(Map<String, dynamic> json) =
       _$ShareDtoImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
   ShareTypeEnum get type;
+  @override
+  String? get urlCover;
+  @override
+  String? get title;
+  @override
+  List<String>? get songListString;
+  @override
+  Upper? get upper;
+  @override
+  int? get duration;
+  @override
+  int? get cid;
 
   /// Create a copy of ShareDto
   /// with the given fields replaced by the non-null parameter values.

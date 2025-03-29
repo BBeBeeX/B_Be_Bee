@@ -24,6 +24,8 @@
     <!-- audio visualizer -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <application
         android:label="b_be_bee"
         android:name="${applicationName}"

@@ -20,22 +20,22 @@ import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vibration/vibration.dart';
 
 import '../gen/strings.g.dart';
 import '../util/lyrics_utils.dart';
-import 'audio_player_page_controller.dart';
 import 'lyrics_controller.dart';
 
 final playlistControllerProvider =
     StateNotifierProvider<PlaylistController, PlaylistState>((ref) {
   return PlaylistController(ref);
-},name: 'playlistControllerProvider');
+}, name: 'playlistControllerProvider');
 
 class PlaylistController extends StateNotifier<PlaylistState> {
   Ref ref;
   static const int _maxHistorySize = 500; // 播放历史最大数量
 
-  PlaylistController(this.ref) : super( PlaylistState()) {
+  PlaylistController(this.ref) : super(PlaylistState()) {
     _loadFromStorage();
     _init();
   }
@@ -43,9 +43,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   final _random = Random();
   final _uuid = const Uuid();
 
-
   Future<void> _init() async {
-
     // 监听播放完成
     CustomAudioHandler.player.processingStateStream.listen((processingState) {
       if (processingState == ProcessingState.completed) {
@@ -54,7 +52,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     });
 
     // 监听 上一首/下一首
-    CustomAudioHandler.instance.customEvent.listen((onData){
+    CustomAudioHandler.instance.customEvent.listen((onData) {
       if (onData == 'skipToNext') {
         skipToNext(isCutSong: true);
       } else if (onData == 'skipToPrevious') {
@@ -66,27 +64,26 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   // 从Hive加载播放列表状态
   Future<void> _loadFromStorage() async {
     state = state.copyWith(
-      playHistory: HiveHelper.getPlaylistPlayHistory(),
-      currentPlaylist: HiveHelper.getCurrentPlaylist(),
-      currentIndex: HiveHelper.getCurrentIndex(),
-      repeatMode: HiveHelper.getRepeatMode(),
-      volume: HiveHelper.getVolume(),
-      isMuted: HiveHelper.getIsMuted()
-    );
+        playHistory: HiveHelper.getPlaylistPlayHistory(),
+        currentPlaylist: HiveHelper.getCurrentPlaylist(),
+        currentIndex: HiveHelper.getCurrentIndex(),
+        repeatMode: HiveHelper.getRepeatMode(),
+        volume: HiveHelper.getVolume(),
+        isMuted: HiveHelper.getIsMuted());
 
-    if(state.isMuted){
+    if (state.isMuted) {
       await CustomAudioHandler.player.setVolume(0);
     }
     await CustomAudioHandler.player.setVolume(state.volume);
 
-    await playSong(state.currentIndex,false);
+    await playSong(state.currentIndex, false);
     await pause();
   }
 
   // 播放控制
   Future<void> play() async {
     if (state.currentSong != null) {
-       CustomAudioHandler.player.play();
+      CustomAudioHandler.player.play();
     }
   }
 
@@ -95,39 +92,42 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   }
 
   Future<void> pause() async {
-     CustomAudioHandler.player.pause();
+    CustomAudioHandler.player.pause();
   }
 
   Future<void> togglePlay() async {
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate();
+    }
+
     if (CustomAudioHandler.player.playing) {
-       pause();
-    }else{
-       play();
+      pause();
+    } else {
+      play();
     }
   }
 
-  Future<void> seek(Duration duration)async{
+  Future<void> seek(Duration duration) async {
     CustomAudioHandler.player.seek(duration);
   }
 
   Future<void> _onPlayCompleted() async {
-      if(state.currentSong!=null){
-        await addToHistory(state.currentSong);
-      }
+    if (state.currentSong != null) {
+      await addToHistory(state.currentSong);
+    }
 
-      if (state.repeatMode == RepeatModeEnum.one) {
-        // 单曲循环
-         seek(Duration.zero);
-         play();
+    if (state.repeatMode == RepeatModeEnum.one) {
+      // 单曲循环
+      seek(Duration.zero);
+      play();
+    } else {
+      // 播放下一首
+      if (state.currentPlaylist.isNotEmpty) {
+        skipToNext();
       } else {
-        // 播放下一首
-        if(state.currentPlaylist.isNotEmpty){
-           skipToNext();
-        }else{
-           pause();
-        }
+        pause();
       }
-
+    }
   }
 
   //循环模式修改
@@ -140,33 +140,37 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   }
 
   // 播放列表中的指定歌曲
-  Future<void> playSong(int index,bool play) async {
-
+  Future<void> playSong(int index, bool play) async {
     if (index < 0 || index >= state.currentPlaylist.length) return;
 
     state = state.copyWith(
       currentIndex: index,
     );
-    await _setAudio(state.currentPlaylist[index],play);
+    await _setAudio(state.currentPlaylist[index], play);
 
     await HiveHelper.setCurrentIndex(index);
   }
 
-  Future<void> _setAudio(AudioInfo audioInfo,bool play) async {
+  Future<void> _setAudio(AudioInfo audioInfo, bool play) async {
     await pause();
 
-    ref.read(lyricsControllerProvider.notifier).parseLyrics(await LyricsUtils.getAudioLyrics(ref,audioInfo));
+    ref
+        .read(lyricsControllerProvider.notifier)
+        .parseLyrics(await LyricsUtils.getAudioLyrics(ref, audioInfo));
 
     final Map<AudioSourceTypeEnum, Future<bool> Function()> sourceHandlers = {
-      AudioSourceTypeEnum.local: () async => await _setAudioByLocal(audioInfo,play),
-      AudioSourceTypeEnum.bili: () async => await _setAudioByBili(audioInfo,play),
-      AudioSourceTypeEnum.bili_music: () async => await _setAudioByBili(audioInfo,play), //暂时还走视频流
+      AudioSourceTypeEnum.local: () async =>
+          await _setAudioByLocal(audioInfo, play),
+      AudioSourceTypeEnum.bili: () async =>
+          await _setAudioByBili(audioInfo, play),
+      AudioSourceTypeEnum.bili_music: () async =>
+          await _setAudioByBili(audioInfo, play), //暂时还走视频流
       //TODO 走音频流
       // AudioSourceType.bili_music: () async => await _setmusicByBili(audioInfo.bvid, audioInfo.cid),
     };
 
     //获取本地音频
-    if(audioInfo.audioCurrentType == AudioSourceTypeEnum.local){
+    if (audioInfo.audioCurrentType == AudioSourceTypeEnum.local) {
       final handler = sourceHandlers[audioInfo.audioCurrentType];
       if (handler != null) {
         final success = await handler();
@@ -183,7 +187,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
         final success = await handler();
         if (success) {
           return;
-        }else{
+        } else {
           await skipToNext();
         }
       }
@@ -201,36 +205,37 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     }
   }
 
-  Future<bool> _setAudioByLocal(AudioInfo audioInfo,bool play) async {
+  Future<bool> _setAudioByLocal(AudioInfo audioInfo, bool play) async {
     final url = audioInfo.localPath;
 
     try {
-      await CustomAudioHandler.instance.setAudio(
-        url, audioInfo, AudioSourceTypeEnum.local,'',play
-      );
+      await CustomAudioHandler.instance
+          .setAudio(url, audioInfo, AudioSourceTypeEnum.local, '', play);
 
-      state = state.copyWith(
-        currentAudioPlayInfo: AudioPlayInfo()
-      );
+      state = state.copyWith(currentAudioPlayInfo: AudioPlayInfo());
       return true;
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog( 'load local audio fail: $url, error: $e');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('load local audio fail: $url, error: $e');
       });
     }
     return false;
   }
 
-  Future<bool> _setAudioByBili(AudioInfo audioInfo,bool play,{AudioQuality? targetQuality,Duration? currentPosition}) async {
-
-    try{
-      if(audioInfo.biliCid == 0){
-        final cid = (await BiliVideoPlayApi.getAudioPagelist(audioInfo.onlineId)).first.cid ?? 0;
-        audioInfo = audioInfo.copyWith(
-          biliCid: cid
-        );
+  Future<bool> _setAudioByBili(AudioInfo audioInfo, bool play,
+      {AudioQuality? targetQuality, Duration? currentPosition}) async {
+    try {
+      if (audioInfo.biliCid == 0) {
+        final cid =
+            (await BiliVideoPlayApi.getAudioPagelist(audioInfo.onlineId))
+                    .first
+                    .cid ??
+                0;
+        audioInfo = audioInfo.copyWith(biliCid: cid);
       }
-      if(audioInfo.biliCid == 0){
+      if (audioInfo.biliCid == 0) {
         return false;
       }
       targetQuality ??= ref.read(settingsProvider).audioQuality;
@@ -238,50 +243,60 @@ class PlaylistController extends StateNotifier<PlaylistState> {
       final AudioPlayInfo audioPlayInfo = await BiliVideoPlayApi.getVideoPlay(
           bvid: audioInfo.onlineId,
           cid: audioInfo.biliCid,
-          isVip: ref.read(biliUserProvider).vip != BiliVipLabelEnum.free ? true : false
-      );
+          isVip: ref.read(biliUserProvider).vip != BiliVipLabelEnum.free
+              ? true
+              : false);
 
-      final targetAudio = audioPlayInfo.audios.firstWhere(
+      final targetAudio = audioPlayInfo.audios
+          .firstWhere(
             (audio) => audio.quality == targetQuality,
-        orElse: () => audioPlayInfo.audios.first,
-      ).copyWith(audioType:AudioSourceTypeEnum.bili);
+            orElse: () => audioPlayInfo.audios.first,
+          )
+          .copyWith(audioType: AudioSourceTypeEnum.bili);
 
-      try{
-        await CustomAudioHandler.instance.setAudio(targetAudio.urls.first, audioInfo, AudioSourceTypeEnum.bili,targetAudio.quality.getLabel(),play);
+      try {
+        await CustomAudioHandler.instance.setAudio(
+            targetAudio.urls.first,
+            audioInfo,
+            AudioSourceTypeEnum.bili,
+            targetAudio.quality.getLabel(),
+            play);
         print('_setAudioByBili1');
 
-        if(currentPosition!=null) {
+        if (currentPosition != null) {
           CustomAudioHandler.player.seek(currentPosition);
         }
 
-        state = state.copyWith(
-            currentAudioPlayInfo: audioPlayInfo
-        );
+        state = state.copyWith(currentAudioPlayInfo: audioPlayInfo);
         return true;
-
-      }catch(e){
+      } catch (e) {
         //目标音质的资源有问题
-        await ToastUtil.show( t.controller.bili.loadBiliAudioFail ,notShow: '$targetAudio, error: $e');
+        await ToastUtil.show(t.controller.bili.loadBiliAudioFail,
+            notShow: '$targetAudio, error: $e');
 
         for (var prioritizedAudio in audioPlayInfo.audios) {
+          try {
+            await CustomAudioHandler.instance.setAudio(
+                prioritizedAudio.urls.first,
+                audioInfo,
+                AudioSourceTypeEnum.bili,
+                prioritizedAudio.quality.getLabel(),
+                true);
 
-          try{
-            await CustomAudioHandler.instance.setAudio(prioritizedAudio.urls.first, audioInfo, AudioSourceTypeEnum.bili,prioritizedAudio.quality.getLabel(),true);
-
-            state = state.copyWith(
-                currentAudioPlayInfo: audioPlayInfo
-            );
+            state = state.copyWith(currentAudioPlayInfo: audioPlayInfo);
             return true;
           } catch (e) {
             await Future.microtask(() {
-              container.read(commonLoggerProvider.notifier).addLog( 'Failed to load BiliBili audio resources: $prioritizedAudio.urls.first, error: $e');
+              container.read(commonLoggerProvider.notifier).addLog(
+                  'Failed to load BiliBili audio resources: $prioritizedAudio.urls.first, error: $e');
             });
           }
         }
       }
-
-    }catch(e){
-      await ToastUtil.show( t.controller.bili.loadBiliAudioFail ,notShow:' bvid:${audioInfo.onlineId} cid:${audioInfo.biliCid} , error: $e');
+    } catch (e) {
+      await ToastUtil.show(t.controller.bili.loadBiliAudioFail,
+          notShow:
+              ' bvid:${audioInfo.onlineId} cid:${audioInfo.biliCid} , error: $e');
     }
     return false;
   }
@@ -290,13 +305,19 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     final currentPosition = CustomAudioHandler.player.position;
 
     try {
-      await CustomAudioHandler.instance.setAudio(audioPlayItem.urls.first, state.currentPlaylist[state.currentIndex], state.currentPlaylist[state.currentIndex].audioCurrentType,audioPlayItem.quality.getLabel(),true);
+      await CustomAudioHandler.instance.setAudio(
+          audioPlayItem.urls.first,
+          state.currentPlaylist[state.currentIndex],
+          state.currentPlaylist[state.currentIndex].audioCurrentType,
+          audioPlayItem.quality.getLabel(),
+          true);
       await seek(currentPosition);
 
-      await ToastUtil.show( t.controller.currentPlaying(label: audioPlayItem.quality.getLabel()));
+      await ToastUtil.show(
+          t.controller.currentPlaying(label: audioPlayItem.quality.getLabel()));
       return true;
     } catch (e) {
-      await ToastUtil.show( t.controller.switchQualityError,notShow:': $e');
+      await ToastUtil.show(t.controller.switchQualityError, notShow: ': $e');
 
       return false;
     }
@@ -304,7 +325,13 @@ class PlaylistController extends StateNotifier<PlaylistState> {
 
   // 跳到下一首歌
   Future<void> skipToNext({bool isCutSong = false}) async {
-    if(state.currentSong!=null){
+    if (isCutSong) {
+      if (await Vibration.hasVibrator()) {
+        Vibration.vibrate();
+      }
+    }
+
+    if (state.currentSong != null) {
       await addToHistory(state.currentSong);
     }
 
@@ -319,12 +346,12 @@ class PlaylistController extends StateNotifier<PlaylistState> {
         }
         break;
       case RepeatModeEnum.one:
-        if(isCutSong){
+        if (isCutSong) {
           nextIndex = state.currentIndex + 1;
           if (nextIndex >= state.currentPlaylist.length) {
             nextIndex = 0;
           }
-        }else{
+        } else {
           nextIndex = state.currentIndex;
         }
         break;
@@ -339,12 +366,18 @@ class PlaylistController extends StateNotifier<PlaylistState> {
         break;
     }
 
-    await playSong(nextIndex,true);
+    await playSong(nextIndex, true);
   }
 
   // 跳到上一首歌
   Future<void> skipToPrevious({bool isCutSong = false}) async {
-    if(state.currentSong!=null){
+    if (isCutSong) {
+      if (await Vibration.hasVibrator()) {
+        Vibration.vibrate();
+      }
+    }
+
+    if (state.currentSong != null) {
       await addToHistory(state.currentSong);
     }
 
@@ -359,12 +392,12 @@ class PlaylistController extends StateNotifier<PlaylistState> {
         }
         break;
       case RepeatModeEnum.one:
-        if(isCutSong){
+        if (isCutSong) {
           prevIndex = state.currentIndex - 1;
           if (prevIndex < 0) {
             prevIndex = state.currentPlaylist.length - 1;
           }
-        }else{
+        } else {
           prevIndex = state.currentIndex;
         }
         break;
@@ -379,18 +412,18 @@ class PlaylistController extends StateNotifier<PlaylistState> {
         break;
     }
 
-    await playSong(prevIndex,true);
+    await playSong(prevIndex, true);
   }
 
   Future<void> addToHistory(AudioInfo? track) async {
-    if(track == null ) return;
+    if (track == null) return;
 
-    await ref.read(playStatisticsProvider.notifier).recordPlay(track.id, CustomAudioHandler.player.position);
+    await ref
+        .read(playStatisticsProvider.notifier)
+        .recordPlay(track.id, CustomAudioHandler.player.position);
     final newHistory = List<AudioInfo>.from(state.playHistory);
 
-    newHistory.removeWhere((item) =>
-      item.id == track.id
-    );
+    newHistory.removeWhere((item) => item.id == track.id);
     newHistory.insert(0, track);
 
     if (newHistory.length > _maxHistorySize) {
@@ -402,8 +435,8 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     await HiveHelper.setPlaylistPlayHistory(state.playHistory);
   }
 
-  Future<void> addToHistoryByIndex(int index) async{
-    if(state.currentPlaylist.length <= index) return;
+  Future<void> addToHistoryByIndex(int index) async {
+    if (state.currentPlaylist.length <= index) return;
     await addToHistory(state.currentPlaylist[index]);
   }
 
@@ -413,22 +446,18 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   }
 
   Future<void> selectSongFromHistory(int index) async {
-    state = state.copyWith(
-      currentPlaylist: state.playHistory,
-        currentIndex: index
-    );
+    state =
+        state.copyWith(currentPlaylist: state.playHistory, currentIndex: index);
     await HiveHelper.setCurrentPlaylist(state.playHistory);
     await HiveHelper.setCurrentIndex(index);
-
   }
 
   // 插入当前歌曲
-  Future<void> insertSong(AudioInfo track,{bool isToEnd = false}) async {
-
+  Future<void> insertSong(AudioInfo track, {bool isToEnd = false}) async {
     final updatedSongs = List<AudioInfo>.from(state.currentPlaylist);
-    if(isToEnd){
+    if (isToEnd) {
       updatedSongs.insert(state.currentPlaylist.length, track);
-    }else{
+    } else {
       updatedSongs.insert(state.currentIndex + 1, track);
     }
 
@@ -454,7 +483,6 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     );
     await HiveHelper.setCurrentPlaylist(updatedSongs);
     await HiveHelper.setCurrentIndex(state.currentIndex);
-
   }
 
   Future<void> removeSong(int index) async {
@@ -463,12 +491,12 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     state = state.copyWith(currentPlaylist: newQueue);
     await HiveHelper.setCurrentPlaylist(newQueue);
 
-    if(state.currentIndex == index){
-      await playSong(index,true);
+    if (state.currentIndex == index) {
+      await playSong(index, true);
     }
   }
 
-  Future<void> removeSongs(List<AudioInfo> playlist,String? playlistId) async {
+  Future<void> removeSongs(List<AudioInfo> playlist, String? playlistId) async {
     if (playlistId != null && playlistId != state.playlistId) {
       return;
     }
@@ -482,13 +510,13 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     int newCurrentIndex = state.currentIndex;
     bool isToSkip = false;
 
-    if (state.currentSong != null && removeIds.contains(state.currentSong!.id)) {
+    if (state.currentSong != null &&
+        removeIds.contains(state.currentSong!.id)) {
       newCurrentIndex = newPlaylist.isEmpty ? -1 : 0;
       isToSkip = true;
     } else {
       newCurrentIndex = newPlaylist.indexWhere(
-              (song) => song.id == state.currentPlaylist[state.currentIndex].id
-      );
+          (song) => song.id == state.currentPlaylist[state.currentIndex].id);
     }
 
     state = state.copyWith(
@@ -503,47 +531,41 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     await HiveHelper.setCurrentPlaylist(newPlaylist);
     await HiveHelper.setCurrentIndex(newCurrentIndex);
 
-
-    if(isToSkip){
+    if (isToSkip) {
       await skipToNext();
     }
   }
 
   Future<void> removeFromHistory(AudioInfo track) async {
     final newHistory = List<AudioInfo>.from(state.playHistory)
-      ..removeWhere((item) =>
-        item.id == track.id
-      );
-    
+      ..removeWhere((item) => item.id == track.id);
+
     state = state.copyWith(playHistory: newHistory);
     await HiveHelper.setPlaylistPlayHistory(newHistory);
   }
 
   Future<void> removeFromHistoryByIndex(int index) async {
-    final newHistory = List<AudioInfo>.from(state.playHistory)
-      ..removeAt(index);
+    final newHistory = List<AudioInfo>.from(state.playHistory)..removeAt(index);
 
     state = state.copyWith(playHistory: newHistory);
     await HiveHelper.setPlaylistPlayHistory(newHistory);
   }
 
-  Future<void> setPlaylist(List<AudioInfo> playlist,String? playlistId,{int index = 0,AudioInfo? song}) async {
+  Future<void> setPlaylist(List<AudioInfo> playlist, String? playlistId,
+      {int index = 0, AudioInfo? song}) async {
     if (state.currentIndex >= 0) {
       await addToHistoryByIndex(state.currentIndex);
     }
 
-    if(song != null){
-      index = _getIndexOfAudioInfo(playlist,song.id);
+    if (song != null) {
+      index = _getIndexOfAudioInfo(playlist, song.id);
     }
 
     final id = playlistId ?? _uuid.v4();
 
     state = state.copyWith(
-      currentPlaylist: playlist,
-      currentIndex: index,
-      playlistId: id
-    );
-    await _setAudio(playlist[index],true);
+        currentPlaylist: playlist, currentIndex: index, playlistId: id);
+    await _setAudio(playlist[index], true);
 
     await HiveHelper.setCurrentIndex(index);
     await HiveHelper.setCurrentPlaylist(playlist);
@@ -565,27 +587,28 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     );
     await HiveHelper.setCurrentPlaylist([]);
     await HiveHelper.setCurrentIndex(-1);
-
   }
 
   Future<void> reorderSongs(int oldIndex, int newIndex) async {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    
+
     final updatedPlaylist = List<AudioInfo>.from(state.currentPlaylist);
     final item = updatedPlaylist.removeAt(oldIndex);
     updatedPlaylist.insert(newIndex, item);
-    
+
     int newCurrentIndex = state.currentIndex;
     if (oldIndex == state.currentIndex) {
       newCurrentIndex = newIndex;
-    } else if (oldIndex < state.currentIndex && newIndex >= state.currentIndex) {
+    } else if (oldIndex < state.currentIndex &&
+        newIndex >= state.currentIndex) {
       newCurrentIndex--;
-    } else if (oldIndex > state.currentIndex && newIndex <= state.currentIndex) {
+    } else if (oldIndex > state.currentIndex &&
+        newIndex <= state.currentIndex) {
       newCurrentIndex++;
     }
-    
+
     state = state.copyWith(
       currentPlaylist: updatedPlaylist,
       currentIndex: newCurrentIndex,
@@ -594,7 +617,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     await HiveHelper.setCurrentIndex(newCurrentIndex);
   }
 
-  Future<void> toggleMute() async{
+  Future<void> toggleMute() async {
     state = state.copyWith(
       isMuted: !state.isMuted,
     );
@@ -612,7 +635,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   }
 
   Future<void> addVolume() async {
-    final value = state.volume+0.1;
+    final value = state.volume + 0.1;
     state = state.copyWith(
       volume: value,
     );
@@ -621,14 +644,11 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   }
 
   Future<void> subVolume() async {
-    final value = state.volume-0.1;
+    final value = state.volume - 0.1;
     state = state.copyWith(
       volume: value,
     );
     await CustomAudioHandler.player.setVolume(value);
     await HiveHelper.setVolume(value);
   }
-
-
 }
-

@@ -7,25 +7,25 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 import '../config/init.dart';
 import '../gen/strings.g.dart';
+import '../model/dao/collect_playlist.dart';
 import '../model/dto/share/share_dto.dart';
+import '../model/enum/collect_type_enum.dart';
 import '../provider/image_color_provider.dart';
 import '../provider/logging/common_logs_provider.dart';
 
 class ShareAudioPage extends ConsumerWidget {
-  final AudioInfo audioInfo;
+  final AudioInfo? audioInfo;
+  final CollectPlaylist? collectPlaylist;
   final GlobalKey _globalKey = GlobalKey();
 
-  ShareAudioPage({
-    super.key,
-    required this.audioInfo,
-  });
+  ShareAudioPage({super.key, this.audioInfo, this.collectPlaylist});
 
   Widget buildColorOption(
-      Color? color,
-      int index,
-      ShareAudioState state,
-      ShareAudioController controller,
-      ) {
+    Color? color,
+    int index,
+    ShareAudioState state,
+    ShareAudioController controller,
+  ) {
     return Container(
       width: 50,
       height: 50,
@@ -45,10 +45,10 @@ class ShareAudioPage extends ConsumerWidget {
                 decoration: BoxDecoration(
                   gradient: index == 1
                       ? LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [color ?? Colors.grey, Colors.black],
-                  )
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [color ?? Colors.grey, Colors.black],
+                        )
                       : null,
                   color: index != 1
                       ? (index == 2 ? Colors.black : color ?? Colors.grey)
@@ -75,22 +75,19 @@ class ShareAudioPage extends ConsumerWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(shareAudioProvider);
     final controller = ref.read(shareAudioProvider.notifier);
 
-    final coverUrl = audioInfo.coverWebUrl.isNotEmpty
-        ? audioInfo.coverWebUrl
-        : audioInfo.coverLocalUrl;
+    final coverUrl = audioInfo?.coverWebUrl ??
+        audioInfo?.coverLocalUrl ??
+        collectPlaylist?.cover ??
+        '';
     final mainColor = ref.watch(imageColorProvider(coverUrl));
 
     BoxDecoration getBackgroundDecoration(Color? color, int index) {
-      final defaultColor = Theme
-          .of(context)
-          .colorScheme
-          .onPrimary;
+      final defaultColor = Theme.of(context).colorScheme.onPrimary;
       final backgroundColor = color ?? defaultColor;
 
       switch (index) {
@@ -147,14 +144,18 @@ class ShareAudioPage extends ConsumerWidget {
                       error: (_, __) => Container(
                         width: 350,
                         height: 600,
-                        decoration: getBackgroundDecoration(null, state.selectedColorIndex),
-                        child: _buildContent(context, ref, mainColor, state.selectedColorIndex),
+                        decoration: getBackgroundDecoration(
+                            null, state.selectedColorIndex),
+                        child: _buildContent(
+                            context, ref, mainColor, state.selectedColorIndex),
                       ),
                       data: (color) => Container(
                         width: 350,
                         height: 600,
-                        decoration: getBackgroundDecoration(color, state.selectedColorIndex),
-                        child: _buildContent(context, ref, mainColor, state.selectedColorIndex),
+                        decoration: getBackgroundDecoration(
+                            color, state.selectedColorIndex),
+                        child: _buildContent(
+                            context, ref, mainColor, state.selectedColorIndex),
                       ),
                     ),
                   ),
@@ -169,52 +170,48 @@ class ShareAudioPage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: mainColor.when(
                         loading: () => [],
-                        error: (_, __) =>
-                            List.generate(
-                              ShareAudioState.colorCount,
-                                  (index) =>
-                                  index == ShareAudioState.colorCount - 1
-                                      ? buildColorOption(
-                                    null,
-                                    index,
-                                    ref.read(shareAudioProvider),
-                                    ref.read(shareAudioProvider.notifier),
-                                  )
-                                      : Row(
-                                    children: [
-                                      buildColorOption(
-                                        null,
-                                        index,
-                                        ref.read(shareAudioProvider),
-                                        ref.read(shareAudioProvider.notifier),
-                                      ),
-                                      const SizedBox(width: 20),
-                                    ],
-                                  ),
-                            ),
-                        data: (color) =>
-                            List.generate(
-                              ShareAudioState.colorCount,
-                                  (index) =>
-                                  index == ShareAudioState.colorCount - 1
-                                      ? buildColorOption(
-                                    color,
-                                    index,
-                                    ref.read(shareAudioProvider),
-                                    ref.read(shareAudioProvider.notifier),
-                                  )
-                                      : Row(
-                                    children: [
-                                      buildColorOption(
-                                        color,
-                                        index,
-                                        ref.read(shareAudioProvider),
-                                        ref.read(shareAudioProvider.notifier),
-                                      ),
-                                      const SizedBox(width: 20),
-                                    ],
-                                  ),
-                            ),
+                        error: (_, __) => List.generate(
+                          ShareAudioState.colorCount,
+                          (index) => index == ShareAudioState.colorCount - 1
+                              ? buildColorOption(
+                                  null,
+                                  index,
+                                  ref.read(shareAudioProvider),
+                                  ref.read(shareAudioProvider.notifier),
+                                )
+                              : Row(
+                                  children: [
+                                    buildColorOption(
+                                      null,
+                                      index,
+                                      ref.read(shareAudioProvider),
+                                      ref.read(shareAudioProvider.notifier),
+                                    ),
+                                    const SizedBox(width: 20),
+                                  ],
+                                ),
+                        ),
+                        data: (color) => List.generate(
+                          ShareAudioState.colorCount,
+                          (index) => index == ShareAudioState.colorCount - 1
+                              ? buildColorOption(
+                                  color,
+                                  index,
+                                  ref.read(shareAudioProvider),
+                                  ref.read(shareAudioProvider.notifier),
+                                )
+                              : Row(
+                                  children: [
+                                    buildColorOption(
+                                      color,
+                                      index,
+                                      ref.read(shareAudioProvider),
+                                      ref.read(shareAudioProvider.notifier),
+                                    ),
+                                    const SizedBox(width: 20),
+                                  ],
+                                ),
+                        ),
                       ),
                     ),
                   ),
@@ -240,7 +237,13 @@ class ShareAudioPage extends ConsumerWidget {
                   icon: Icons.link,
                   label: t.sharePage.copyLink,
                   onTap: () async {
-                    final shareDto = await ShareDto.fromAudioInfo(audioInfo: audioInfo);
+                    final shareDto = audioInfo != null
+                        ? ShareDto.fromAudioInfo(audioInfo: audioInfo)
+                        : collectPlaylist != null
+                            ? ShareDto.fromCollectPlaylist(
+                                collectPlaylist: collectPlaylist!)
+                            : null;
+
                     if (shareDto != null) {
                       final data = ShareDto.toBase64(shareDto);
                       await controller.copyLink(data);
@@ -249,18 +252,21 @@ class ShareAudioPage extends ConsumerWidget {
                     }
                   },
                 ),
-                _buildActionButton(
-                  icon: Icons.save_alt,
-                  label: t.sharePage.saveImage,
-                  onTap: () async {
-                    await controller.saveImage(_globalKey);
-                  },
-                ),
+                if (collectPlaylist == null ||
+                    collectPlaylist?.collectSourceType != CollectTypeEnum.local)
+                  _buildActionButton(
+                    icon: Icons.save_alt,
+                    label: t.sharePage.saveImage,
+                    onTap: () async {
+                      await controller.saveImage(_globalKey);
+                    },
+                  ),
                 _buildActionButton(
                   icon: Icons.more_horiz,
                   label: t.general.more,
                   onTap: () async {
-                    await controller.shareImage(_globalKey, audioInfo.title);
+                    await controller.shareImage(_globalKey,
+                        audioInfo?.title ?? collectPlaylist?.title ?? '');
                   },
                 ),
               ],
@@ -271,8 +277,14 @@ class ShareAudioPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref, AsyncValue<Color?> mainColor, int selectedColorIndex) {
-    final shareDto = ShareDto.fromAudioInfo(audioInfo: audioInfo);
+  Widget _buildContent(BuildContext context, WidgetRef ref,
+      AsyncValue<Color?> mainColor, int selectedColorIndex) {
+    final shareDto = audioInfo != null
+        ? ShareDto.fromAudioInfo(audioInfo: audioInfo)
+        : collectPlaylist != null
+            ? ShareDto.fromCollectPlaylist(collectPlaylist: collectPlaylist!)
+            : null;
+
     if (shareDto == null) {
       ToastUtil.show(t.sharePage.shareFail);
     }
@@ -282,6 +294,11 @@ class ShareAudioPage extends ConsumerWidget {
     Future.microtask(() {
       container.read(commonLoggerProvider.notifier).addLog('share data: $data');
     });
+
+    final coverUrl = audioInfo?.coverWebUrl ??
+        audioInfo?.coverLocalUrl ??
+        collectPlaylist?.cover ??
+        '';
 
     return Center(
       child: Container(
@@ -300,9 +317,7 @@ class ShareAudioPage extends ConsumerWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  audioInfo.coverWebUrl.isNotEmpty
-                      ? audioInfo.coverWebUrl
-                      : audioInfo.coverLocalUrl,
+                  coverUrl,
                   width: 220,
                   height: 220,
                   fit: BoxFit.cover,
@@ -313,7 +328,7 @@ class ShareAudioPage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                audioInfo.title,
+                audioInfo?.title ?? collectPlaylist?.title ?? '',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -327,7 +342,7 @@ class ShareAudioPage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                audioInfo.upper.name,
+                audioInfo?.upper.name ?? collectPlaylist?.upper?.name ?? '',
                 style: const TextStyle(
                   color: Colors.white70,
                   fontSize: 14,
@@ -407,5 +422,3 @@ class ShareAudioPage extends ConsumerWidget {
     );
   }
 }
-
-

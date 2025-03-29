@@ -43,9 +43,7 @@ mixin _$CollectPlaylist {
   @HiveField(7)
   CollectTypeEnum get collectCurrentType => throw _privateConstructorUsedError;
   @HiveField(8)
-  CollectTypeEnum get collectSourceType =>
-      throw _privateConstructorUsedError; // @HiveField(7) @Default(CollectTypeEnum.local) CollectTypeEnum collectCurrentType,
-// @HiveField(8) @Default(CollectTypeEnum.local) CollectTypeEnum collectSourceType,
+  CollectTypeEnum get collectSourceType => throw _privateConstructorUsedError;
   @HiveField(9)
   Upper? get upper => throw _privateConstructorUsedError;
   @HiveField(10)
@@ -361,8 +359,6 @@ class _$CollectPlaylistImpl extends _CollectPlaylist {
   @override
   @HiveField(8)
   final CollectTypeEnum collectSourceType;
-// @HiveField(7) @Default(CollectTypeEnum.local) CollectTypeEnum collectCurrentType,
-// @HiveField(8) @Default(CollectTypeEnum.local) CollectTypeEnum collectSourceType,
   @override
   @HiveField(9)
   final Upper? upper;
@@ -444,9 +440,7 @@ abstract class _CollectPlaylist extends CollectPlaylist {
   CollectTypeEnum get collectCurrentType;
   @override
   @HiveField(8)
-  CollectTypeEnum
-      get collectSourceType; // @HiveField(7) @Default(CollectTypeEnum.local) CollectTypeEnum collectCurrentType,
-// @HiveField(8) @Default(CollectTypeEnum.local) CollectTypeEnum collectSourceType,
+  CollectTypeEnum get collectSourceType;
   @override
   @HiveField(9)
   Upper? get upper;

@@ -1,4 +1,3 @@
-
 import 'package:b_be_bee_app/controller/collects_controller.dart';
 import 'package:b_be_bee_app/controller/download_controller.dart';
 import 'package:b_be_bee_app/model/dao/collect_playlist.dart';
@@ -36,7 +35,7 @@ class CollectsOptionsWidget extends ConsumerWidget {
     }
 
     playlist ??= HiveHelper.getCollectsPlaylist(collectPlaylistId);
-    if(playlist == null){
+    if (playlist == null) {
       context.pop();
     }
 
@@ -50,8 +49,8 @@ class CollectsOptionsWidget extends ConsumerWidget {
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceDim,
-              borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(30)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(30)),
             ),
             child: SingleChildScrollView(
               controller: scrollController,
@@ -76,14 +75,15 @@ class CollectsOptionsWidget extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                playlist?.title ??'',
+                                playlist?.title ?? '',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).colorScheme.surfaceTint
-                                ),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceTint),
                               ),
                               const SizedBox(height: 2),
                             ],
@@ -93,10 +93,13 @@ class CollectsOptionsWidget extends ConsumerWidget {
                     ),
                   ),
                   const Divider(height: 1),
-
                   OptionItemWidget(
-                    icon: playlist?.isTop ?? false ? Icons.push_pin : Icons.push_pin_outlined,
-                    text: playlist?.isTop ?? false ? t.widget.cancelPin :t.widget.pin,
+                    icon: playlist?.isTop ?? false
+                        ? Icons.push_pin
+                        : Icons.push_pin_outlined,
+                    text: playlist?.isTop ?? false
+                        ? t.widget.cancelPin
+                        : t.widget.pin,
                     color: Theme.of(context).colorScheme.primaryFixed,
                     onTap: () async {
                       await controller.togglePinPlaylist(playlist!.id);
@@ -104,18 +107,20 @@ class CollectsOptionsWidget extends ConsumerWidget {
                   ),
                   OptionItemWidget(
                     icon: Icons.favorite,
-                    color:Colors.red,
-                    text:  t.general.cancelCollection,
+                    color: Colors.red,
+                    text: t.general.cancelCollection,
                     onTap: () async {
-                      await CollectsDeleteConfirmDialog.open(context, ref, playlist!.title, playlist.id);
+                      await CollectsDeleteConfirmDialog.open(
+                          context, ref, playlist!.title, playlist.id);
                     },
                   ),
                   OptionItemWidget(
                     icon: Icons.edit,
                     color: Theme.of(context).colorScheme.primaryFixed,
-                    text:  t.widget.rename,
+                    text: t.widget.rename,
                     onTap: () async {
-                      await CollectsRenameDialog.open(context, ref, playlist!.title, playlist.id);
+                      await CollectsRenameDialog.open(
+                          context, ref, playlist!.title, playlist.id);
                     },
                   ),
                   OptionItemWidget(
@@ -123,10 +128,15 @@ class CollectsOptionsWidget extends ConsumerWidget {
                     text: t.general.share,
                     onTap: () async {
                       await Future.microtask(() {
-                        container.read(commonLoggerProvider.notifier).addLog(
-                            'share playlist id: $collectPlaylistId ');
+                        container
+                            .read(commonLoggerProvider.notifier)
+                            .addLog('share playlist id: $collectPlaylistId ');
                       });
-                      // await context.push(() => ShareAudioPage(audioInfo: song));
+                      final collectPlaylist = ref
+                          .read(collectsProvider.notifier)
+                          .getCollectsPlaylist(collectPlaylistId);
+                      await context.push(() =>
+                          ShareAudioPage(collectPlaylist: collectPlaylist));
                     },
                   ),
                   OptionItemWidget(
@@ -135,18 +145,20 @@ class CollectsOptionsWidget extends ConsumerWidget {
                     text: t.general.download,
                     onTap: () async {
                       await getFilePermission();
-                      await ToastUtil.show(t.widget.downloadingTitle(title: playlist!.title));
-                      final list = await controller.getPlaylistSongs(playlist.id);
-                      await ref.read(downloadControllerProvider.notifier).addDownloads(list);
+                      await ToastUtil.show(
+                          t.widget.downloadingTitle(title: playlist!.title));
+                      final list =
+                          await controller.getPlaylistSongs(playlist.id);
+                      await ref
+                          .read(downloadControllerProvider.notifier)
+                          .addDownloads(list);
                     },
                   ),
                   const SizedBox(height: 8),
                 ],
-
               ),
             ),
           );
-        }
-    );
+        });
   }
 }

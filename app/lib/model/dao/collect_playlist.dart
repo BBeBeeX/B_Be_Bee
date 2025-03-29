@@ -8,7 +8,6 @@ import 'audio_info.dart';
 part 'collect_playlist.freezed.dart';
 part 'collect_playlist.g.dart';
 
-
 @HiveType(typeId: 1)
 @freezed
 class CollectPlaylist with _$CollectPlaylist {
@@ -28,11 +27,9 @@ class CollectPlaylist with _$CollectPlaylist {
     List<AudioInfo>? songs,
     @HiveField(5) @Default(false) bool isDefault,
     @HiveField(6) @Default(0) int createTime,
-    @HiveField(7)  required CollectTypeEnum collectCurrentType,
-    @HiveField(8)  required CollectTypeEnum collectSourceType,
-    // @HiveField(7) @Default(CollectTypeEnum.local) CollectTypeEnum collectCurrentType,
-    // @HiveField(8) @Default(CollectTypeEnum.local) CollectTypeEnum collectSourceType,
-    @HiveField(9)  Upper? upper,
+    @HiveField(7) required CollectTypeEnum collectCurrentType,
+    @HiveField(8) required CollectTypeEnum collectSourceType,
+    @HiveField(9) Upper? upper,
     @HiveField(10) String? onlineId,
   }) = _CollectPlaylist;
 
@@ -50,7 +47,7 @@ class CollectPlaylist with _$CollectPlaylist {
         other.upper == upper &&
         other.isDefault == isDefault &&
         other.onlineId == onlineId &&
-        _listEquals(other.songIds, songIds)&&
+        _listEquals(other.songIds, songIds) &&
         _listEquals(other.songs!, songs!);
   }
 
@@ -77,4 +74,3 @@ class CollectPlaylist with _$CollectPlaylist {
     return true;
   }
 }
-
