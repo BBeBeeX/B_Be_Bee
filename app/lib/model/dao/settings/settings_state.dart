@@ -64,6 +64,8 @@ import 'package:b_be_bee_app/model/enum/color_mode_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:flutter/material.dart';
 
+import '../../enum/contrast_color_enum.dart';
+
 class SettingsState {
   ///通用
   final ThemeMode theme;
@@ -76,6 +78,10 @@ class SettingsState {
   final bool enableMessageBar;
   final bool enableAnimations;
   final bool autoSyncToLocal; // 是否自动同步收藏夹
+
+  ///显示
+  final ContrastColorEnum playBarFontColorMode; //播放栏字体颜色模式
+  final ContrastColorEnum playPageFontColorMode; //播放页字体颜色模式
 
   ///下载
   final String destination; // 文件保存路径
@@ -135,6 +141,8 @@ class SettingsState {
     this.autoStart = true,
     this.autoStartLaunchHidden = true,
     this.autoSyncToLocal = true,
+    this.playBarFontColorMode = ContrastColorEnum.blackAndWhite,
+    this.playPageFontColorMode = ContrastColorEnum.blackAndWhite,
     this.destination = '',
     this.isDownloadLyrics = true,
     this.isDownloadCover = true,
@@ -167,6 +175,8 @@ class SettingsState {
     bool? autoStart,
     bool? autoStartLaunchHidden,
     bool? autoSyncToLocal,
+    ContrastColorEnum? playBarFontColorMode,
+    ContrastColorEnum? playPageFontColorMode,
     String? destination,
     bool? isDownloadLyrics,
     bool? isDownloadCover,
@@ -198,6 +208,9 @@ class SettingsState {
       autoStartLaunchHidden:
           autoStartLaunchHidden ?? this.autoStartLaunchHidden,
       autoSyncToLocal: autoSyncToLocal ?? this.autoSyncToLocal,
+      playBarFontColorMode: playBarFontColorMode ?? this.playBarFontColorMode,
+      playPageFontColorMode:
+          playPageFontColorMode ?? this.playPageFontColorMode,
       destination: destination ?? this.destination,
       isDownloadLyrics: isDownloadLyrics ?? this.isDownloadLyrics,
       isDownloadCover: isDownloadCover ?? this.isDownloadCover,

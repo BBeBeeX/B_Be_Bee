@@ -20,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
+import '../../model/enum/contrast_color_enum.dart';
+
 class SettingsPage extends ConsumerWidget {
   final bool hasBackIcon;
 
@@ -214,6 +216,41 @@ class SettingsPage extends ConsumerWidget {
                     value: settings.isUpdateRemind,
                     onChanged: (_) => controller.onToggleUpdateRemind(),
                   ),
+                ),
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: '显示',
+            children: [
+              SettingsEntry(
+                label: '播放栏字体颜色模式',
+                child: CustomDropdownButton<ContrastColorEnum>(
+                  value: settings.playBarFontColorMode,
+                  items: ContrastColorEnum.values.map((playBarFontColorMode) {
+                    return DropdownMenuItem(
+                      value: playBarFontColorMode,
+                      alignment: Alignment.center,
+                      child: Text(playBarFontColorMode.name),
+                    );
+                  }).toList(),
+                  onChanged: (playBarFontColorMode) async =>
+                      controller.setPlayBarFontColorMode(playBarFontColorMode),
+                ),
+              ),
+              SettingsEntry(
+                label: '播放页字体颜色模式',
+                child: CustomDropdownButton<ContrastColorEnum>(
+                  value: settings.playPageFontColorMode,
+                  items: ContrastColorEnum.values.map((playPageFontColorMode) {
+                    return DropdownMenuItem(
+                      value: playPageFontColorMode,
+                      alignment: Alignment.center,
+                      child: Text(playPageFontColorMode.name),
+                    );
+                  }).toList(),
+                  onChanged: (playPageFontColorMode) async => controller
+                      .setPlayPageFontColorMode(playPageFontColorMode),
                 ),
               ),
             ],

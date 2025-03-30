@@ -11,10 +11,12 @@ import 'package:just_audio/just_audio.dart';
 
 class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
   final bool isColumn;
+  final Color? fontColor;
 
   const CurrentPlaylistProgressBarWidget({
     super.key,
     this.isColumn = true,
+    this.fontColor,
   });
 
   @override
@@ -39,10 +41,11 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
                       Text(
                         TimeUtils.formatDuration(position),
                         style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.7)),
+                            color: fontColor?.withOpacity(0.7) ??
+                                Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.7)),
                       ),
                       StreamBuilder<String>(
                         stream: CustomAudioHandler.instance.qualityDataStream,
@@ -51,20 +54,22 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
                           return Text(
                             qualityValue,
                             style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.7)),
+                                color: fontColor?.withOpacity(0.7) ??
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.7)),
                           );
                         },
                       ),
                       Text(
                         TimeUtils.formatDuration(duration),
                         style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.7)),
+                            color: fontColor?.withOpacity(0.7) ??
+                                Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.7)),
                       ),
                     ],
                   ),
@@ -78,19 +83,21 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
                 Text(
                   TimeUtils.formatDuration(position),
                   style: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.7)),
+                      color: fontColor?.withOpacity(0.7) ??
+                          Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.7)),
                 ),
                 _progressBar(context, ref, position, duration, false),
                 Text(
                   TimeUtils.formatDuration(duration),
                   style: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.7)),
+                      color: fontColor?.withOpacity(0.7) ??
+                          Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.7)),
                 ),
               ],
             );
@@ -133,7 +140,8 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
                 if (snapshot.data == null) return const SizedBox();
                 return FftVisualizerWidget(
                   snapshot.data!,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                  color: fontColor?.withOpacity(0.8) ??
+                      Theme.of(context).colorScheme.primary.withOpacity(0.8),
                 );
               },
             ),
@@ -156,18 +164,19 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
           width: isColumn ? null : MediaQuery.of(context).size.width / 3 - 100,
           decoration: BoxDecoration(
             border: Border.all(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                color: fontColor?.withOpacity(0.3) ??
+                    Theme.of(context).colorScheme.primary.withOpacity(0.3),
                 width: 1),
             borderRadius: BorderRadius.circular(4),
           ),
           child: SliderTheme(
             data: SliderTheme.of(context).copyWith(
               trackHeight: 4,
-              thumbColor:
+              thumbColor: fontColor?.withOpacity(0.9) ??
                   Theme.of(context).colorScheme.primary.withOpacity(0.9),
-              activeTrackColor:
+              activeTrackColor: fontColor?.withOpacity(0.9) ??
                   Theme.of(context).colorScheme.primary.withOpacity(0.9),
-              inactiveTrackColor:
+              inactiveTrackColor: fontColor?.withOpacity(0.3) ??
                   Theme.of(context).colorScheme.primary.withOpacity(0.3),
             ),
             child: _CustomSlider(
@@ -182,6 +191,7 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
                     );
               },
               isColumn: isColumn,
+              fontColor: fontColor,
             ),
           ),
         )
@@ -195,12 +205,14 @@ class _CustomSlider extends ConsumerWidget {
   final double max;
   final ValueChanged<double> onChanged;
   final bool isColumn;
+  final Color? fontColor;
 
   const _CustomSlider({
     required this.value,
     required this.max,
     required this.onChanged,
     required this.isColumn,
+    this.fontColor,
   });
 
   @override
@@ -212,10 +224,10 @@ class _CustomSlider extends ConsumerWidget {
             // 设置进度条的高度
             thumbShape: SliderComponentShape.noThumb,
             // 去掉滑块（点）
-            activeTrackColor:
+            activeTrackColor: fontColor?.withOpacity(0.8) ??
                 Theme.of(context).colorScheme.primary.withOpacity(0.8),
             // 已播放部分的颜色，半透明白色
-            inactiveTrackColor:
+            inactiveTrackColor: fontColor?.withOpacity(0.3) ??
                 Theme.of(context).colorScheme.primary.withOpacity(0.3),
             // 未播放部分的颜色，半透明白色
             overlayShape: SliderComponentShape.noOverlay,
@@ -231,10 +243,10 @@ class _CustomSlider extends ConsumerWidget {
             // 设置进度条的高度
             thumbShape: SliderComponentShape.noOverlay,
             // 去掉滑块（点）
-            activeTrackColor:
+            activeTrackColor: fontColor?.withOpacity(0.9) ??
                 Theme.of(context).colorScheme.primary.withOpacity(0.9),
             // 已播放部分的颜色，半透明白色
-            inactiveTrackColor:
+            inactiveTrackColor: fontColor?.withOpacity(0.3) ??
                 Theme.of(context).colorScheme.primary.withOpacity(0.3),
             // 未播放部分的颜色，半透明白色
             overlayShape: SliderComponentShape.noThumb,

@@ -16,6 +16,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:routerino/routerino.dart';
 
+import '../model/enum/contrast_color_enum.dart';
+
 final settingsProvider =
     StateNotifierProvider<SettingsController, SettingsState>((ref) {
   return SettingsController();
@@ -39,6 +41,8 @@ class SettingsController extends StateNotifier<SettingsState> {
       autoStart: await HiveHelper.getAutoStart(),
       autoStartLaunchHidden: HiveHelper.getAutoStartLaunchHidden(),
       autoSyncToLocal: HiveHelper.getAutoSyncToLocal(),
+      playBarFontColorMode: HiveHelper.getPlayBarFontColorMode(),
+      playPageFontColorMode: HiveHelper.getPlayPageFontColorMode(),
       destination: HiveHelper.getDestination() ?? destinationPath,
       isDownloadLyrics: HiveHelper.isDownloadLyrics(),
       isDownloadCover: HiveHelper.isDownloadCover(),
@@ -140,6 +144,22 @@ class SettingsController extends StateNotifier<SettingsState> {
       autoStartLaunchHidden: autoStartLaunchHidden,
     );
     await HiveHelper.setAutoStartLaunchHidden(autoStartLaunchHidden);
+  }
+
+  Future<void> setPlayBarFontColorMode(
+      ContrastColorEnum playBarFontColorMode) async {
+    state = state.copyWith(
+      playBarFontColorMode: playBarFontColorMode,
+    );
+    await HiveHelper.setPlayBarFontColorMode(playBarFontColorMode);
+  }
+
+  Future<void> setPlayPageFontColorMode(
+      ContrastColorEnum playPageFontColorMode) async {
+    state = state.copyWith(
+      playPageFontColorMode: playPageFontColorMode,
+    );
+    await HiveHelper.setPlayPageFontColorMode(playPageFontColorMode);
   }
 
   Future<void> setDestination(String destination) async {

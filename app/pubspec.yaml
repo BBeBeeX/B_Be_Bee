@@ -3,7 +3,7 @@ description: An open source cross-platform music client ,compatible across multi
 homepage: https://b_be_bee.com/
 publish_to: "none"
 
-version: 0.0.3
+version: 0.0.4
 
 environment:
   flutter: ">=3.24.0"

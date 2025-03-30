@@ -24,6 +24,8 @@ import 'package:hive_ce_flutter/adapters.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../model/enum/contrast_color_enum.dart';
+
 const _commonBoxName = 'bbb_box';
 const _collectsBoxName = 'bbb_collects_box';
 const _audioBoxName = 'bbb_audio_box';
@@ -48,6 +50,8 @@ const _advancedSettingsKey = 'bbb_advanced_settings';
 const _autoStart = 'bbb_autoStart';
 const _autoStartLaunchHidden = 'bbb_autoStartLaunchHidden';
 const _autoSyncToLocal = 'bbb_autoSyncToLocal';
+const _playBarFontColorMode = 'bbb_playBarFontColorMode';
+const _playPageFontColorMode = 'bbb_playPageFontColorMode';
 const _isAutoUpdate = 'bbb_isAutoUpdate';
 const _isUpdateRemind = 'bbb_isUpdateRemind';
 const _isEnableLoudnessEnhancer = 'bbb_is_enable_loudness_enhancer';
@@ -105,6 +109,7 @@ class HiveHelper {
       ..registerAdapter(AudioInfoImplAdapter()) //9
       ..registerAdapter(AudioQualityAdapter()) //10
       ..registerAdapter(CollectTypeEnumAdapter()) //11
+      ..registerAdapter(ContrastColorEnumAdapter()) //12
       ..registerAdapter(PlayStatisticsAdapter()); //17
 
     _box = await Hive.openBox(_commonBoxName);
@@ -445,6 +450,40 @@ class HiveHelper {
 
   static Future<void> setAutoSyncToLocal(bool autoSyncToLocal) async {
     await _box.put(_autoSyncToLocal, autoSyncToLocal);
+  }
+
+  static ContrastColorEnum? getPlayBarFontColorMode() {
+    final value = _box.get(_playBarFontColorMode);
+    if (value == null) {
+      return null;
+    }
+    return ContrastColorEnum.values.firstWhere((theme) => theme.name == value);
+  }
+
+  static Future<void> setPlayBarFontColorMode(
+      ContrastColorEnum? playBarFontColorMode) async {
+    if (playBarFontColorMode == null) {
+      await _box.delete(_playBarFontColorMode);
+    } else {
+      await _box.put(_playBarFontColorMode, playBarFontColorMode.name);
+    }
+  }
+
+  static ContrastColorEnum? getPlayPageFontColorMode() {
+    final value = _box.get(_playPageFontColorMode);
+    if (value == null) {
+      return null;
+    }
+    return ContrastColorEnum.values.firstWhere((theme) => theme.name == value);
+  }
+
+  static Future<void> setPlayPageFontColorMode(
+      ContrastColorEnum? playPageFontColorMode) async {
+    if (playPageFontColorMode == null) {
+      await _box.delete(_playPageFontColorMode);
+    } else {
+      await _box.put(_playPageFontColorMode, playPageFontColorMode.name);
+    }
   }
 
   static bool getIsMuted() {
