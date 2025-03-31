@@ -20,12 +20,15 @@ import 'package:b_be_bee_app/widget/bottom_sheet/batch_operation_bottom_sheet.da
 import 'package:b_be_bee_app/widget/bottom_sheet/select_list_audioInfo_to_addition_bottom_sheet.dart';
 import 'package:b_be_bee_app/widget/desktop_main_area_widget.dart';
 import 'package:b_be_bee_app/widget/dialogs/collects_delete_confirm_dialog.dart';
-import 'package:b_be_bee_app/widget/img/network_image.dart';
-import 'package:b_be_bee_app/widget/list_tile/audio_tile.dart';
-import 'package:b_be_bee_app/widget/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
+
+import '../model/dao/audio_info.dart';
+import '../widget/bottom_sheet/select_music_options_bottom_sheet.dart';
+import '../widget/img/network_image.dart';
+import '../widget/loading_widget.dart';
+import '../widget/marquee_custom.dart';
 
 class CollectsPlaylistPage extends ConsumerWidget {
   final CollectPlaylist collectPlaylist;
@@ -38,31 +41,32 @@ class CollectsPlaylistPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(collectsPlaylistPageProvider(collectPlaylist.id));
-    if(!vm.isLoaded){
-      ref.read(collectsPlaylistPageProvider(collectPlaylist.id).notifier).loadData(collectPlaylist);
+    if (!vm.isLoaded) {
+      ref
+          .read(collectsPlaylistPageProvider(collectPlaylist.id).notifier)
+          .loadData(collectPlaylist);
     }
 
     return Scaffold(
       body: SafeArea(
-        child: vm.isLoading
-            ? LoadingWidget()
-            : _buildBody(context, vm, ref),
+        child: vm.isLoading ? LoadingWidget() : _buildBody(context, vm, ref),
       ),
     );
   }
 
-  Widget _buildBody(BuildContext context, CollectsPageVm vm, WidgetRef ref)  {
+  Widget _buildBody(BuildContext context, CollectsPageVm vm, WidgetRef ref) {
     if (vm.error != null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(t.general.loadFail(error: vm.error??'')),
+            Text(t.general.loadFail(error: vm.error ?? '')),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () async =>
-                  ref.read(collectsPlaylistPageProvider(collectPlaylist.id).notifier)
-                      .loadData(collectPlaylist),
+              onPressed: () async => ref
+                  .read(
+                      collectsPlaylistPageProvider(collectPlaylist.id).notifier)
+                  .loadData(collectPlaylist),
               child: Text(t.general.retry),
             ),
           ],
@@ -82,7 +86,8 @@ class CollectsPlaylistPage extends ConsumerWidget {
         .contains(vm.collectPlaylist?.id);
 
     return DesktopMainAreaWidget(
-      child: Stack(children: [
+        child: Stack(
+      children: [
         Container(
           height: MediaQuery.of(context).size.height * 0.6,
           decoration: BoxDecoration(
@@ -109,73 +114,75 @@ class CollectsPlaylistPage extends ConsumerWidget {
               pinned: true,
               elevation: 0,
               backgroundColor: Colors.transparent,
-    automaticallyImplyLeading: checkPlatformIsDesktop()?false: true,
+              automaticallyImplyLeading:
+                  checkPlatformIsDesktop() ? false : true,
               // leading: IconButton(
               //   icon: const Icon(Icons.arrow_back),
               //   onPressed: () => Navigator.of(context).pop(),
               // ),
               title: Text(collectPlaylist.title),
               actions: [
-                if(collectPlaylist.collectCurrentType != CollectTypeEnum.local)
+                if (collectPlaylist.collectCurrentType != CollectTypeEnum.local)
                   IconButton(
                     icon: const Icon(Icons.sync),
                     onPressed: () async {
-                      await ref.read(collectsPlaylistPageProvider(collectPlaylist.id).notifier).loadData(collectPlaylist);
+                      await ref
+                          .read(collectsPlaylistPageProvider(collectPlaylist.id)
+                              .notifier)
+                          .loadData(collectPlaylist);
                     },
                   ),
                 IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () async {
-                    await context.push(() =>
-                        CollectsPlaylistSearchPage(
+                    await context.push(() => CollectsPlaylistSearchPage(
                           medias: vm.collectPlaylist?.songs ?? [],
                         ));
                   },
                 ),
               ],
             ),
-            if(true)
+            if (true)
               SliverToBoxAdapter(
-                child: _buildHeader(context,vm,ref, data,isFav),
+                child: _buildHeader(context, vm, ref, data, isFav),
               ),
             SliverToBoxAdapter(
-              child: _buildActionButtons(context, vm, ref,isFav),
+              child: _buildActionButtons(context, vm, ref, isFav),
             ),
             SliverToBoxAdapter(
               child: _buildPlayAllSection(context, ref, vm),
             ),
-            AudioTile(
-                medias: vm.sortedMedias??[],
-              collectPlaylist:collectPlaylist,
-              isDraggable: vm.currentSortMethod == SortMethodEnum.default_ &&
-                  collectPlaylist.collectCurrentType == CollectTypeEnum.local,
-                onReorder: (oldIndex, newIndex) async {
-                  await ref.read(collectsPlaylistPageProvider(collectPlaylist.id).notifier)
-                      .reorderSongs(oldIndex, newIndex);
-                },
-                removeAudio: collectPlaylist.collectCurrentType ==CollectTypeEnum.local? ref.read(collectsProvider.notifier).removeFromPlaylist:null
-              ,
-            ),
+            SliverReorderableList(
+              itemCount: vm.sortedMedias?.length ?? 0,
+              onReorder: (oldIndex, newIndex) async {
+                await ref
+                    .read(collectsPlaylistPageProvider(collectPlaylist.id)
+                        .notifier)
+                    .reorderSongs(oldIndex, newIndex);
+              },
+              itemBuilder: (context, index) => _buildMediaItem(
+                context,
+                ref,
+                vm,
+                vm.sortedMedias![index],
+                index,
+              ),
+            )
           ],
         )
-      ],)
-    )
-
-
-      ;
+      ],
+    ));
   }
 
-  Widget _buildHeader(BuildContext context, CollectsPageVm vm,
-      WidgetRef ref, CollectPlaylist? info,bool isFav) {
-
-    final listenTime = TimeUtils.durationToTimeString(
-        ref.read(playStatisticsProvider.notifier)
-            .getTotalDurationByIdList(info?.songIds??[])
-    );
+  Widget _buildHeader(BuildContext context, CollectsPageVm vm, WidgetRef ref,
+      CollectPlaylist? info, bool isFav) {
+    final listenTime = TimeUtils.durationToTimeString(ref
+        .read(playStatisticsProvider.notifier)
+        .getTotalDurationByIdList(info?.songIds ?? []));
 
     final defaultCover = info?.songs
         ?.map((song) => song.coverWebUrl)
-        .firstWhere((cover) => cover.isNotEmpty,orElse:()=> '') ;
+        .firstWhere((cover) => cover.isNotEmpty, orElse: () => '');
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -188,8 +195,8 @@ class CollectsPlaylistPage extends ConsumerWidget {
               width: 120,
               height: 120,
               imageUrl: info?.cover ?? defaultCover,
-              errorIcon: const Icon(
-                  Icons.collections_bookmark_sharp, color: Colors.grey),
+              errorIcon: const Icon(Icons.collections_bookmark_sharp,
+                  color: Colors.grey),
               defaultUrl: '',
             ),
           ),
@@ -210,40 +217,61 @@ class CollectsPlaylistPage extends ConsumerWidget {
                 if (info?.upper != null)
                   InkWell(
                     onTap: () async {
-                      await context.push(() =>
-                          BiliUpperPage(uid: info?.upper?.id ?? '0'));
+                      await context.push(
+                          () => BiliUpperPage(uid: info?.upper?.id ?? '0'));
                     },
                     child: Row(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: NetworkImageByCache(
-                            width: 30, height: 30, imageUrl: info?.upper?.face
-                            , defaultUrl: Constants.bili_up_default_cover,),
+                            width: 30,
+                            height: 30,
+                            imageUrl: info?.upper?.face,
+                            defaultUrl: Constants.bili_up_default_cover,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           info?.upper?.name ?? t.general.unknownUser,
-                          style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.7)),
                         ),
-                        Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.7)),
                       ],
                     ),
                   ),
                 const SizedBox(height: 8),
                 // if(param.type == CollectTypeEnum.local)
-                  Row(
-                    children: [
-                      Icon(Icons.headphones, color: Theme.of(context).colorScheme.primary.withOpacity(0.7),),
-                      const SizedBox(width: 8),
-                      Text(
-                        info?.songs?.isNotEmpty == true
-                            ? listenTime
-                            : t.utils.toMinute(minute: 0)
-                        , style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
-                      ),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.headphones,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.7),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      info?.songs?.isNotEmpty == true
+                          ? listenTime
+                          : t.utils.toMinute(minute: 0),
+                      style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.7)),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -252,84 +280,84 @@ class CollectsPlaylistPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionButtons(BuildContext context, CollectsPageVm vm,
-      WidgetRef ref,bool isFav) {
-
-
+  Widget _buildActionButtons(
+      BuildContext context, CollectsPageVm vm, WidgetRef ref, bool isFav) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-
-          if( collectPlaylist.collectCurrentType != CollectTypeEnum.local)
-            _buildActionButton(context,Icons.playlist_add, t.general.addTo, () async {
+          if (collectPlaylist.collectCurrentType != CollectTypeEnum.local)
+            _buildActionButton(context, Icons.playlist_add, t.general.addTo,
+                () async {
               await SelectListAudioInfoToAdditionBottomSheet.open(
-                  context, ref, vm.collectPlaylist?.songs??[],vm.collectPlaylist?.id??'');
+                  context,
+                  ref,
+                  vm.collectPlaylist?.songs ?? [],
+                  vm.collectPlaylist?.id ?? '');
             }),
-
-
           isFav
-              ? _buildActionButton(context,Icons.favorite, t.general.cancelCollection, () async {
-            await CollectsDeleteConfirmDialog.open(
-                context, ref, vm.collectPlaylist?.title ??'', vm.collectPlaylist?.id??'');
-            if(collectPlaylist.collectCurrentType == CollectTypeEnum.local){
-              context.pop();
-            }
-          }, iconColor: Colors.red
-          )
-              : _buildActionButton(context,Icons.favorite_border, t.general.favorite, () async {
-            if (vm.collectPlaylist?.songs?.isNotEmpty ?? false) {
-              final collectPlaylistId = await ref.read(
-                  collectsProvider.notifier)
-                  .createPlaylist(
-                  title: collectPlaylist.title ?? t.general.unnamedPlaylist,
-                  playlistId: collectPlaylist.id,
-                cover: collectPlaylist.cover,
-                collectCurrentType: CollectTypeEnum.local,
-                collectSourceType: collectPlaylist.collectSourceType,
-                onlineId:collectPlaylist.onlineId
-              );
+              ? _buildActionButton(
+                  context, Icons.favorite, t.general.cancelCollection,
+                  () async {
+                  await CollectsDeleteConfirmDialog.open(
+                      context,
+                      ref,
+                      vm.collectPlaylist?.title ?? '',
+                      vm.collectPlaylist?.id ?? '');
+                  if (collectPlaylist.collectCurrentType ==
+                      CollectTypeEnum.local) {
+                    context.pop();
+                  }
+                }, iconColor: Colors.red)
+              : _buildActionButton(
+                  context, Icons.favorite_border, t.general.favorite, () async {
+                  if (vm.collectPlaylist?.songs?.isNotEmpty ?? false) {
+                    final collectPlaylistId = await ref
+                        .read(collectsProvider.notifier)
+                        .createPlaylist(
+                            title: collectPlaylist.title ??
+                                t.general.unnamedPlaylist,
+                            playlistId: collectPlaylist.id,
+                            cover: collectPlaylist.cover,
+                            collectCurrentType: CollectTypeEnum.local,
+                            collectSourceType:
+                                collectPlaylist.collectSourceType,
+                            onlineId: collectPlaylist.onlineId);
 
-              await ref.read(collectsProvider.notifier)
-                  .addListToPlaylist(
-                  collectPlaylistId,
-                  vm.collectPlaylist?.songs??[]
-              );
+                    await ref.read(collectsProvider.notifier).addListToPlaylist(
+                        collectPlaylistId, vm.collectPlaylist?.songs ?? []);
 
-              await ToastUtil.show(t.collectsPage.addToCollectsSuccess);
-            }
-          }
-          ),
-
-          _buildActionButton(context,Icons.download, t.general.download, () async {
-            final collectPlaylistId = await ref.read(
-                collectsProvider.notifier)
+                    await ToastUtil.show(t.collectsPage.addToCollectsSuccess);
+                  }
+                }),
+          _buildActionButton(context, Icons.download, t.general.download,
+              () async {
+            final collectPlaylistId = await ref
+                .read(collectsProvider.notifier)
                 .createPlaylist(
-                title: collectPlaylist.title ?? t.general.unnamedPlaylist,
-                playlistId: collectPlaylist.id,
-                cover: collectPlaylist.cover,
-                collectCurrentType: CollectTypeEnum.local,
-                collectSourceType: collectPlaylist.collectSourceType,
-                onlineId:collectPlaylist.onlineId
-            );
+                    title: collectPlaylist.title ?? t.general.unnamedPlaylist,
+                    playlistId: collectPlaylist.id,
+                    cover: collectPlaylist.cover,
+                    collectCurrentType: CollectTypeEnum.local,
+                    collectSourceType: collectPlaylist.collectSourceType,
+                    onlineId: collectPlaylist.onlineId);
 
-            await ref.read(collectsProvider.notifier)
-                .addListToPlaylist(
-                collectPlaylistId,
-                vm.collectPlaylist?.songs??[]
-            );
+            await ref.read(collectsProvider.notifier).addListToPlaylist(
+                collectPlaylistId, vm.collectPlaylist?.songs ?? []);
 
-            await ref.read(downloadControllerProvider.notifier).addDownloads(
-                vm.collectPlaylist?.songs??[]);
+            await ref
+                .read(downloadControllerProvider.notifier)
+                .addDownloads(vm.collectPlaylist?.songs ?? []);
           }),
         ],
       ),
     );
   }
 
-  Widget _buildActionButton(BuildContext context,IconData icon, String label,
-      VoidCallback onPressed,{Color? iconColor,double? iconSize = 24}) {
+  Widget _buildActionButton(
+      BuildContext context, IconData icon, String label, VoidCallback onPressed,
+      {Color? iconColor, double? iconSize = 24}) {
     return InkWell(
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20),
@@ -342,7 +370,11 @@ class CollectsPlaylistPage extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, size: iconSize,color: iconColor,),
+            Icon(
+              icon,
+              size: iconSize,
+              color: iconColor,
+            ),
             const SizedBox(width: 4),
             Text(label),
           ],
@@ -351,53 +383,65 @@ class CollectsPlaylistPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildPlayAllSection(BuildContext context, WidgetRef ref, CollectsPageVm vm) {
-
+  Widget _buildPlayAllSection(
+      BuildContext context, WidgetRef ref, CollectsPageVm vm) {
     final playlistId = ref.watch(playlistControllerProvider).playlistId;
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-    playlistId == vm.collectPlaylist?.id
-              ?
-
-    StreamBuilder<bool>(
-      stream: CustomAudioHandler.instance
-          .playbackState
-          .map((state) => state.playing)
-          .distinct(),
-      builder: (context, snapshot) {
-        final playing = snapshot.data ?? false;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment
-              .center,
-          children: [
-            IconButton(
-              icon:  Icon(playing ?Icons.pause_circle_filled:Icons.play_circle_filled, size: 36,color: green,),
-              onPressed: () async {
-                  playing
-                    ? ref.read(playlistControllerProvider.notifier).pause()
-                    : ref.read(playlistControllerProvider.notifier).play();
-              },
-            )
-          ],
-        );
-      },
-    )
-              :
-          IconButton(
-            icon:  Icon(Icons.play_circle_filled, size: 36,color: green,),
-            onPressed: () async {
-              if (vm.collectPlaylist != null &&(vm.collectPlaylist?.songs?.isNotEmpty ?? false)) {
-                await ref.read(playlistControllerProvider.notifier).setPlaylist(
-                    vm.collectPlaylist?.songs??[],vm.collectPlaylist?.id??''
-                );
-              }
-            },
-          ),
+          playlistId == vm.collectPlaylist?.id
+              ? StreamBuilder<bool>(
+                  stream: CustomAudioHandler.instance.playbackState
+                      .map((state) => state.playing)
+                      .distinct(),
+                  builder: (context, snapshot) {
+                    final playing = snapshot.data ?? false;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            playing
+                                ? Icons.pause_circle_filled
+                                : Icons.play_circle_filled,
+                            size: 36,
+                            color: green,
+                          ),
+                          onPressed: () async {
+                            playing
+                                ? ref
+                                    .read(playlistControllerProvider.notifier)
+                                    .pause()
+                                : ref
+                                    .read(playlistControllerProvider.notifier)
+                                    .play();
+                          },
+                        )
+                      ],
+                    );
+                  },
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.play_circle_filled,
+                    size: 36,
+                    color: green,
+                  ),
+                  onPressed: () async {
+                    if (vm.collectPlaylist != null &&
+                        (vm.collectPlaylist?.songs?.isNotEmpty ?? false)) {
+                      await ref
+                          .read(playlistControllerProvider.notifier)
+                          .setPlaylist(vm.collectPlaylist?.songs ?? [],
+                              vm.collectPlaylist?.id ?? '');
+                    }
+                  },
+                ),
           const SizedBox(width: 8),
-          Text(t.collectsPage.playAllMedias(length:vm.collectPlaylist?.songs?.length ?? 0)),
+          Text(t.collectsPage
+              .playAllMedias(length: vm.collectPlaylist?.songs?.length ?? 0)),
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.checklist),
@@ -405,13 +449,15 @@ class CollectsPlaylistPage extends ConsumerWidget {
             onPressed: () async {
               if (vm.collectPlaylist?.songs != null) {
                 await BatchOperationBottomSheet.open(
-                    vm.collectPlaylist?.songs??[],
-                    vm.collectPlaylist?.id??'',
-                    collectPlaylist.collectCurrentType == CollectTypeEnum.local ? ref
-                        .read(collectsProvider.notifier)
-                        .removeSongs : null
-                );
-                await ref.read(collectsPlaylistPageProvider(collectPlaylist.id).notifier).loadData(collectPlaylist);
+                    vm.collectPlaylist?.songs ?? [],
+                    vm.collectPlaylist?.id ?? '',
+                    collectPlaylist.collectCurrentType == CollectTypeEnum.local
+                        ? ref.read(collectsProvider.notifier).removeSongs
+                        : null);
+                await ref
+                    .read(collectsPlaylistPageProvider(collectPlaylist.id)
+                        .notifier)
+                    .loadData(collectPlaylist);
               }
             },
           ),
@@ -419,17 +465,29 @@ class CollectsPlaylistPage extends ConsumerWidget {
           PopupMenuButton<SortMethodEnum>(
             icon: const Icon(Icons.sort),
             onSelected: (SortMethodEnum method) {
-              ref.read(collectsPlaylistPageProvider(collectPlaylist.id).notifier).setSortMethod(method);
+              ref
+                  .read(
+                      collectsPlaylistPageProvider(collectPlaylist.id).notifier)
+                  .setSortMethod(method);
             },
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
                 value: SortMethodEnum.default_,
                 child: Row(
                   children: [
-                    Icon(Icons.restore, color: vm.currentSortMethod == SortMethodEnum.default_ ? Colors.green : null),
+                    Icon(Icons.restore,
+                        color: vm.currentSortMethod == SortMethodEnum.default_
+                            ? Colors.green
+                            : null),
                     SizedBox(width: 8),
-                    Text(t.collectsPage.defaultSort,style: TextStyle( color: vm.currentSortMethod == SortMethodEnum.default_ ? Colors.green : null)),
-                    if (vm.currentSortMethod == SortMethodEnum.default_) const Icon(Icons.check, color: Colors.green),
+                    Text(t.collectsPage.defaultSort,
+                        style: TextStyle(
+                            color:
+                                vm.currentSortMethod == SortMethodEnum.default_
+                                    ? Colors.green
+                                    : null)),
+                    if (vm.currentSortMethod == SortMethodEnum.default_)
+                      const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
               ),
@@ -437,10 +495,19 @@ class CollectsPlaylistPage extends ConsumerWidget {
                 value: SortMethodEnum.titleAZ,
                 child: Row(
                   children: [
-                    Icon(Icons.sort_by_alpha, color: vm.currentSortMethod == SortMethodEnum.titleAZ ? Colors.green : null),
+                    Icon(Icons.sort_by_alpha,
+                        color: vm.currentSortMethod == SortMethodEnum.titleAZ
+                            ? Colors.green
+                            : null),
                     SizedBox(width: 8),
-                    Text(t.collectsPage.songTitleSort,style: TextStyle( color: vm.currentSortMethod == SortMethodEnum.titleAZ ? Colors.green : null)),
-                    if (vm.currentSortMethod == SortMethodEnum.titleAZ) const Icon(Icons.check, color: Colors.green),
+                    Text(t.collectsPage.songTitleSort,
+                        style: TextStyle(
+                            color:
+                                vm.currentSortMethod == SortMethodEnum.titleAZ
+                                    ? Colors.green
+                                    : null)),
+                    if (vm.currentSortMethod == SortMethodEnum.titleAZ)
+                      const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
               ),
@@ -448,10 +515,19 @@ class CollectsPlaylistPage extends ConsumerWidget {
                 value: SortMethodEnum.artistAZ,
                 child: Row(
                   children: [
-                    Icon(Icons.person, color: vm.currentSortMethod == SortMethodEnum.artistAZ ? Colors.green : null),
+                    Icon(Icons.person,
+                        color: vm.currentSortMethod == SortMethodEnum.artistAZ
+                            ? Colors.green
+                            : null),
                     SizedBox(width: 8),
-                    Text(t.collectsPage.singerNameSort,style: TextStyle( color: vm.currentSortMethod == SortMethodEnum.artistAZ ? Colors.green : null)),
-                    if (vm.currentSortMethod == SortMethodEnum.artistAZ) const Icon(Icons.check, color: Colors.green),
+                    Text(t.collectsPage.singerNameSort,
+                        style: TextStyle(
+                            color:
+                                vm.currentSortMethod == SortMethodEnum.artistAZ
+                                    ? Colors.green
+                                    : null)),
+                    if (vm.currentSortMethod == SortMethodEnum.artistAZ)
+                      const Icon(Icons.check, color: Colors.green),
                   ],
                 ),
               ),
@@ -461,5 +537,76 @@ class CollectsPlaylistPage extends ConsumerWidget {
       ),
     );
   }
-}
 
+  Widget _buildMediaItem(BuildContext context, WidgetRef ref, CollectsPageVm vm,
+      AudioInfo media, int index) {
+    return ReorderableDelayedDragStartListener(
+      key: ValueKey(media.id),
+      index: index,
+      enabled: vm.currentSortMethod == SortMethodEnum.default_ &&
+          collectPlaylist.collectCurrentType == CollectTypeEnum.local,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () async {
+            await ref.read(playlistControllerProvider.notifier).setPlaylist(
+                  vm.sortedMedias ?? [],
+                  collectPlaylist.id,
+                  index: vm.sortedMedias!.indexOf(media),
+                );
+          },
+          splashColor: Colors.grey.withOpacity(0.3),
+          highlightColor: Colors.grey.withOpacity(0.2),
+          child: ListTile(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: NetworkImageByCache(
+                    width: 80,
+                    height: 60,
+                    imageUrl: media.coverWebUrl,
+                    defaultUrl: media.coverLocalUrl,
+                    errorIcon: const Icon(Icons.music_note, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+            title: MarqueeCustom(
+              text: media.title ?? t.general.unnamedVideo,
+              style: TextStyle(
+                  fontSize: 16,
+                  color:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.9)),
+            ),
+            subtitle: MarqueeCustom(
+              text: media.upper.name ?? t.general.unknownUser,
+              style: TextStyle(
+                  fontSize: 14,
+                  color:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.7)),
+            ),
+            trailing: GestureDetector(
+              onTap: () async {
+                await SelectMusicOptionsBottomSheet.open(
+                  context,
+                  ref,
+                  media,
+                  collectPlaylist,
+                  collectPlaylist.collectCurrentType == CollectTypeEnum.local
+                      ? ref.read(collectsProvider.notifier).removeFromPlaylist
+                      : null,
+                  fromPlay: false,
+                );
+              },
+              child: const Icon(Icons.more_vert),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

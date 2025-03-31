@@ -4,6 +4,8 @@ import 'package:b_be_bee_app/widget/img/network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../marquee_custom.dart';
+
 class CurrentPlaylistItemWidget extends ConsumerWidget {
   final String? coverUrl;
   final String title;
@@ -51,27 +53,24 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  playlist.currentSong?.title ?? '',
+                MarqueeCustom(
+                  text: playlist.currentSong?.title ?? '',
                   style: TextStyle(
                     color: fontColor ?? Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: isBottom ? 16.0 : 24.0,
                   ),
                   textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
-                Text(
-                  playlist.currentSong?.upper.name ?? '',
+                MarqueeCustom(
+                  text: playlist.currentSong?.upper.name ?? '',
                   style: TextStyle(
                     color: fontColor?.withOpacity(0.7) ??
                         Theme.of(context).colorScheme.primary.withOpacity(0.7),
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  numberOfReps: 10,
                 ),
               ],
             ),

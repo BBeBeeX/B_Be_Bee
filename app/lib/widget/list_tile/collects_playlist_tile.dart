@@ -30,18 +30,19 @@ class CollectsPlaylistTile extends ConsumerWidget {
             index: index!,
             child: Material(
               type: MaterialType.transparency,
-              child: _buildListTile(context, ref,isOpenSideBar),
+              child: _buildListTile(context, ref, isOpenSideBar),
             ),
           )
         : Material(
             type: MaterialType.transparency,
-            child: _buildListTile(context, ref,isOpenSideBar),
+            child: _buildListTile(context, ref, isOpenSideBar),
           );
   }
 
-  Widget _buildListTile(BuildContext context, WidgetRef ref,bool isOpenSideBar) {
+  Widget _buildListTile(
+      BuildContext context, WidgetRef ref, bool isOpenSideBar) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric( horizontal: 8),
+      contentPadding: EdgeInsets.symmetric(horizontal: 8),
       minTileHeight: 60,
       leading: Row(
         mainAxisSize: MainAxisSize.min,
@@ -56,7 +57,8 @@ class CollectsPlaylistTile extends ConsumerWidget {
                   imageUrl: playlist.cover,
                   defaultUrl: '',
                   errorIcon: Container(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.1),
                     child: const Icon(Icons.music_note),
                   ),
                 ),
@@ -82,20 +84,36 @@ class CollectsPlaylistTile extends ConsumerWidget {
           ),
         ],
       ),
-      title: isOpenSideBar&&isSideBar||!isSideBar ?  Text(playlist.title) : null ,
-      subtitle: isOpenSideBar&&isSideBar||!isSideBar ? Text(t.widget.audiosNum(count: playlist.songIds.length)): null ,
-      trailing: isOpenSideBar&&isSideBar||!isSideBar ? !playlist.isDefault
-          ? GestureDetector(
-              onTap: () async {
-                await SelectCollectsOptionsBottomSheet.open(
-                    context, ref, playlist.id);
-              },
-              child: Icon(Icons.more_vert,color: Theme.of(context).colorScheme.primary.withOpacity(0.8),),
+      title: isOpenSideBar && isSideBar || !isSideBar
+          ? Text(
+              playlist.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             )
-          : null: null ,
+          : null,
+      subtitle: isOpenSideBar && isSideBar || !isSideBar
+          ? Text(
+              t.widget.audiosNum(count: playlist.songIds.length),
+            )
+          : null,
+      trailing: isOpenSideBar && isSideBar || !isSideBar
+          ? !playlist.isDefault
+              ? GestureDetector(
+                  onTap: () async {
+                    await SelectCollectsOptionsBottomSheet.open(
+                        context, ref, playlist.id);
+                  },
+                  child: Icon(
+                    Icons.more_vert,
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                  ),
+                )
+              : null
+          : null,
       onTap: () async {
         await context.pushToPlaylist(
-           playlist,
+          playlist,
         );
       },
     );

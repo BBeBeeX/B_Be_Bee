@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
+import '../pages/bili/bili_my_page.dart';
+
 final globalNavigationKey = Routerino.navigatorKey;
 final localNavigationKey = GlobalKey<NavigatorState>();
 
@@ -70,6 +72,10 @@ class RouterObserver extends RouterinoObserver {
         return;
       } else if (routeName == 'AudioDevicesPage') {
         pushToLocalNavigator(const AudioDevicesPage());
+        Future.microtask(() => route.navigator?.removeRoute(route));
+        return;
+      } else if (routeName == 'MyBiliPage') {
+        pushToLocalNavigator(const MyBiliPage());
         Future.microtask(() => route.navigator?.removeRoute(route));
         return;
       } else {

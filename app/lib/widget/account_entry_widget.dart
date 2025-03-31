@@ -9,7 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
-class AccountEntryWidget extends ConsumerWidget{
+import '../pages/bili/bili_my_page.dart';
+import '../util/native/platform_check.dart';
+
+class AccountEntryWidget extends ConsumerWidget {
   final bool isDesktopTopBar;
 
   const AccountEntryWidget({
@@ -21,16 +24,23 @@ class AccountEntryWidget extends ConsumerWidget{
     final biliUserState = ref.watch(biliUserProvider);
     final biliUserController = ref.read(biliUserProvider.notifier);
 
-    if(isDesktopTopBar){
+    if (isDesktopTopBar) {
       return PopupMenuButton<String>(
         padding: const EdgeInsets.all(0),
         icon: const Icon(Icons.person_outline),
         onSelected: (value) async {
           if (value == 'bili') {
             if (biliUserState.isLogin) {
-              await ref.read(mainPageProvider.notifier).changeTab(
-                  MainTabEnum.settings);
-            }else{
+              if (checkPlatformIsDesktop()) {
+                if (biliUserState.isLogin) {
+                  context.push(() => MyBiliPage());
+                }
+              } else {
+                await ref
+                    .read(mainPageProvider.notifier)
+                    .changeTab(MainTabEnum.settings);
+              }
+            } else {
               await BiliLoginDialog.show(context);
             }
           }
@@ -39,52 +49,56 @@ class AccountEntryWidget extends ConsumerWidget{
           return [
             PopupMenuItem<String>(
               enabled: false,
-              child: Text(t.settingsPage.account.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              child: Text(t.settingsPage.account.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
             PopupMenuItem<String>(
-              value: 'bili',
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: biliUserState.avatarUrl.isNotEmpty ? CachedNetworkImageProvider(biliUserState.avatarUrl) : null,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('BiliBili'),
-                        Text(
-                          biliUserState.isLogin ?(biliUserState.username!='' ?biliUserState.username: t.widget.hasLogin)  : t.widget.noLogin,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                value: 'bili',
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundImage: biliUserState.avatarUrl.isNotEmpty
+                          ? CachedNetworkImageProvider(biliUserState.avatarUrl)
+                          : null,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('BiliBili'),
+                          Text(
+                            biliUserState.isLogin
+                                ? (biliUserState.username != ''
+                                    ? biliUserState.username
+                                    : t.widget.hasLogin)
+                                : t.widget.noLogin,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (biliUserState.isLogin)
-                    TextButton(
-                      onPressed: () {
-                        biliUserController.logout();
-                        context.pop();
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.red,
+                        ],
                       ),
-                      child: Text(t.widget.logout),
                     ),
-                ],
-              ),
-            ),
-
-
+                    if (biliUserState.isLogin)
+                      TextButton(
+                        onPressed: () {
+                          biliUserController.logout();
+                          context.pop();
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                        ),
+                        child: Text(t.widget.logout),
+                      ),
+                  ],
+                )),
           ];
         },
       );
-    }else{
+    } else {
       return SettingsSection(
         title: t.settingsPage.account.title,
         children: [
@@ -126,7 +140,9 @@ class _AccountEntry extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: avatarUrl != null && avatarUrl!.isNotEmpty ? CachedNetworkImageProvider(avatarUrl!) : null,
+            backgroundImage: avatarUrl != null && avatarUrl!.isNotEmpty
+                ? CachedNetworkImageProvider(avatarUrl!)
+                : null,
             child: avatarUrl == null ? Icon(Icons.person) : null,
           ),
           const SizedBox(width: 12),
@@ -158,4 +174,3 @@ class _AccountEntry extends StatelessWidget {
     );
   }
 }
-

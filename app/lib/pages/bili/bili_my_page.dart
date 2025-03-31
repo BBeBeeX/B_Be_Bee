@@ -1,4 +1,3 @@
-
 import 'package:b_be_bee_app/controller/bili/bili_my_page_controller.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/bili/login/my_bili_login_page.dart';
@@ -17,41 +16,41 @@ import 'package:routerino/routerino.dart';
 
 const _horizontalPadding = 15.0;
 
-
 class MyBiliPage extends ConsumerWidget {
   const MyBiliPage();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final vm = ref.watch(myBiliPageVmProvider);
     final animations = ref.watch(animationProvider);
 
-    final sizingInformation = SizingInformation(MediaQuery
-        .sizeOf(context)
-        .width);
+    final sizingInformation =
+        SizingInformation(MediaQuery.sizeOf(context).width);
     final buttonWidth = sizingInformation.isDesktop
         ? BigButton.desktopWidth
         : BigButton.mobileWidth;
 
     Future.microtask(() async {
-      final lastFetchTimestamp = ref.read(myBiliPageVmProvider).lastFetchTimestamp;
+      final lastFetchTimestamp =
+          ref.read(myBiliPageVmProvider).lastFetchTimestamp;
       if (lastFetchTimestamp == 0) {
         await ref.read(myBiliPageVmProvider.notifier).initializeData();
       }
     });
 
-
     return RefreshIndicator(
-      onRefresh: () async => ref.read(myBiliPageVmProvider.notifier).onRefresh(),
-      child: ResponsiveListView(
+      onRefresh: () async =>
+          ref.read(myBiliPageVmProvider.notifier).onRefresh(),
+      child: Scrollbar(
         controller: vm.scrollController,
-        padding: EdgeInsets.zero,
-        children: [
-          const SizedBox(height: 60),
-          if (vm.isLoading)
-            const Center(child: CircularProgressIndicator())
-          else ...[
+        child: ResponsiveListView(
+          controller: vm.scrollController,
+          padding: EdgeInsets.zero,
+          children: [
+            const SizedBox(height: 60),
+            if (vm.isLoading)
+              const Center(child: CircularProgressIndicator())
+            else ...[
               Padding(
                 padding: const EdgeInsets.only(
                   bottom: 10,
@@ -65,11 +64,12 @@ class MyBiliPage extends ConsumerWidget {
                   faceUrl: vm.user.avatarUrl,
                   onTap: () async {
                     await context.push(() => const MyBiliLoginPage());
-                    await ref.read(myBiliPageVmProvider.notifier).initializeData();
+                    await ref
+                        .read(myBiliPageVmProvider.notifier)
+                        .initializeData();
                   },
                 ),
               ),
-
               if (vm.user.isLogin) ...[
                 const SizedBox(height: 10),
                 const PlayListTabs(),
@@ -77,14 +77,12 @@ class MyBiliPage extends ConsumerWidget {
                 const BiliPlaySubscribeLists(),
                 // const PlayWaitingLists(),
               ],
-
               const SizedBox(height: 20),
-
               _buildAnimatedText(animations),
-
               const SizedBox(height: 50),
             ],
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -96,7 +94,7 @@ Widget _buildAnimatedText(bool animations) {
     child: OpacitySlideshow(
       durationMillis: 6000,
       running: animations,
-      children:  [
+      children: [
         Text(
           t.biliPage.biliTipsText1,
           style: TextStyle(color: Colors.grey),

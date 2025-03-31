@@ -1,13 +1,14 @@
-import 'package:b_be_bee_app/controller/playlist_controller.dart';
-import 'package:b_be_bee_app/controller/settings_controller.dart';
-import 'package:b_be_bee_app/model/dto/player/player_position_data.dart';
-import 'package:b_be_bee_app/provider/seek_dragging_provider.dart';
-import 'package:b_be_bee_app/util/audio_handler.dart';
-import 'package:b_be_bee_app/util/time_utils.dart';
 import 'package:b_be_bee_app/widget/audio_visual/fft_visualizer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+
+import '../../controller/playlist_controller.dart';
+import '../../controller/settings_controller.dart';
+import '../../model/dto/player/player_position_data.dart';
+import '../../util/audio_handler.dart';
+import '../../util/time_utils.dart';
+import '../custom_slider.dart';
 
 class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
   final bool isColumn;
@@ -179,7 +180,7 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
               inactiveTrackColor: fontColor?.withOpacity(0.3) ??
                   Theme.of(context).colorScheme.primary.withOpacity(0.3),
             ),
-            child: _CustomSlider(
+            child: CustomSlider(
               value:
                   position.inSeconds.toDouble() > duration.inSeconds.toDouble()
                       ? duration.inSeconds.toDouble()
@@ -196,86 +197,6 @@ class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class _CustomSlider extends ConsumerWidget {
-  final double value;
-  final double max;
-  final ValueChanged<double> onChanged;
-  final bool isColumn;
-  final Color? fontColor;
-
-  const _CustomSlider({
-    required this.value,
-    required this.max,
-    required this.onChanged,
-    required this.isColumn,
-    this.fontColor,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    if (isColumn) {
-      return SliderTheme(
-          data: SliderThemeData(
-            trackHeight: 8.0,
-            // 设置进度条的高度
-            thumbShape: SliderComponentShape.noThumb,
-            // 去掉滑块（点）
-            activeTrackColor: fontColor?.withOpacity(0.8) ??
-                Theme.of(context).colorScheme.primary.withOpacity(0.8),
-            // 已播放部分的颜色，半透明白色
-            inactiveTrackColor: fontColor?.withOpacity(0.3) ??
-                Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            // 未播放部分的颜色，半透明白色
-            overlayShape: SliderComponentShape.noOverlay,
-            // 去掉滑块按下时的圈圈
-            thumbColor: Colors.transparent, // 去掉滑块的颜色
-            // trackShape: RectangularSliderTrackShape(), // 设置矩形边框
-          ),
-          child: slider(ref));
-    } else {
-      return SliderTheme(
-          data: SliderThemeData(
-            trackHeight: 2.0,
-            // 设置进度条的高度
-            thumbShape: SliderComponentShape.noOverlay,
-            // 去掉滑块（点）
-            activeTrackColor: fontColor?.withOpacity(0.9) ??
-                Theme.of(context).colorScheme.primary.withOpacity(0.9),
-            // 已播放部分的颜色，半透明白色
-            inactiveTrackColor: fontColor?.withOpacity(0.3) ??
-                Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            // 未播放部分的颜色，半透明白色
-            overlayShape: SliderComponentShape.noThumb,
-            // 去掉滑块按下时的圈圈
-            thumbColor: Colors.transparent, // 去掉滑块的颜色
-            // trackShape: RectangularSliderTrackShape(), // 设置矩形边框
-          ),
-          child: slider(ref));
-    }
-  }
-
-  Widget slider(WidgetRef ref) {
-    final draggingValue = ref.watch(seekDragingProvider);
-
-    return Slider(
-      value: draggingValue ?? value,
-      min: 0.0,
-      max: max,
-      onChanged: (value) {
-        ref.read(seekDragingProvider.notifier).startDragging(value);
-      },
-      onChangeStart: (startValue) {
-        ref.read(seekDragingProvider.notifier).startDragging(startValue);
-      },
-      onChangeEnd: (endValue) {
-        onChanged(endValue);
-
-        ref.read(seekDragingProvider.notifier).endDragging();
-      },
     );
   }
 }

@@ -14,11 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
-import '../controller/settings_controller.dart';
-import '../model/enum/contrast_color_enum.dart';
-import '../provider/image_color_provider.dart';
-import '../util/color_utils.dart';
-
 class AudioPlayerPage extends ConsumerWidget {
   const AudioPlayerPage({super.key});
 
@@ -41,26 +36,10 @@ class AudioPlayerPage extends ConsumerWidget {
     });
 
     final coverUrl = _getCoverUrl(playlist);
-
-    final mainColor = ref.watch(imageColorProvider(coverUrl));
-    final playPageFontColorMode =
-        ref.watch(settingsProvider).playPageFontColorMode;
-    Color fontColor =
-        Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white;
-
-    mainColor.whenData((color) {
-      print('color: $color');
-      if (color == null) {
-        return Colors.grey;
-      } else {
-        if (playPageFontColorMode == ContrastColorEnum.blackAndWhite) {
-          fontColor =
-              color.computeLuminance() <= 0.5 ? Colors.white : Colors.black;
-        } else if (playPageFontColorMode == ContrastColorEnum.opposite) {
-          fontColor = ColorUtils.getContrastColor(color);
-        }
-        return color;
-      }
+    Future.microtask(() async {
+      await ref
+          .read(audioPlayerPageControllerProvider.notifier)
+          .setFontColor(coverUrl);
     });
 
     if (playlist.currentSong == null) {
@@ -106,7 +85,7 @@ class AudioPlayerPage extends ConsumerWidget {
             child: Column(
               children: [
                 _buildHeader(context, ref, playlist, state.pageId,
-                    controller.pageController, fontColor),
+                    controller.pageController, state.fontColor),
                 Expanded(
                   child: PageView(
                     controller: controller.pageController,
@@ -125,10 +104,12 @@ class AudioPlayerPage extends ConsumerWidget {
                           _buildCoverImage(playlist),
                           const Spacer(),
                           _buildPlaybackControls(
-                              context, ref, playlist, fontColor),
+                              context, ref, playlist, state.fontColor),
                         ],
                       ),
-                      const LyricsPageWidget(),
+                      LyricsPageWidget(
+                        fontColor: state.fontColor,
+                      ),
                     ],
                   ),
                 ),

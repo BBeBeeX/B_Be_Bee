@@ -10,14 +10,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 final collectsProvider =
-StateNotifierProvider<CollectsController, CollectsState>((ref) {
-  return CollectsController();
-},name: 'collectPlaylistControllerProvider');
+    StateNotifierProvider<CollectsController, CollectsState>((ref) {
+  return CollectsController(ref);
+}, name: 'collectPlaylistControllerProvider');
 
 class CollectsController extends StateNotifier<CollectsState> {
   final _uuid = const Uuid();
+  Ref ref;
 
-  CollectsController() : super( CollectsState()) {
+  CollectsController(this.ref) : super(CollectsState()) {
     _init();
   }
 
@@ -36,7 +37,6 @@ class CollectsController extends StateNotifier<CollectsState> {
   //更新所有ids
   Future<void> _loadPlaylistIds() async {
     try {
-
       final savedIds = HiveHelper.getCollectsPlaylistIds();
       if (savedIds.isNotEmpty) {
         final List<String> playlistIds = List<String>.from(savedIds);
@@ -46,7 +46,9 @@ class CollectsController extends StateNotifier<CollectsState> {
       }
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error loading playlist ids: $e');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error loading playlist ids: $e');
       });
     }
   }
@@ -58,33 +60,33 @@ class CollectsController extends StateNotifier<CollectsState> {
       state = state.copyWith(playlists: playlists);
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Error loading playlists: $e');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error loading playlists: $e');
       });
     }
   }
 
   // 创建新歌单
-  Future<String> createPlaylist({
-    required String title,
-    String? playlistId,
-    bool isDefault = false,
-    String? cover,
-    required CollectTypeEnum collectCurrentType,
-    required CollectTypeEnum collectSourceType,
-    String? onlineId
-  }) async {
+  Future<String> createPlaylist(
+      {required String title,
+      String? playlistId,
+      bool isDefault = false,
+      String? cover,
+      required CollectTypeEnum collectCurrentType,
+      required CollectTypeEnum collectSourceType,
+      String? onlineId}) async {
     final id = playlistId ?? _uuid.v4();
     final newPlaylist = CollectPlaylist(
-      id: id,
-      title: title,
-      songIds: [],
-      isDefault: isDefault,
-      cover: cover ?? '',
-      createTime: DateTime.now().millisecondsSinceEpoch,
-      collectCurrentType: collectCurrentType,
-      collectSourceType: collectSourceType,
-      onlineId: onlineId
-    );
+        id: id,
+        title: title,
+        songIds: [],
+        isDefault: isDefault,
+        cover: cover ?? '',
+        createTime: DateTime.now().millisecondsSinceEpoch,
+        collectCurrentType: collectCurrentType,
+        collectSourceType: collectSourceType,
+        onlineId: onlineId);
 
     await HiveHelper.saveCollectsPlaylist(newPlaylist);
 
@@ -97,7 +99,7 @@ class CollectsController extends StateNotifier<CollectsState> {
     return id;
   }
 
-  CollectPlaylist? getCollectsPlaylist(String playlistId)  {
+  CollectPlaylist? getCollectsPlaylist(String playlistId) {
     CollectPlaylist? collectPlaylist;
 
     for (var playlist in state.playlists) {
@@ -110,7 +112,8 @@ class CollectsController extends StateNotifier<CollectsState> {
   }
 
   Future<void> _updatePlaylistIds(String id) async {
-    final existingPlaylistIndex = state.playlistIds.indexWhere((targetId) => targetId == id);
+    final existingPlaylistIndex =
+        state.playlistIds.indexWhere((targetId) => targetId == id);
 
     if (existingPlaylistIndex == -1) {
       state = state.copyWith(playlistIds: [...state.playlistIds, id]);
@@ -121,23 +124,24 @@ class CollectsController extends StateNotifier<CollectsState> {
   Future<void> _updatePlaylists(CollectPlaylist updatePlaylist) async {
     await HiveHelper.saveCollectsPlaylist(updatePlaylist);
 
-    final existingPlaylistIndex = state.playlists.indexWhere((playlist) => playlist.id == updatePlaylist.id);
+    final existingPlaylistIndex = state.playlists
+        .indexWhere((playlist) => playlist.id == updatePlaylist.id);
 
     if (existingPlaylistIndex != -1) {
       final newPlaylists = state.playlists.map((playlist) {
         return playlist.id == updatePlaylist.id
             ? playlist.copyWith(
-          title: updatePlaylist.title,
-          cover:updatePlaylist.cover,
-          isTop:updatePlaylist.isTop,
-          songIds:updatePlaylist.songIds,
-        )
+                title: updatePlaylist.title,
+                cover: updatePlaylist.cover,
+                isTop: updatePlaylist.isTop,
+                songIds: updatePlaylist.songIds,
+                songs: HiveHelper.getAudioInfoList(updatePlaylist.songIds))
             : playlist;
       }).toList();
 
       state = state.copyWith(playlists: newPlaylists);
-    } else{
-      state = state.copyWith(playlists: [...state.playlists,updatePlaylist]);
+    } else {
+      state = state.copyWith(playlists: [...state.playlists, updatePlaylist]);
     }
   }
 
@@ -149,7 +153,9 @@ class CollectsController extends StateNotifier<CollectsState> {
     if (playlist == null) return;
 
     final updatedPlaylist = playlist.copyWith(
-      cover: (playlist.cover == null || playlist.cover!.isEmpty) ? song.coverWebUrl : playlist.cover,
+      cover: (playlist.cover == null || playlist.cover!.isEmpty)
+          ? song.coverWebUrl
+          : playlist.cover,
     );
 
     if (!updatedPlaylist.songIds.contains(song.id)) {
@@ -161,26 +167,29 @@ class CollectsController extends StateNotifier<CollectsState> {
   }
 
   // 歌曲从默认歌单 加入/移除
-  Future<void> toggleDefaultPlaylist(AudioInfo song) async{
+  Future<void> toggleDefaultPlaylist(AudioInfo song) async {
     for (final playlist in state.playlists) {
       if (playlist.isDefault) {
-        if(playlist.songIds.contains(song.id)){
-          await removeFromPlaylist(playlist.id,song.id);
-        }else{
-          await addToPlaylist(playlist.id,song);
+        if (playlist.songIds.contains(song.id)) {
+          await removeFromPlaylist(playlist.id, song.id);
+        } else {
+          await addToPlaylist(playlist.id, song);
         }
         return;
       }
     }
   }
 
-  Future<void> addListToPlaylist(String playlistId, List<AudioInfo> songs) async {
+  Future<void> addListToPlaylist(
+      String playlistId, List<AudioInfo> songs) async {
     await HiveHelper.saveAudioInfoListIfNotExists(songs);
 
     final playlist = getCollectsPlaylist(playlistId);
     if (playlist == null) return;
     final updatedPlaylist = playlist.copyWith(
-      cover: (playlist.cover == null || playlist.cover!.isEmpty)  ? songs.first.coverWebUrl : playlist.cover,
+      cover: (playlist.cover == null || playlist.cover!.isEmpty)
+          ? songs.first.coverWebUrl
+          : playlist.cover,
     );
 
     List<String> addIds = [];
@@ -190,8 +199,9 @@ class CollectsController extends StateNotifier<CollectsState> {
       }
     }
 
+    final songIds = [...updatedPlaylist.songIds, ...addIds];
     final updatedPlaylistWithSong = updatedPlaylist.copyWith(
-      songIds: [...updatedPlaylist.songIds, ...addIds],
+      songIds: songIds,
     );
 
     await _updatePlaylists(updatedPlaylistWithSong);
@@ -207,7 +217,6 @@ class CollectsController extends StateNotifier<CollectsState> {
 
   // 从歌单中移除歌曲
   Future<void> removeFromPlaylist(String playlistId, String songId) async {
-
     final playlist = getCollectsPlaylist(playlistId);
     if (playlist == null) return;
 
@@ -247,12 +256,11 @@ class CollectsController extends StateNotifier<CollectsState> {
     final playlist = getCollectsPlaylist(playlistId);
     if (playlist == null) return;
 
-    await _updatePlaylists(playlist.copyWith(cover:  cover));
+    await _updatePlaylists(playlist.copyWith(cover: cover));
   }
 
   // 切换歌单置顶状态
   Future<void> togglePinPlaylist(String playlistId) async {
-
     final playlist = getCollectsPlaylist(playlistId);
     if (playlist == null) return;
 
@@ -260,15 +268,14 @@ class CollectsController extends StateNotifier<CollectsState> {
     await _updatePlaylists(updatedPlaylist);
   }
 
-
   // 根据歌曲ID获取包含和不包含该歌曲的歌单列表
-  (List<CollectPlaylist>, List<CollectPlaylist>) getPlaylistsBySongId(String songId) {
+  (List<CollectPlaylist>, List<CollectPlaylist>) getPlaylistsBySongId(
+      String songId) {
     final containingSongPlaylists = <CollectPlaylist>[];
     final notContainingSongPlaylists = <CollectPlaylist>[];
 
     for (final playlist in state.playlists) {
-      if(playlist.collectSourceType == CollectTypeEnum.local){
-
+      if (playlist.collectSourceType == CollectTypeEnum.local) {
         if (playlist.songIds.contains(songId)) {
           containingSongPlaylists.add(playlist);
         } else {
@@ -296,8 +303,9 @@ class CollectsController extends StateNotifier<CollectsState> {
   }
 
   bool isSongInDefaultPlaylist(String songId) {
-    List<CollectPlaylist> containingSongPlaylists = getPlaylistsBySongId(songId).$1;
-    if(containingSongPlaylists.any((playlist) => playlist.isDefault)){
+    List<CollectPlaylist> containingSongPlaylists =
+        getPlaylistsBySongId(songId).$1;
+    if (containingSongPlaylists.any((playlist) => playlist.isDefault)) {
       return true;
     }
 
@@ -305,7 +313,7 @@ class CollectsController extends StateNotifier<CollectsState> {
   }
 
   //暂时只能往本地添加不能删除
-  Future<void> syncPlaylist(String playlistId,List<AudioInfo> audios)async {
+  Future<void> syncPlaylist(String playlistId, List<AudioInfo> audios) async {
     try {
       final localPlaylist = getCollectsPlaylist(playlistId);
       if (localPlaylist == null) {
@@ -320,7 +328,8 @@ class CollectsController extends StateNotifier<CollectsState> {
           .toList();
 
       final updatedPlaylist = localPlaylist.copyWith(
-        cover: (localPlaylist.cover == null || localPlaylist.cover!.isEmpty) && audios.isNotEmpty
+        cover: (localPlaylist.cover == null || localPlaylist.cover!.isEmpty) &&
+                audios.isNotEmpty
             ? audios.first.coverWebUrl
             : localPlaylist.cover,
         songIds: [...localPlaylist.songIds, ...newAudioIds],
@@ -330,14 +339,13 @@ class CollectsController extends StateNotifier<CollectsState> {
 
       await Future.microtask(() {
         container.read(commonLoggerProvider.notifier).addLog(
-            'Playlist synced successfully: ${localPlaylist.title} with ${audios.length} songs'
-        );      });
-
+            'Playlist synced successfully: ${localPlaylist.title} with ${audios.length} songs');
+      });
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog(
-            'Error syncing playlist: $e'
-        );
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error syncing playlist: $e');
       });
 
       rethrow;
@@ -345,7 +353,8 @@ class CollectsController extends StateNotifier<CollectsState> {
   }
 
   // 重新排序歌单中的歌曲
-  Future<void> reorderSongs(String playlistId, int oldIndex, int newIndex) async {
+  Future<void> reorderSongs(
+      String playlistId, int oldIndex, int newIndex) async {
     final playlist = getCollectsPlaylist(playlistId);
     if (playlist == null) return;
 
@@ -375,14 +384,14 @@ class CollectsController extends StateNotifier<CollectsState> {
     state = state.copyWith(playlists: updatedPlaylists);
 
     final newPlaylistIds = [
-      ...state.playlistIds.where((id) =>
-          state.playlists.firstWhere((p) => p.id == id).isDefault),
+      ...state.playlistIds.where(
+          (id) => state.playlists.firstWhere((p) => p.id == id).isDefault),
       ...newOrder,
     ];
     await HiveHelper.setCollectsPlaylistIds(newPlaylistIds);
   }
 
-  Future<void> removeSongs(List<AudioInfo> songs,String? playlistId) async {
+  Future<void> removeSongs(List<AudioInfo> songs, String? playlistId) async {
     try {
       final playlist = getCollectsPlaylist(playlistId ?? '');
       if (playlist == null) {
@@ -391,28 +400,26 @@ class CollectsController extends StateNotifier<CollectsState> {
 
       final removeIds = songs.map((song) => song.id).toSet();
 
-      final updatedSongIds = playlist.songIds
-          .where((id) => !removeIds.contains(id))
-          .toList();
+      final updatedSongIds =
+          playlist.songIds.where((id) => !removeIds.contains(id)).toList();
 
       final updatedPlaylist = playlist.copyWith(
         songIds: updatedSongIds,
-        cover: updatedSongIds.isEmpty && !playlist.isDefault ? '' : playlist.cover,
+        cover:
+            updatedSongIds.isEmpty && !playlist.isDefault ? '' : playlist.cover,
       );
 
       await _updatePlaylists(updatedPlaylist);
 
       await Future.microtask(() {
         container.read(commonLoggerProvider.notifier).addLog(
-            'Removed ${songs.length} songs from playlist: ${playlist.title}'
-        );
+            'Removed ${songs.length} songs from playlist: ${playlist.title}');
       });
-
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog(
-            'Error removing songs from playlist: $e'
-        );
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Error removing songs from playlist: $e');
       });
 
       rethrow;

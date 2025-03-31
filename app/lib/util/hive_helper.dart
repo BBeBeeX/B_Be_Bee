@@ -559,6 +559,7 @@ class HiveHelper {
 
   /// collects playlist 收藏夹
   static Future<void> saveCollectsPlaylist(CollectPlaylist playlist) async {
+    playlist = playlist.copyWith(songs: null);
     await _collectsBox.put(playlist.id, playlist);
   }
 

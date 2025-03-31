@@ -41,9 +41,9 @@ class CollectsOptionsWidget extends ConsumerWidget {
     final controller = ref.read(collectsProvider.notifier);
 
     return DraggableScrollableSheet(
-        initialChildSize: 0.3,
-        minChildSize: 0.3,
-        maxChildSize: 0.5,
+        initialChildSize: 0.5,
+        minChildSize: 0.5,
+        maxChildSize: 0.7,
         builder: (context, scrollController) {
           return Container(
             decoration: BoxDecoration(
@@ -99,7 +99,7 @@ class CollectsOptionsWidget extends ConsumerWidget {
                     text: playlist?.isTop ?? false
                         ? t.widget.cancelPin
                         : t.widget.pin,
-                    color: Theme.of(context).colorScheme.primaryFixed,
+                    color: Theme.of(context).colorScheme.primary,
                     onTap: () async {
                       await controller.togglePinPlaylist(playlist!.id);
                     },
@@ -115,7 +115,7 @@ class CollectsOptionsWidget extends ConsumerWidget {
                   ),
                   OptionItemWidget(
                     icon: Icons.edit,
-                    color: Theme.of(context).colorScheme.primaryFixed,
+                    color: Theme.of(context).colorScheme.primary,
                     text: t.widget.rename,
                     onTap: () async {
                       await CollectsRenameDialog.open(
@@ -124,6 +124,7 @@ class CollectsOptionsWidget extends ConsumerWidget {
                   ),
                   OptionItemWidget(
                     icon: Icons.share_outlined,
+                    color: Theme.of(context).colorScheme.primary,
                     text: t.general.share,
                     onTap: () async {
                       await Future.microtask(() {
@@ -140,7 +141,7 @@ class CollectsOptionsWidget extends ConsumerWidget {
                   ),
                   OptionItemWidget(
                     icon: Icons.download,
-                    color: Theme.of(context).colorScheme.primaryFixed,
+                    color: Theme.of(context).colorScheme.primary,
                     text: t.general.download,
                     onTap: () async {
                       await getFilePermission();

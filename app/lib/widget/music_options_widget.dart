@@ -26,25 +26,22 @@ class MusicOptionsWidget extends ConsumerWidget {
   final AudioInfo song;
   final CollectPlaylist? collectPlaylist;
   final bool fromPlay;
-  final Function(String playlistId,String songId)? removeAudio;
+  final Function(String playlistId, String songId)? removeAudio;
 
-  const MusicOptionsWidget({
-    super.key,
-    required this.song,
-    required this.fromPlay,
-    required this.collectPlaylist,
-    this.removeAudio
-  });
+  const MusicOptionsWidget(
+      {super.key,
+      required this.song,
+      required this.fromPlay,
+      required this.collectPlaylist,
+      this.removeAudio});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(musicOptionsProvider(song).notifier);
     final sleepTimerState = ref.watch(sleepTimerProvider);
-    final collectPlaylistController = ref.read(
-        collectsProvider.notifier);
+    final collectPlaylistController = ref.read(collectsProvider.notifier);
     final playListController = ref.read(playlistControllerProvider.notifier);
     final playlistState = ref.watch(collectsProvider);
-
 
     final isFav = collectPlaylistController.isSongInDefaultPlaylist(song.id);
 
@@ -56,7 +53,8 @@ class MusicOptionsWidget extends ConsumerWidget {
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceContainer,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(30)),
             ),
             child: SingleChildScrollView(
               controller: scrollController,
@@ -84,11 +82,12 @@ class MusicOptionsWidget extends ConsumerWidget {
                                 song.title,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style:  TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).colorScheme.surfaceTint
-                                ),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceTint),
                               ),
                               const SizedBox(height: 2),
                               Text(
@@ -103,63 +102,82 @@ class MusicOptionsWidget extends ConsumerWidget {
                   ),
                   const Divider(height: 1),
                   isFav
-                      ?   OptionItemWidget(
-                    icon: Icons.favorite,
-                    color: Colors.red,
-                    text: t.widget.removeFromFav,
-                    onTap: () async {
-                      await collectPlaylistController.toggleDefaultPlaylist(song);
-                    },
-                  )
-                      :OptionItemWidget(
-                    icon: Icons.favorite_border,
-                    color: Theme.of(context).colorScheme.primaryFixed,
-                    text: t.widget.addToFav,
-                    onTap: () async {
-                      await collectPlaylistController.toggleDefaultPlaylist(song);
-                    },
-                  ),
-                  if(removeAudio != null && collectPlaylist != null)
+                      ? OptionItemWidget(
+                          icon: Icons.favorite,
+                          color: Colors.red,
+                          text: t.widget.removeFromFav,
+                          onTap: () async {
+                            await collectPlaylistController
+                                .toggleDefaultPlaylist(song);
+                          },
+                        )
+                      : OptionItemWidget(
+                          icon: Icons.favorite_border,
+                          color: Theme.of(context).colorScheme.primary,
+                          text: t.widget.addToFav,
+                          onTap: () async {
+                            await collectPlaylistController
+                                .toggleDefaultPlaylist(song);
+                          },
+                        ),
+                  if (removeAudio != null && collectPlaylist != null)
                     OptionItemWidget(
                       icon: Icons.do_not_disturb_on_outlined,
+                      color: Theme.of(context).colorScheme.primary,
                       text: t.widget.removeFromThis,
                       onTap: () async {
-                        await removeAudio!(collectPlaylist!.id,song.id,);
-                        await ref.read(collectsPlaylistPageProvider(collectPlaylist!.id).notifier).loadData(collectPlaylist!);
+                        await removeAudio!(
+                          collectPlaylist!.id,
+                          song.id,
+                        );
+                        await ref
+                            .read(collectsPlaylistPageProvider(
+                                    collectPlaylist!.id)
+                                .notifier)
+                            .loadData(collectPlaylist!);
                         context.pop();
                       },
                     ),
 
-                  if(!fromPlay)
+                  if (!fromPlay)
                     OptionItemWidget(
-                      icon: Icons.play_arrow,
-                      color: Theme.of(context).colorScheme.primaryFixed,
-                      text: t.general.play,
-                      onTap: () async => {
-                        if(collectPlaylist == null){
-                          playListController.setPlaylist([song],song.id),
-                        }else{
-                          playListController.setPlaylist(collectPlaylist!.songs!,collectPlaylist!.id,index: collectPlaylist!.songs?.indexOf(song) ?? 0),
-                        }
-                      }
-          ),
-                  if(!fromPlay)
+                        icon: Icons.play_arrow,
+                        color: Theme.of(context).colorScheme.primary,
+                        text: t.general.play,
+                        onTap: () async => {
+                              if (collectPlaylist == null)
+                                {
+                                  playListController
+                                      .setPlaylist([song], song.id),
+                                }
+                              else
+                                {
+                                  playListController.setPlaylist(
+                                      collectPlaylist!.songs!,
+                                      collectPlaylist!.id,
+                                      index: collectPlaylist!.songs
+                                              ?.indexOf(song) ??
+                                          0),
+                                }
+                            }),
+                  if (!fromPlay)
                     OptionItemWidget(
                       icon: Icons.skip_next,
-                      color: Theme.of(context).colorScheme.primaryFixed,
+                      color: Theme.of(context).colorScheme.primary,
                       text: t.general.nextPlay,
                       onTap: () async => playListController.insertSong(song),
                     ),
-                  if(!fromPlay)
+                  if (!fromPlay)
                     OptionItemWidget(
-                    icon: Icons.playlist_add,
-                      color: Theme.of(context).colorScheme.primaryFixed,
+                      icon: Icons.playlist_add,
+                      color: Theme.of(context).colorScheme.primary,
                       text: t.widget.addToPlaylist,
-                    onTap: () async => playListController.insertSong(song,isToEnd: true),
-                  ),
+                      onTap: () async =>
+                          playListController.insertSong(song, isToEnd: true),
+                    ),
                   OptionItemWidget(
                     icon: Icons.folder,
-                    color: Theme.of(context).colorScheme.primaryFixed,
+                    color: Theme.of(context).colorScheme.primary,
                     text: t.widget.addToCollects,
                     onTap: () async {
                       await vm.addToPlaylist(context);
@@ -167,21 +185,25 @@ class MusicOptionsWidget extends ConsumerWidget {
                   ),
                   OptionItemWidget(
                     icon: Icons.person_outline,
+                    color: Theme.of(context).colorScheme.primary,
                     text: t.widget.jumpToUpper,
                     onTap: () async {
                       context.pop();
-                      await context.push(() => BiliUpperPage(uid: song.upper.id));
-                      },
+                      await context
+                          .push(() => BiliUpperPage(uid: song.upper.id));
+                    },
                   ),
                   OptionItemWidget(
                     icon: Icons.share_outlined,
+                    color: Theme.of(context).colorScheme.primary,
                     text: t.general.share,
                     onTap: () async {
                       await Future.microtask(() {
-                        container.read(commonLoggerProvider.notifier).addLog(
-                            'share music title: ${song.title} '
-                            'id: ${song.id} '
-                            'type: ${song.audioSourceType} '
+                        container
+                            .read(commonLoggerProvider.notifier)
+                            .addLog('share music title: ${song.title} '
+                                'id: ${song.id} '
+                                'type: ${song.audioSourceType} '
                                 'cover: ${song.coverWebUrl} '
                                 'upper: ${song.upper} ');
                       });
@@ -189,25 +211,28 @@ class MusicOptionsWidget extends ConsumerWidget {
                     },
                   ),
 
-                  if(fromPlay)
+                  if (fromPlay)
                     OptionItemWidget(
-                    icon: Icons.timer,
+                      icon: Icons.timer,
                       text: t.widget.setSleepTimer,
-                    color: sleepTimerState.isTimerActive ? Colors.green : Theme.of(context).colorScheme.primaryFixed,
-                    onTap: () async {
-                      context.pop();
-                      await showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        builder: (context) => SleepTimerWidget(),
-                      );
-                    },
-                  ),
+                      color: sleepTimerState.isTimerActive
+                          ? Colors.green
+                          : Theme.of(context).colorScheme.primary,
+                      onTap: () async {
+                        context.pop();
+                        await showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          isScrollControlled: true,
+                          builder: (context) => SleepTimerWidget(),
+                        );
+                      },
+                    ),
                   // _buildOptionItem(
                   //   context,
                   //   icon: Icons.music_note_outlined,
                   //   text: '显示 Spotify 音乐码',
+                  //   color: Theme.of(context).colorScheme.primary,
                   //   onTap: () {
                   //     vm.showMusicCode(context);
                   //   },
@@ -216,45 +241,47 @@ class MusicOptionsWidget extends ConsumerWidget {
                   // OptionItemWidget(
                   //   icon: Icons.info_outline,
                   //   text: '查看歌曲制作人',
-                  //   color: Theme.of(context).colorScheme.primaryFixed,
+                  //   color: Theme.of(context).colorScheme.primary,
                   //   onTap: () {
                   //     vm.showCredits(context);
                   //   },
                   // ),
-                  if(!checkPlatformIsDesktop())
-                  OptionItemWidget(
-                    icon: Icons.notifications,
-                    text: t.widget.setRingtone,
-                    color: Theme.of(context).colorScheme.primaryFixed,
-                    onTap: () async {
-                      await ref.read(downloadControllerProvider.notifier).setAndroidRingtone(song);
-                    },
-                  ),
+                  if (!checkPlatformIsDesktop())
+                    OptionItemWidget(
+                      icon: Icons.notifications,
+                      text: t.widget.setRingtone,
+                      color: Theme.of(context).colorScheme.primary,
+                      onTap: () async {
+                        await ref
+                            .read(downloadControllerProvider.notifier)
+                            .setAndroidRingtone(song);
+                      },
+                    ),
                   //TODO 播放设置
                   // if(fromPlay)
                   //   OptionItemWidget(
                   //   icon: Icons.graphic_eq,
-                  //     color: Theme.of(context).colorScheme.primaryFixed,
+                  //     color: Theme.of(context).colorScheme.primary,
                   //   text: '播放设置',
                   //   onTap: () {
                   //     vm.showCredits(context);
                   //   },
                   // ),
-                  if(fromPlay)
+                  if (fromPlay)
                     OptionItemWidget(
-                    icon: Icons.high_quality,
-                    text: t.widget.quality,
-                      color: Theme.of(context).colorScheme.primaryFixed,
-                    onTap: () async {
-                      context.pop();
-                      await AudioQualityBottomSheet.open(context, ref);
-                    },
-                  ),
+                      icon: Icons.high_quality,
+                      text: t.widget.quality,
+                      color: Theme.of(context).colorScheme.primary,
+                      onTap: () async {
+                        context.pop();
+                        await AudioQualityBottomSheet.open(context, ref);
+                      },
+                    ),
                   //TODO 播放器样式
                   // if(fromPlay)
                   //   OptionItemWidget(
                   //     icon: Icons.shape_line,
-                  //     color: Theme.of(context).colorScheme.primaryFixed,
+                  //     color: Theme.of(context).colorScheme.primary,
                   //     text: '播放器样式',
                   //     onTap: () {
                   //       vm.showCredits(context);
@@ -264,28 +291,29 @@ class MusicOptionsWidget extends ConsumerWidget {
                   OptionItemWidget(
                     icon: Icons.download,
                     text: t.general.download,
-                    color: Theme.of(context).colorScheme.primaryFixed,
+                    color: Theme.of(context).colorScheme.primary,
                     onTap: () async {
-                      await ToastUtil.show(t.widget.downloadingTitle(title: song.title));
-                      await ref.read(downloadControllerProvider.notifier).addDownload(song);
+                      await ToastUtil.show(
+                          t.widget.downloadingTitle(title: song.title));
+                      await ref
+                          .read(downloadControllerProvider.notifier)
+                          .addDownload(song);
                     },
                   ),
                   OptionItemWidget(
                     icon: Icons.smart_display,
                     text: t.widget.sourceAudio,
-                    color: Theme.of(context).colorScheme.primaryFixed,
+                    color: Theme.of(context).colorScheme.primary,
                     onTap: () {
                       context.pop();
-                      openInBilibili(context,song);
+                      openInBilibili(context, song);
                     },
                   ),
                   const SizedBox(height: 8),
                 ],
-
               ),
             ),
           );
-        }
-    );
+        });
   }
 }

@@ -1,9 +1,10 @@
-
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/model/enum/main_tab_enum.dart';
 import 'package:b_be_bee_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../pages/bili/bili_my_page.dart';
 
 class MainPageState {
   final MainTabEnum currentTab;
@@ -33,38 +34,40 @@ class MainPageState {
     List<Page<dynamic>>? historyList,
     int? currentIndex,
   }) {
-    final finalHistoryList = historyList??this.historyList;
+    final finalHistoryList = historyList ?? this.historyList;
     final finalCurrentIndex = currentIndex ?? this.currentIndex;
     print('finalHistoryList: ${finalHistoryList.length}');
-    print('currentPages: ${finalHistoryList.sublist(0, finalCurrentIndex + 1).length}');
+    print(
+        'currentPages: ${finalHistoryList.sublist(0, finalCurrentIndex + 1).length}');
     print('finalCurrentIndex: $finalCurrentIndex');
     return MainPageState(
-      currentTab: currentTab ?? this.currentTab,
-      controller: controller ?? this.controller,
-      isOpenSideBar: isOpenSideBar ?? this.isOpenSideBar,
+        currentTab: currentTab ?? this.currentTab,
+        controller: controller ?? this.controller,
+        isOpenSideBar: isOpenSideBar ?? this.isOpenSideBar,
         historyList: finalHistoryList,
-      currentIndex: finalCurrentIndex,
+        currentIndex: finalCurrentIndex,
         canGoBack: finalCurrentIndex > 0,
         canGoForward: finalCurrentIndex < finalHistoryList.length - 1,
-        currentPages: finalHistoryList.sublist(0, finalCurrentIndex + 1)
-    );
+        currentPages: finalHistoryList.sublist(0, finalCurrentIndex + 1));
   }
-
 }
 
-final mainPageProvider = StateNotifierProvider<MainPageController, MainPageState>((ref) {
+final mainPageProvider =
+    StateNotifierProvider<MainPageController, MainPageState>((ref) {
   return MainPageController(ref);
-},name: 'mainPageProvider');
+}, name: 'mainPageProvider');
 
 class MainPageController extends StateNotifier<MainPageState> {
   Ref ref;
+  List<Widget> uniquePageList = [MyBiliPage()];
 
-  MainPageController(this.ref) : super(
-    MainPageState(
-      currentTab: MainTabEnum.home,
-      controller: PageController(),
-    ),
-  ) {
+  MainPageController(this.ref)
+      : super(
+          MainPageState(
+            currentTab: MainTabEnum.home,
+            controller: PageController(),
+          ),
+        ) {
     Future.microtask(() async {
       await postInit(ref);
     });
@@ -86,10 +89,32 @@ class MainPageController extends StateNotifier<MainPageState> {
   }
 
   void pushPage(Widget page) {
+    Type pageType = page.runtimeType;
+
+    bool isUniquePage = uniquePageList.any((p) => p.runtimeType == pageType);
+
+    if (isUniquePage) {
+      int existingIndex = state.historyList
+          .indexWhere((p) => p.key.toString().contains(pageType.toString()));
+
+      if (existingIndex != -1) {
+        print('${page.runtimeType.toString()} is unique page');
+        List<Page<dynamic>> updatedHistoryList = List.from(state.historyList);
+
+        Page<dynamic> existingPage = updatedHistoryList.removeAt(existingIndex);
+
+        state = state.copyWith(
+          historyList: [...updatedHistoryList, existingPage],
+          currentIndex: state.currentIndex + 1,
+        );
+        return;
+      }
+    }
+
     final newPage = MaterialPage(
-        key: ValueKey('${page.runtimeType}-${DateTime.now().millisecondsSinceEpoch}'),
-        child: page
-    );
+        key: ValueKey(
+            '${page.runtimeType}-${DateTime.now().millisecondsSinceEpoch}'),
+        child: page);
 
     if (state.currentIndex < state.historyList.length - 1) {
       state = state.copyWith(
@@ -97,18 +122,20 @@ class MainPageController extends StateNotifier<MainPageState> {
           ...state.historyList.sublist(0, state.currentIndex + 1),
           newPage
         ],
-        currentIndex: state.currentIndex+1,
+        currentIndex: state.currentIndex + 1,
       );
     } else {
       state = state.copyWith(
         historyList: [...state.historyList, newPage],
-        currentIndex: state.currentIndex+1,
+        currentIndex: state.currentIndex + 1,
       );
     }
   }
 
-  bool isSearchPage(){
-    return state.currentPages[state.currentIndex].key.toString().contains('SearchPage') ;
+  bool isSearchPage() {
+    return state.currentPages[state.currentIndex].key
+        .toString()
+        .contains('SearchPage');
   }
 
   void goBack() {
@@ -135,12 +162,9 @@ class MainPageController extends StateNotifier<MainPageState> {
     }
   }
 
-
-    @override
-    void dispose() {
-      state.controller.dispose();
-      super.dispose();
-    }
-
-
+  @override
+  void dispose() {
+    state.controller.dispose();
+    super.dispose();
+  }
 }

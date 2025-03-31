@@ -5,10 +5,11 @@ import 'package:b_be_bee_app/model/enum/bili_vip_label_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
+import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BiliUserNotifier extends StateNotifier<BiliUser> {
-  BiliUserNotifier() : super(const BiliUser()){
+  BiliUserNotifier() : super(const BiliUser()) {
     _loadBiliUser();
   }
 
@@ -26,10 +27,10 @@ class BiliUserNotifier extends StateNotifier<BiliUser> {
         state.avatarUrl != avatarUrl ||
         state.vip != vip ||
         !state.isLogin) {
-
-
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('bili user login: $username');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('bili user login: $username');
       });
       state = state.copyWith(
         isLogin: true,
@@ -48,7 +49,8 @@ class BiliUserNotifier extends StateNotifier<BiliUser> {
     );
     await HiveHelper.setLocalBiliUser(state);
 
-    DateTime lastTime = DateTime.fromMillisecondsSinceEpoch(HiveHelper.getBiliRefreshTokenLastTime());
+    DateTime lastTime = DateTime.fromMillisecondsSinceEpoch(
+        HiveHelper.getBiliRefreshTokenLastTime());
     DateTime now = DateTime.now();
 
     bool isToday = lastTime.year == now.year &&
@@ -67,6 +69,8 @@ class BiliUserNotifier extends StateNotifier<BiliUser> {
 
     //清cookie
     RhttpUtils().clearCookies();
+
+    ToastUtil.show('登出成功');
   }
 
   Future<void> updateAvatar(String avatarUrl) async {
@@ -79,13 +83,12 @@ class BiliUserNotifier extends StateNotifier<BiliUser> {
     state = biliUser;
   }
 
-  bool isVip(){
+  bool isVip() {
     return state.vip != BiliVipLabelEnum.free ? true : false;
   }
-
 }
 
 final biliUserProvider =
-StateNotifierProvider<BiliUserNotifier, BiliUser>((ref) {
+    StateNotifierProvider<BiliUserNotifier, BiliUser>((ref) {
   return BiliUserNotifier();
-},name: 'biliUserProvider');
+}, name: 'biliUserProvider');
