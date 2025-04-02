@@ -180,9 +180,7 @@ class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
         },
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ToastUtil.show(e.toString());
       await Future.microtask(() {
         container
             .read(commonLoggerProvider.notifier)

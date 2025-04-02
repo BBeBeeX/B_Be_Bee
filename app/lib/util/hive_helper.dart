@@ -603,6 +603,18 @@ class HiveHelper {
     return _box.get('ids');
   }
 
+  static Map<String, CollectPlaylist?> getAllCollects() {
+    final Map<String, CollectPlaylist?> boxData = {};
+    for (final key in _collectsBox.keys) {
+      try {
+        boxData[key.toString()] = _collectsBox.get(key);
+      } catch (e) {
+        boxData[key.toString()] = null;
+      }
+    }
+    return boxData;
+  }
+
   /// audios
   static AudioInfo? _getAudioFromCacheOrBox(String id) {
     if (_audiosCache.containsKey(id)) {

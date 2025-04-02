@@ -418,9 +418,12 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   Future<void> addToHistory(AudioInfo? track) async {
     if (track == null) return;
 
-    await ref
-        .read(playStatisticsProvider.notifier)
-        .recordPlay(track.id, CustomAudioHandler.player.position);
+    await ref.read(playStatisticsProvider.notifier).recordPlay(
+        track.id,
+        CustomAudioHandler.player.position == Duration.zero
+            ? (CustomAudioHandler.player.duration ?? Duration.zero)
+            : CustomAudioHandler.player.position);
+
     final newHistory = List<AudioInfo>.from(state.playHistory);
 
     newHistory.removeWhere((item) => item.id == track.id);
