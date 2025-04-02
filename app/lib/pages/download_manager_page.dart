@@ -19,6 +19,7 @@ class DownloadManagerPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final downloadState = ref.watch(downloadControllerProvider);
     final controller = ref.read(downloadControllerProvider.notifier);
+    bool isInitialized = ref.watch(downloadControllerProvider).isInit;
 
     return Scaffold(
         appBar: AppBar(
@@ -26,7 +27,7 @@ class DownloadManagerPage extends ConsumerWidget {
             automaticallyImplyLeading: checkPlatformIsDesktop() ? false : true),
         body: Column(
           children: [
-            _buildInitializationStatus(ref),
+            if (isInitialized) _buildInitializationStatus(ref),
             Expanded(
               child: ListView.builder(
                 itemCount: downloadState.tasks.length,
@@ -149,7 +150,6 @@ class DownloadManagerPage extends ConsumerWidget {
   }
 
   Widget _buildInitializationStatus(WidgetRef ref) {
-    bool isInitialized = ref.watch(downloadControllerProvider).isInit;
     return ValueListenableBuilder<FFMpegProgress>(
       valueListenable: downloadFFmpegProgress,
       builder: (context, progress, child) {
@@ -157,10 +157,10 @@ class DownloadManagerPage extends ConsumerWidget {
             progress.phase == FFMpegProgressPhase.decompressing) {
           return Container(
             width: double.infinity,
-            color: isInitialized ? Colors.green : Colors.red,
+            color: Colors.red,
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              isInitialized ? '已初始化' : '未初始化',
+              '未初始化',
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white, fontSize: 18),
             ),
