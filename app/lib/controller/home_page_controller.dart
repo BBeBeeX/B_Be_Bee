@@ -24,9 +24,10 @@ class HomePageState {
   }
 }
 
-final homePageProvider = StateNotifierProvider<HomePageController, HomePageState>((ref) {
+final homePageProvider =
+    StateNotifierProvider<HomePageController, HomePageState>((ref) {
   return HomePageController()..loadInitialRecommends();
-},name: 'homePageProvider');
+}, name: 'homePageProvider');
 
 class HomePageController extends StateNotifier<HomePageState> {
   static const int loadMoreCount = 5;
@@ -34,7 +35,7 @@ class HomePageController extends StateNotifier<HomePageState> {
 
   HomePageController() : super(const HomePageState());
 
-  void loadInitialRecommends() {
+  Future<void> loadInitialRecommends() async {
     final initialRecommends = _getRandomRecommends(loadMoreCount);
     state = state.copyWith(recommends: initialRecommends);
   }
@@ -57,10 +58,13 @@ class HomePageController extends StateNotifier<HomePageState> {
     final List<Map<String, String>> shuffled = List.from(allRecommends)
       ..shuffle(_random);
 
-    return shuffled.take(count).map((item) => RecommendParams(
-      id: item['id']!,
-      type: item['type']!,
-      title: item['title']!,
-    )).toList();
+    return shuffled
+        .take(count)
+        .map((item) => RecommendParams(
+              id: item['id']!,
+              type: item['type']!,
+              title: item['title']!,
+            ))
+        .toList();
   }
-} 
+}

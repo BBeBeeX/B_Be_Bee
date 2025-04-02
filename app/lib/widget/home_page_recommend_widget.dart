@@ -8,7 +8,6 @@ class HomePageRecommendWidget extends ConsumerWidget {
   final RecommendParams params;
   static const int maxDisplayCount = 20;
 
-
   const HomePageRecommendWidget({
     super.key,
     required this.params,
@@ -16,18 +15,13 @@ class HomePageRecommendWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    final state = ref.watch(homePageRecommendProvider(
-        params
-    ));
-
+    final state = ref.watch(homePageRecommendProvider(params));
 
     if (state.audioList.isEmpty) {
       return const SizedBox();
     }
 
     final displayList = state.audioList.take(maxDisplayCount).toList();
-
 
     return Column(
       children: [
@@ -38,21 +32,25 @@ class HomePageRecommendWidget extends ConsumerWidget {
               Expanded(
                 child: Text(
                   params.title,
-                  maxLines:2,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               TextButton.icon(
                 onPressed: () async {
-                  await ref.read(homePageRecommendProvider(params).notifier).playAllAudios();
+                  await ref
+                      .read(homePageRecommendProvider(params).notifier)
+                      .playAllAudios();
                 },
                 icon: const Icon(Icons.play_arrow, size: 20),
                 label: Text(t.general.playAll),
               ),
               TextButton.icon(
                 onPressed: () async {
-                  await ref.read(homePageRecommendProvider(params).notifier).toCollectPage(context);
+                  await ref
+                      .read(homePageRecommendProvider(params).notifier)
+                      .toCollectPage(context);
                 },
                 icon: const Icon(Icons.chevron_right, size: 20),
                 label: Text(t.general.more),
@@ -67,10 +65,13 @@ class HomePageRecommendWidget extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             itemCount: displayList.length,
             itemBuilder: (context, index) {
-              return AudioCardWidget(audioInfo: displayList[index],
-                onTap: () async {
-                  await ref.read(homePageRecommendProvider(params).notifier).playAudios(displayList[index]);
-                });
+              return AudioCardWidget(
+                  audioInfo: displayList[index],
+                  onTap: () async {
+                    await ref
+                        .read(homePageRecommendProvider(params).notifier)
+                        .playAudios(displayList[index]);
+                  });
             },
           ),
         ),
@@ -78,5 +79,4 @@ class HomePageRecommendWidget extends ConsumerWidget {
       ],
     );
   }
-
 }

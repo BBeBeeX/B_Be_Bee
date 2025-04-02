@@ -37,133 +37,130 @@ class BiliUpperPage extends ConsumerWidget {
     }
 
     return Scaffold(
-        body: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 200,
-              pinned: true,
-              stretch: true,
-              flexibleSpace: FlexibleSpaceBar(
-                stretchModes: const [
-                  StretchMode.zoomBackground,
-                  StretchMode.blurBackground,
-                ],
-                background: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                      child: NetworkImageByCache(
-                        imageUrl: state.upperFace,
-                        defaultUrl: '',
-                        width: double.infinity,
-                        height: double.infinity,
-                        boxFit: BoxFit.cover,
-                      ),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            stretch: true,
+            flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [
+                StretchMode.zoomBackground,
+                StretchMode.blurBackground,
+              ],
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                    child: NetworkImageByCache(
+                      imageUrl: state.upperFace,
+                      defaultUrl: '',
+                      width: double.infinity,
+                      height: double.infinity,
+                      boxFit: BoxFit.cover,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Theme.of(context).scaffoldBackgroundColor,
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: NetworkImageByCache(
-                                  imageUrl: state.upperFace,
-                                  defaultUrl: '',
-                                  width: 80,
-                                  height: 80,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.upperName,
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    if (state.notice.isNotEmpty == true) ...[
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        state.notice,
-                                        style: Theme.of(context).textTheme.bodySmall,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Theme.of(context).scaffoldBackgroundColor,
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: NetworkImageByCache(
+                                imageUrl: state.upperFace,
+                                defaultUrl: '',
+                                width: 80,
+                                height: 80,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.upperName,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  if (state.notice.isNotEmpty == true) ...[
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      state.notice,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 16),
+          ),
+          if (state.allVideos?.isNotEmpty == true) ...[
+            SliverToBoxAdapter(
+              child: _buildAllVideos(context, state, ref),
+            ),
             const SliverToBoxAdapter(
-              child: SizedBox(height: 16),
+              child: SizedBox(height: 24),
             ),
-
-            if (state.allVideos?.isNotEmpty == true) ...[
-              SliverToBoxAdapter(
-                child: _buildAllVideos(context, state,ref),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 24),
-              ),
-            ],
-
-            if (state.seasonsAndSeries.seasons_list?.isNotEmpty == true) ...[
-              SliverToBoxAdapter(
-                child: _buildSeasonsList(context,ref, state),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 24),
-              ),
-            ],
-
-            if (state.seasonsAndSeries.series_list?.isNotEmpty == true) ...[
-              SliverToBoxAdapter(
-                child: _buildSeriesList(context,ref, state),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 24),
-              ),
-            ],
-
           ],
-        ),
+          if (state.seasonsAndSeries.seasons_list?.isNotEmpty == true) ...[
+            SliverToBoxAdapter(
+              child: _buildSeasonsList(context, ref, state),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 24),
+            ),
+          ],
+          if (state.seasonsAndSeries.series_list?.isNotEmpty == true) ...[
+            SliverToBoxAdapter(
+              child: _buildSeriesList(context, ref, state),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 24),
+            ),
+          ],
+        ],
+      ),
     );
   }
 
-  Widget _buildSeasonsList(BuildContext context, WidgetRef ref, BiliUpperPageState state) {
+  Widget _buildSeasonsList(
+      BuildContext context, WidgetRef ref, BiliUpperPageState state) {
     if (state.seasonsAndSeries.seasons_list == null) return const SizedBox();
-    
+
     return Column(
       children: state.seasonsAndSeries.seasons_list!.map((season) {
         return Column(
@@ -180,14 +177,18 @@ class BiliUpperPage extends ConsumerWidget {
                   ),
                   TextButton.icon(
                     onPressed: () async {
-                      await ref.read(biliUpperPageProvider(uid).notifier).playSeason( season,state);
-                      },
+                      await ref
+                          .read(biliUpperPageProvider(uid).notifier)
+                          .playSeason(season, state);
+                    },
                     icon: const Icon(Icons.play_arrow, size: 20),
                     label: Text(t.general.playAll),
                   ),
                   TextButton.icon(
-                    onPressed: () async{
-                      await ref.read(biliUpperPageProvider(uid).notifier).toSeasonCollectPage(context, season);
+                    onPressed: () async {
+                      await ref
+                          .read(biliUpperPageProvider(uid).notifier)
+                          .toSeasonCollectPage(context, season);
                     },
                     icon: const Icon(Icons.chevron_right, size: 20),
                     label: Text(t.general.more),
@@ -203,7 +204,7 @@ class BiliUpperPage extends ConsumerWidget {
                 itemCount: season.archives?.length ?? 0,
                 itemBuilder: (context, index) {
                   final video = season.archives![index];
-                  return _buildArchiveCard(ref,state,season, video);
+                  return _buildArchiveCard(ref, state, season, video);
                 },
               ),
             ),
@@ -214,9 +215,10 @@ class BiliUpperPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSeriesList(BuildContext context, WidgetRef ref, BiliUpperPageState state) {
+  Widget _buildSeriesList(
+      BuildContext context, WidgetRef ref, BiliUpperPageState state) {
     if (state.seasonsAndSeries.series_list == null) return const SizedBox();
-    
+
     return Column(
       children: state.seasonsAndSeries.series_list!.map((series) {
         return Column(
@@ -233,14 +235,18 @@ class BiliUpperPage extends ConsumerWidget {
                   ),
                   TextButton.icon(
                     onPressed: () async {
-                      await ref.read(biliUpperPageProvider(uid).notifier).playSeries( series,state);
+                      await ref
+                          .read(biliUpperPageProvider(uid).notifier)
+                          .playSeries(series, state);
                     },
                     icon: const Icon(Icons.play_arrow, size: 20),
                     label: Text(t.general.playAll),
                   ),
                   TextButton.icon(
-                    onPressed: () async{
-                      await ref.read(biliUpperPageProvider(uid).notifier).toSeriesCollectPage(context, series, state);
+                    onPressed: () async {
+                      await ref
+                          .read(biliUpperPageProvider(uid).notifier)
+                          .toSeriesCollectPage(context, series, state);
                     },
                     icon: const Icon(Icons.chevron_right, size: 20),
                     label: Text(t.general.more),
@@ -256,7 +262,7 @@ class BiliUpperPage extends ConsumerWidget {
                 itemCount: series.archives?.length ?? 0,
                 itemBuilder: (context, index) {
                   final video = series.archives![index];
-                  return _buildArchiveCard(ref,state,series, video);
+                  return _buildArchiveCard(ref, state, series, video);
                 },
               ),
             ),
@@ -267,7 +273,8 @@ class BiliUpperPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildAllVideos(BuildContext context, BiliUpperPageState state, WidgetRef ref) {
+  Widget _buildAllVideos(
+      BuildContext context, BiliUpperPageState state, WidgetRef ref) {
     if (state.allVideos == null) return const SizedBox();
 
     final rows = (state.allVideos!.length / 5).ceil().clamp(0, 2);
@@ -282,7 +289,7 @@ class BiliUpperPage extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: Row(
                   children: [
-                     Expanded(
+                    Expanded(
                       child: Text(
                         t.general.allVideos,
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -290,14 +297,18 @@ class BiliUpperPage extends ConsumerWidget {
                     ),
                     TextButton.icon(
                       onPressed: () async {
-                          await ref.read(biliUpperPageProvider(uid).notifier).playAllAudios();
+                        await ref
+                            .read(biliUpperPageProvider(uid).notifier)
+                            .playAllAudios();
                       },
                       icon: const Icon(Icons.play_arrow, size: 20),
                       label: Text(t.general.playAll),
                     ),
                     TextButton.icon(
                       onPressed: () async {
-                        await ref.read(biliUpperPageProvider(uid).notifier).toAllAudiosCollectPage(context);
+                        await ref
+                            .read(biliUpperPageProvider(uid).notifier)
+                            .toAllAudiosCollectPage(context);
                       },
                       icon: const Icon(Icons.chevron_right, size: 20),
                       label: Text(t.general.more),
@@ -319,7 +330,6 @@ class BiliUpperPage extends ConsumerWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 8),
           ],
         );
@@ -327,58 +337,65 @@ class BiliUpperPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildArchiveCard(WidgetRef ref, BiliUpperPageState state,dynamic season, BiliSeasonsSeriesArchives video) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-    child: InkWell(
-    onTap: () async {
-      await ref.read(biliUpperPageProvider(uid).notifier).playDynamicSeasonSeries( season,state,video: video);
-    },
-      child: SizedBox(
-        width: 160,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-              child: NetworkImageByCache(
-                width: 160,
-                height: 90,
-                imageUrl: video.pic ?? '',
-                defaultUrl: '',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                video.title ?? '',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 12),
-              ),
-            ),
-          ],
-        ),
-      ),
-      ),
-    );
-  }
-
-  Widget _buildVideoCard(BuildContext context, WidgetRef ref , AudioInfo video) {
+  Widget _buildArchiveCard(WidgetRef ref, BiliUpperPageState state,
+      dynamic season, BiliSeasonsSeriesArchives video) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 4),
       child: InkWell(
         onTap: () async {
-              await ref.read(playlistControllerProvider.notifier)
-              .setPlaylist((ref.read(biliUpperPageProvider(uid)).allVideos??[]),'bili_upper_$uid}',song: video);
-          },
+          await ref
+              .read(biliUpperPageProvider(uid).notifier)
+              .playDynamicSeasonSeries(season, state, video: video);
+        },
         child: SizedBox(
           width: 160,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(8)),
+                child: NetworkImageByCache(
+                  width: 160,
+                  height: 90,
+                  imageUrl: video.pic ?? '',
+                  defaultUrl: '',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  video.title ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVideoCard(BuildContext context, WidgetRef ref, AudioInfo video) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: InkWell(
+        onTap: () async {
+          await ref.read(playlistControllerProvider.notifier).setPlaylist(
+              (ref.read(biliUpperPageProvider(uid)).allVideos ?? []),
+              'bili_upper_$uid}',
+              song: video);
+        },
+        child: SizedBox(
+          width: 160,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(8)),
                 child: NetworkImageByCache(
                   width: 160,
                   height: 90,
@@ -388,11 +405,16 @@ class BiliUpperPage extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Text(
-                  video.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12),
+                child: SizedBox(
+                  height: 40,
+                  child: Text(
+                    video.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
             ],

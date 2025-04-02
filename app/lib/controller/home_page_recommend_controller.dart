@@ -23,15 +23,15 @@ class HomePageRecommendState {
     CollectPlaylist? playlistInfo,
   }) {
     return HomePageRecommendState(
-      audioList: audioList ?? this.audioList,
-        playlistInfo: playlistInfo?? this.playlistInfo
-    );
+        audioList: audioList ?? this.audioList,
+        playlistInfo: playlistInfo ?? this.playlistInfo);
   }
 }
 
-final homePageRecommendProvider = StateNotifierProvider.family<HomePageRecommendController, HomePageRecommendState, RecommendParams>(
-  (ref, params) => HomePageRecommendController(ref, params),
-name: 'homePageRecommendProvider');
+final homePageRecommendProvider = StateNotifierProvider.family<
+        HomePageRecommendController, HomePageRecommendState, RecommendParams>(
+    (ref, params) => HomePageRecommendController(ref, params),
+    name: 'homePageRecommendProvider');
 
 class RecommendParams {
   final String id;
@@ -43,78 +43,76 @@ class RecommendParams {
     required this.type,
     required this.title,
   });
-
-
 }
 
-class HomePageRecommendController extends StateNotifier<HomePageRecommendState> {
+class HomePageRecommendController
+    extends StateNotifier<HomePageRecommendState> {
   final Ref ref;
   final RecommendParams params;
 
-  HomePageRecommendController(this.ref, this.params) : super(HomePageRecommendState()) {
+  HomePageRecommendController(this.ref, this.params)
+      : super(HomePageRecommendState()) {
     loadData();
   }
 
   Future<void> loadData() async {
-    if(state.audioList.isEmpty){
+    if (state.audioList.isEmpty) {
       try {
         switch (params.type) {
           case 'bili_season':
             await _getSeasonAudiosSample();
             break;
         }
-
-      } catch (e,a) {
+      } catch (e, a) {
         await Future.microtask(() {
           container.read(commonLoggerProvider.notifier).addLog(
               'HomePageRecommendController load data error ${e.toString()}\n'
-                  '${a.toString()}');
+              '${a.toString()}');
         });
       }
     }
   }
 
   Future<void> playAllAudios() async {
-    switch(params.type){
+    switch (params.type) {
       case 'bili_season':
         await _getSeasonAudiosAll();
         break;
     }
 
-    if(state.playlistInfo != null){
-      await ref.read(playlistControllerProvider.notifier)
-          .setPlaylist(state.playlistInfo!.songs ?? [],state.playlistInfo!.id);
+    if (state.playlistInfo != null) {
+      await ref
+          .read(playlistControllerProvider.notifier)
+          .setPlaylist(state.playlistInfo!.songs ?? [], state.playlistInfo!.id);
     }
   }
 
-  Future<void> playAudios(AudioInfo? song) async{
-    switch(params.type){
+  Future<void> playAudios(AudioInfo? song) async {
+    switch (params.type) {
       case 'bili_season':
         await _getSeasonAudiosAll();
         break;
     }
 
-    if(state.playlistInfo != null){
-      await ref.read(playlistControllerProvider.notifier)
-          .setPlaylist(state.playlistInfo!.songs??[],state.playlistInfo!.id,song:song);
+    if (state.playlistInfo != null) {
+      await ref.read(playlistControllerProvider.notifier).setPlaylist(
+          state.playlistInfo!.songs ?? [], state.playlistInfo!.id,
+          song: song);
     }
   }
 
   Future<void> toCollectPage(BuildContext context) async {
-    switch(params.type){
+    switch (params.type) {
       case 'bili_season':
-        await context.pushToPlaylist( CollectPlaylist(
-              id: 'bili_season_${params.id}',
-              title: params.title,
-              collectCurrentType: CollectTypeEnum.biliSeason,
-              collectSourceType: CollectTypeEnum.biliSeason,
-              onlineId: params.id
-          )
-        );
+        await context.pushToPlaylist(CollectPlaylist(
+            id: 'bili_season_${params.id}',
+            title: params.title,
+            collectCurrentType: CollectTypeEnum.biliSeason,
+            collectSourceType: CollectTypeEnum.biliSeason,
+            onlineId: params.id));
         break;
     }
   }
-
 
   Future<void> _getSeasonAudiosSample() async {
     final list = await BiliCollectsApi.getSeasonsSample(int.parse(params.id));
@@ -124,12 +122,13 @@ class HomePageRecommendController extends StateNotifier<HomePageRecommendState> 
   }
 
   // 获取upper为空的原因是账户未登录
-  Future<void> _getSeasonAudiosAll() async{
-    if(state.playlistInfo == null){
-      final playlistInfo = await BiliCollectsApi.getSeasons(int.parse(params.id));
+  Future<void> _getSeasonAudiosAll() async {
+    if (state.playlistInfo == null) {
+      final playlistInfo =
+          await BiliCollectsApi.getSeasons(int.parse(params.id));
       state = state.copyWith(
         playlistInfo: playlistInfo,
       );
     }
   }
-} 
+}

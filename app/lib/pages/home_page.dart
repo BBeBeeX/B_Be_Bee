@@ -16,8 +16,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homePageProvider);
 
-    return ResponsiveBuilder(
-        builder: (sizingInformation) {
+    return ResponsiveBuilder(builder: (sizingInformation) {
       if (!sizingInformation.isDesktop) {
         return Scaffold(
           appBar: AppBar(
@@ -30,7 +29,8 @@ class HomePage extends ConsumerWidget {
           body: NotificationListener<ScrollNotification>(
             onNotification: (scrollInfo) {
               if (scrollInfo is ScrollEndNotification) {
-                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                if (scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent) {
                   ref.read(homePageProvider.notifier).loadMoreRecommends();
                 }
               }
@@ -62,18 +62,16 @@ class HomePage extends ConsumerWidget {
                       onTap: () async {
                         await Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const SearchPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const SearchPage()),
                         );
                       },
                     ),
                   ),
-
                   const BiliMusicRankWidget(),
-
                   ...state.recommends.map((params) => HomePageRecommendWidget(
-                    params: params,
-                  )),
-
+                        params: params,
+                      )),
                   if (state.isLoading)
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -84,37 +82,34 @@ class HomePage extends ConsumerWidget {
             ),
           ),
         );
-      }else{
+      } else {
         return NotificationListener<ScrollNotification>(
-            onNotification: (scrollInfo) {
-              if (scrollInfo is ScrollEndNotification) {
-                if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-                  ref.read(homePageProvider.notifier).loadMoreRecommends();
-                }
+          onNotification: (scrollInfo) {
+            if (scrollInfo is ScrollEndNotification) {
+              if (scrollInfo.metrics.pixels ==
+                  scrollInfo.metrics.maxScrollExtent) {
+                ref.read(homePageProvider.notifier).loadMoreRecommends();
               }
-              return true;
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-
-                  const BiliMusicRankWidget(),
-
-                  ...state.recommends.map((params) => HomePageRecommendWidget(
-                    params: params,
-                  )),
-
-                  if (state.isLoading)
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                ],
-              ),
+            }
+            return true;
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const BiliMusicRankWidget(),
+                ...state.recommends.map((params) => HomePageRecommendWidget(
+                      params: params,
+                    )),
+                if (state.isLoading)
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  ),
+              ],
             ),
+          ),
         );
       }
-        }
-        );
+    });
   }
 }

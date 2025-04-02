@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../pages/bili/bili_my_page.dart';
+import 'home_page_controller.dart';
 
 class MainPageState {
   final MainTabEnum currentTab;
@@ -31,8 +32,8 @@ class MainPageState {
     MainTabEnum? currentTab,
     PageController? controller,
     bool? isOpenSideBar,
-    List<Page<dynamic>>? historyList,
     int? currentIndex,
+    List<Page<dynamic>>? historyList,
   }) {
     final finalHistoryList = historyList ?? this.historyList;
     final finalCurrentIndex = currentIndex ?? this.currentIndex;
@@ -41,14 +42,15 @@ class MainPageState {
         'currentPages: ${finalHistoryList.sublist(0, finalCurrentIndex + 1).length}');
     print('finalCurrentIndex: $finalCurrentIndex');
     return MainPageState(
-        currentTab: currentTab ?? this.currentTab,
-        controller: controller ?? this.controller,
-        isOpenSideBar: isOpenSideBar ?? this.isOpenSideBar,
-        historyList: finalHistoryList,
-        currentIndex: finalCurrentIndex,
-        canGoBack: finalCurrentIndex > 0,
-        canGoForward: finalCurrentIndex < finalHistoryList.length - 1,
-        currentPages: finalHistoryList.sublist(0, finalCurrentIndex + 1));
+      currentTab: currentTab ?? this.currentTab,
+      controller: controller ?? this.controller,
+      isOpenSideBar: isOpenSideBar ?? this.isOpenSideBar,
+      historyList: finalHistoryList,
+      currentIndex: finalCurrentIndex,
+      canGoBack: finalCurrentIndex > 0,
+      canGoForward: finalCurrentIndex < finalHistoryList.length - 1,
+      currentPages: finalHistoryList.sublist(0, finalCurrentIndex + 1),
+    );
   }
 }
 
@@ -156,6 +158,8 @@ class MainPageController extends StateNotifier<MainPageState> {
 
   void goHome() {
     if (state.currentIndex != 0) {
+      ref.read(homePageProvider.notifier).loadInitialRecommends();
+
       state = state.copyWith(
         currentIndex: 0,
       );
