@@ -123,6 +123,7 @@ _$DownloadStateImpl _$$DownloadStateImplFromJson(Map json) => $checkedCreate(
                   (v as List<dynamic>?)?.map((e) => e as String).toList() ??
                   const []),
           isPaused: $checkedConvert('isPaused', (v) => v as bool? ?? false),
+          isInit: $checkedConvert('isInit', (v) => v as bool? ?? false),
         );
         return val;
       },
@@ -133,6 +134,7 @@ Map<String, dynamic> _$$DownloadStateImplToJson(_$DownloadStateImpl instance) =>
       'tasks': instance.tasks,
       'downloadQueue': instance.downloadQueue,
       'isPaused': instance.isPaused,
+      'isInit': instance.isInit,
     };
 
 _$DownloadTaskImpl _$$DownloadTaskImplFromJson(Map json) => $checkedCreate(
@@ -175,6 +177,7 @@ const _$DownloadStatusEnumEnumMap = {
   DownloadStatusEnum.error: 'error',
   DownloadStatusEnum.canceled: 'canceled',
   DownloadStatusEnum.pending: 'pending',
+  DownloadStatusEnum.init: 'init',
   DownloadStatusEnum.downloadPaused: 'downloadPaused',
   DownloadStatusEnum.downloading: 'downloading',
   DownloadStatusEnum.downloadSuccess: 'downloadSuccess',

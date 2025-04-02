@@ -20,32 +20,34 @@ class DownloadStatusEnumAdapter extends TypeAdapter<DownloadStatusEnum> {
       case 2:
         return DownloadStatusEnum.pending;
       case 3:
-        return DownloadStatusEnum.downloadPaused;
+        return DownloadStatusEnum.init;
       case 4:
-        return DownloadStatusEnum.downloading;
+        return DownloadStatusEnum.downloadPaused;
       case 5:
-        return DownloadStatusEnum.downloadSuccess;
+        return DownloadStatusEnum.downloading;
       case 6:
-        return DownloadStatusEnum.lyricsPaused;
+        return DownloadStatusEnum.downloadSuccess;
       case 7:
-        return DownloadStatusEnum.lyrics;
+        return DownloadStatusEnum.lyricsPaused;
       case 8:
-        return DownloadStatusEnum.lyricsSuccess;
+        return DownloadStatusEnum.lyrics;
       case 9:
-        return DownloadStatusEnum.imagePaused;
+        return DownloadStatusEnum.lyricsSuccess;
       case 10:
-        return DownloadStatusEnum.image;
+        return DownloadStatusEnum.imagePaused;
       case 11:
-        return DownloadStatusEnum.imageSuccess;
+        return DownloadStatusEnum.image;
       case 12:
-        return DownloadStatusEnum.convertPaused;
+        return DownloadStatusEnum.imageSuccess;
       case 13:
-        return DownloadStatusEnum.converting;
+        return DownloadStatusEnum.convertPaused;
       case 14:
-        return DownloadStatusEnum.convertSuccess;
+        return DownloadStatusEnum.converting;
       case 15:
-        return DownloadStatusEnum.completedPaused;
+        return DownloadStatusEnum.convertSuccess;
       case 16:
+        return DownloadStatusEnum.completedPaused;
+      case 17:
         return DownloadStatusEnum.completed;
       default:
         return DownloadStatusEnum.error;
@@ -61,34 +63,36 @@ class DownloadStatusEnumAdapter extends TypeAdapter<DownloadStatusEnum> {
         writer.writeByte(1);
       case DownloadStatusEnum.pending:
         writer.writeByte(2);
-      case DownloadStatusEnum.downloadPaused:
+      case DownloadStatusEnum.init:
         writer.writeByte(3);
-      case DownloadStatusEnum.downloading:
+      case DownloadStatusEnum.downloadPaused:
         writer.writeByte(4);
-      case DownloadStatusEnum.downloadSuccess:
+      case DownloadStatusEnum.downloading:
         writer.writeByte(5);
-      case DownloadStatusEnum.lyricsPaused:
+      case DownloadStatusEnum.downloadSuccess:
         writer.writeByte(6);
-      case DownloadStatusEnum.lyrics:
+      case DownloadStatusEnum.lyricsPaused:
         writer.writeByte(7);
-      case DownloadStatusEnum.lyricsSuccess:
+      case DownloadStatusEnum.lyrics:
         writer.writeByte(8);
-      case DownloadStatusEnum.imagePaused:
+      case DownloadStatusEnum.lyricsSuccess:
         writer.writeByte(9);
-      case DownloadStatusEnum.image:
+      case DownloadStatusEnum.imagePaused:
         writer.writeByte(10);
-      case DownloadStatusEnum.imageSuccess:
+      case DownloadStatusEnum.image:
         writer.writeByte(11);
-      case DownloadStatusEnum.convertPaused:
+      case DownloadStatusEnum.imageSuccess:
         writer.writeByte(12);
-      case DownloadStatusEnum.converting:
+      case DownloadStatusEnum.convertPaused:
         writer.writeByte(13);
-      case DownloadStatusEnum.convertSuccess:
+      case DownloadStatusEnum.converting:
         writer.writeByte(14);
-      case DownloadStatusEnum.completedPaused:
+      case DownloadStatusEnum.convertSuccess:
         writer.writeByte(15);
-      case DownloadStatusEnum.completed:
+      case DownloadStatusEnum.completedPaused:
         writer.writeByte(16);
+      case DownloadStatusEnum.completed:
+        writer.writeByte(17);
     }
   }
 

@@ -15,39 +15,49 @@ class DesktopSideBarWidget extends ConsumerWidget {
 
     return SizedBox(
       width: isOpenSideBar ? 300 : 66,
-      height: MediaQuery.of(context).size.height -150,
-      child:
-      Column(
+      height: MediaQuery.of(context).size.height - 150,
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () async {
-                    await ref.read(mainPageProvider.notifier).toggleOpenSideBar();
-                  },
-                  child: Row(
-                    children: [
-                      Assets.img.logo512.image(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
-                        width: 50,
-                        height: 50,
-                      ),
-                      if(isOpenSideBar)
-                      const SizedBox(width: 8),
-                      if(isOpenSideBar)
-                      Text(
-                        t.widget.library,
-                        style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.8), fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                    ],
+                Tooltip(
+                  message: '折叠音乐库',
+                  child: GestureDetector(
+                    onTap: () async {
+                      await ref
+                          .read(mainPageProvider.notifier)
+                          .toggleOpenSideBar();
+                    },
+                    child: Row(
+                      children: [
+                        Assets.img.logo512.image(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.8),
+                          width: 50,
+                          height: 50,
+                        ),
+                        if (isOpenSideBar) const SizedBox(width: 8),
+                        if (isOpenSideBar)
+                          Text(
+                            t.widget.library,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.8),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-                if(isOpenSideBar)
-                const Spacer(),
-                if(isOpenSideBar)
-                  DesktopSideBarAddPopupMenuButtonWidget(),
+                if (isOpenSideBar) const Spacer(),
+                if (isOpenSideBar) DesktopSideBarAddPopupMenuButtonWidget(),
                 // if(!isOpenSideBar)
                 // IconButton(
                 //   icon: const Icon(Icons.arrow_back),
@@ -58,17 +68,9 @@ class DesktopSideBarWidget extends ConsumerWidget {
               ],
             ),
           ),
-
-          Expanded(
-              child: CollectsListWidget(isSideBar:true)
-          ),
+          Expanded(child: CollectsListWidget(isSideBar: true)),
         ],
       ),
-
-
-
-
-
     );
   }
 }

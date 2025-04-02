@@ -11,10 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CollectsListWidget extends ConsumerWidget {
   final bool isSideBar;
 
-  const CollectsListWidget({
-    super.key,
-    this.isSideBar = false
-  });
+  const CollectsListWidget({super.key, this.isSideBar = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,68 +23,84 @@ class CollectsListWidget extends ConsumerWidget {
     final isSearching = ref.watch(collectsPageProvider).isSearching;
     final isOpenSideBar = ref.watch(mainPageProvider).isOpenSideBar;
 
-
     return CustomScrollView(
       slivers: [
         // 列表头
         SliverToBoxAdapter(
-          child:
-    isOpenSideBar?
-          Container(
-            padding: const EdgeInsets.all(4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // 搜索区域
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: collectsState.isSearching ? 200 : 40,
-                  height: 40,
-                  child: collectsState.isSearching
-                      ? TextField(
-                          autofocus: true,
-                          onChanged: (value) {
-                            ref.read(collectsPageProvider.notifier).setSearchText(value);
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                            hintText: t.widget.searchCollect,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide: BorderSide(
-                                color: Theme.of(context).dividerColor,
+          child: isOpenSideBar
+              ? Container(
+                  padding: const EdgeInsets.all(4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 搜索区域
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: collectsState.isSearching ? 200 : 40,
+                        height: 40,
+                        child: collectsState.isSearching
+                            ? TextField(
+                                autofocus: true,
+                                onChanged: (value) {
+                                  ref
+                                      .read(collectsPageProvider.notifier)
+                                      .setSearchText(value);
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  hintText: t.widget.searchCollect,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    borderSide: BorderSide(
+                                      color: Theme.of(context).dividerColor,
+                                    ),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      ref
+                                          .read(collectsPageProvider.notifier)
+                                          .toggleSearch();
+                                    },
+                                  ),
+                                ),
+                              )
+                            : IconButton(
+                                tooltip: '在音乐库中搜索',
+                                icon: Icon(
+                                  Icons.search,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.8),
+                                ),
+                                onPressed: () {
+                                  ref
+                                      .read(collectsPageProvider.notifier)
+                                      .toggleSearch();
+                                },
                               ),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                ref.read(collectsPageProvider.notifier).toggleSearch();
-                              },
-                            ),
-                          ),
-                        )
-                      : IconButton(
-                          icon:  Icon(Icons.search,color: Theme.of(context).colorScheme.primary.withOpacity(0.8),),
-                          onPressed: () {
-                            ref.read(collectsPageProvider.notifier).toggleSearch();
-                          },
-                        ),
-                ),
+                      ),
 
-                const SizedBox(width: 16),
+                      const SizedBox(width: 16),
 
-                // 排序下拉菜单
-                CollectsListWidgetSortPopupMenuButtonWidget(isSearching: isSearching, collectsStateSortMode: collectsState.sortMode,),
+                      // 排序下拉菜单
+                      CollectsListWidgetSortPopupMenuButtonWidget(
+                        isSearching: isSearching,
+                        collectsStateSortMode: collectsState.sortMode,
+                      ),
 
-                // IconButton(
-                //   icon: const Icon(Icons.grid_view),
-                //   onPressed: () {
-                //     // 切换视图
-                //   },
-                // ),
-              ],
-            ),
-          ):null,
+                      // IconButton(
+                      //   icon: const Icon(Icons.grid_view),
+                      //   onPressed: () {
+                      //     // 切换视图
+                      //   },
+                      // ),
+                    ],
+                  ),
+                )
+              : null,
         ),
 
         // 原有的列表内容
@@ -117,37 +130,31 @@ class CollectsListWidget extends ConsumerWidget {
 
               // 更新歌单顺序
               await ref.read(collectsProvider.notifier).reorderPlaylists(
-                normalPlaylists.map((p) => p.id).toList(),
-              );
+                    normalPlaylists.map((p) => p.id).toList(),
+                  );
             },
-            itemBuilder: (context, index) =>
-                CollectsPlaylistTile(
-                  key: ValueKey(normalPlaylists[index].id),
-                  playlist: normalPlaylists[index],
-                  isDraggable: true,
-                  index: index,
-                  isSideBar: isSideBar,
-                ),
+            itemBuilder: (context, index) => CollectsPlaylistTile(
+              key: ValueKey(normalPlaylists[index].id),
+              playlist: normalPlaylists[index],
+              isDraggable: true,
+              index: index,
+              isSideBar: isSideBar,
+            ),
           ),
 
-        if(isOpenSideBar)
+        if (isOpenSideBar)
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: OutlinedButton.icon(
-                onPressed: () async => InputNewCollectsDialog.open(context, ref),
+                onPressed: () async =>
+                    InputNewCollectsDialog.open(context, ref),
                 icon: const Icon(Icons.add),
                 label: Text(t.collectsPage.createCollects),
               ),
             ),
           ),
-
-
       ],
     );
   }
-
-
-
-
 }

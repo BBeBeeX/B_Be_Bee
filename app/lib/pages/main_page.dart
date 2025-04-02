@@ -12,6 +12,10 @@ import 'package:b_be_bee_app/widget/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../gen/assets.gen.dart';
+import '../model/enum/main_tab_enum.dart';
+import '../widget/music_player_pad_widget.dart';
+
 class MainPage extends ConsumerWidget {
   const MainPage();
 
@@ -22,7 +26,7 @@ class MainPage extends ConsumerWidget {
 
     return ResponsiveBuilder(
       builder: (sizingInformation) {
-        if (!sizingInformation.isDesktop) {
+        if (sizingInformation.isMobile) {
           return Scaffold(
             body: SafeArea(
               bottom: false,
@@ -65,6 +69,127 @@ class MainPage extends ConsumerWidget {
               },
             ),
           );
+        } else if (sizingInformation.isTabletOrDesktop &&
+            !sizingInformation.isDesktop) {
+          List<Widget> buildEnumWidgets() {
+            return MainTabEnum.values.map<Widget>((tab) {
+              return InkWell(
+                onTap: () async {
+                  await ref
+                      .read(mainPageProvider.notifier)
+                      .changeTab(MainTabEnum.values[tab.index]);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: 3,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: state.currentTab.index == tab.index
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(tab.icon),
+                          const SizedBox(width: 8),
+                          Text(tab.label),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }).toList();
+          }
+
+          return Scaffold(
+              body: Row(
+            children: [
+              Container(
+                  width: 200,
+                  height: MediaQuery.of(context).size.height,
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'B Be Bee',
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Assets.img.logo512.image(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(0.8),
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                                Column(
+                                  children: buildEnumWidgets(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              SizedBox(
+                                  width: 200,
+                                  height: 400,
+                                  child: MusicPlayerPadWidget())
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
+              Expanded(
+                child: SafeArea(
+                  left: sizingInformation.isMobile,
+                  child: Stack(
+                    children: [
+                      PageView(
+                        controller: state.controller,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: const [
+                          HomePage(),
+                          CollectsPage(),
+                          MyBiliPage(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ));
         } else {
           final page = ref.watch(mainPageProvider).currentPages;
 

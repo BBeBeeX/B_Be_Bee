@@ -14,6 +14,7 @@ class DownloadState with _$DownloadState {
     @HiveField(0) @Default({}) Map<String, DownloadTask> tasks,
     @HiveField(1) @Default([]) List<String> downloadQueue,
     @HiveField(2) @Default(false) bool isPaused,
+    @Default(false) bool isInit,
   }) = _DownloadState;
 
   factory DownloadState.fromJson(Map<String, dynamic> json) =>

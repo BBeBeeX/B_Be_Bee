@@ -136,6 +136,7 @@ class PlaylistController extends StateNotifier<PlaylistState> {
     final nextIndex = (currentIndex + 1) % values.length;
     state = state.copyWith(repeatMode: values[nextIndex]);
     await HiveHelper.setRepeatMode(values[nextIndex]);
+    ToastUtil.show('当前播放顺序为 ${values[nextIndex].label}');
   }
 
   // 播放列表中的指定歌曲

@@ -18,9 +18,14 @@ import 'package:b_be_bee_app/widget/slider_overlay_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_socks_proxy/socks_proxy.dart';
+import 'package:rhttp/rhttp.dart';
 import 'package:routerino/routerino.dart';
 
 import '../../model/enum/contrast_color_enum.dart';
+import '../../model/enum/proxy_type_enum.dart';
+import '../../util/rhttp_utils.dart';
+import '../play_statistics_page.dart';
 
 class SettingsPage extends ConsumerWidget {
   final bool hasBackIcon;
@@ -407,17 +412,110 @@ class SettingsPage extends ConsumerWidget {
                     onChanged: (str) async => controller.setDestination(str))
             ],
           ),
-          SettingsSection(
-            title: t.settingsPage.network.title,
-            padding: const EdgeInsets.only(bottom: 0),
-            children: [
-              if (settings.advancedSettings)
+          if (settings.advancedSettings)
+            SettingsSection(
+              title: t.settingsPage.network.title,
+              padding: const EdgeInsets.only(bottom: 0),
+              children: [
                 EditableTextEntry(
                     label: 'User-agent',
                     value: settings.userAgent,
                     onChanged: (str) async => controller.setUserAgent(str)),
-            ],
-          ),
+                SettingsEntry(
+                  label: '代理类型',
+                  child: CustomDropdownButton<ProxyTypeEnum>(
+                    value: settings.proxyType,
+                    items: ProxyTypeEnum.values.map((theme) {
+                      return DropdownMenuItem(
+                        value: theme,
+                        alignment: Alignment.center,
+                        child: Text(theme.label),
+                      );
+                    }).toList(),
+                    onChanged: (type) async => controller.setProxyType(type),
+                  ),
+                ),
+                Visibility(
+                  visible: settings.proxyType != ProxyTypeEnum.none,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: AnimatedOpacity(
+                      opacity:
+                          settings.proxyType != ProxyTypeEnum.none ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 500),
+                      child: Column(
+                        children: [
+                          TextEntry(
+                            label: '主机',
+                            value: settings.proxyHost,
+                            onChanged: (value) =>
+                                controller.setProxyHost(value),
+                          ),
+                          TextEntry(
+                            label: '端口',
+                            value: settings.proxyPort.toString(),
+                            onChanged: (value) =>
+                                controller.setProxyPort(int.parse(value)),
+                          ),
+                          TextEntry(
+                            label: '用户名',
+                            value: settings.proxyUsername,
+                            onChanged: (value) =>
+                                controller.setProxyUsername(value),
+                          ),
+                          if (settings.proxyType != ProxyTypeEnum.SOCKS4)
+                            TextEntry(
+                              label: '密码',
+                              value: settings.proxyPassword,
+                              onChanged: (value) =>
+                                  controller.setProxyPassword(value),
+                            ),
+                        ],
+                      )),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    String cert = '';
+                    final username = settings.proxyUsername ?? '';
+                    final password = settings.proxyPassword ?? '';
+
+                    if (username.isNotEmpty && password.isNotEmpty) {
+                      cert = '$username:$password@';
+                    }
+
+                    switch (settings.proxyType) {
+                      case ProxyTypeEnum.HTTP:
+                        SocksProxy.initProxy(
+                            proxy:
+                                'PROXY $cert${settings.proxyHost}:${settings.proxyPort}');
+                        break;
+                      case ProxyTypeEnum.SOCKS4:
+                        SocksProxy.initProxy(
+                            proxy:
+                                'SOCKS4 ${username.isNotEmpty ? '$username@' : null}${settings.proxyHost}:${settings.proxyPort}');
+                        break;
+                      case ProxyTypeEnum.SOCKS5:
+                        SocksProxy.initProxy(
+                            proxy:
+                                'SOCKS5 $cert${settings.proxyHost}:${settings.proxyPort}');
+                        break;
+                      case ProxyTypeEnum.none:
+                        SocksProxy.initProxy(proxy: 'DIRECT');
+                    }
+                  },
+                  child: Text("更新代理"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HttpTextResponse response =
+                        await RhttpUtils().get('http://www.google.com');
+
+                    print(response);
+                  },
+                  child: Text("test proxy"),
+                ),
+              ],
+            ),
           const SizedBox(height: 16),
           AccountEntryWidget(),
           const SizedBox(height: 16),
@@ -430,6 +528,13 @@ class SettingsPage extends ConsumerWidget {
                 buttonLabel: t.general.open,
                 onTap: () async {
                   await context.push(() => const AboutPage());
+                },
+              ),
+              ButtonEntry(
+                label: '播放统计',
+                buttonLabel: t.general.open,
+                onTap: () async {
+                  await context.push(() => const PlayStatisticsPage());
                 },
               ),
               FutureBuilder<(int, String)>(

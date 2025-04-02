@@ -1,11 +1,10 @@
-
-
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:b_be_bee_app/common/api_constants.dart';
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/config/init.dart';
+import 'package:b_be_bee_app/model/enum/proxy_type_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/provider/logging/http_logs_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -19,32 +18,29 @@ class RhttpUtils {
   static final RhttpUtils _instance = RhttpUtils._internal();
 
   factory RhttpUtils() => _instance;
-  static late final RhttpClient _client;
+  static late RhttpClient _client;
   static late final CookieJar cookieJar;
-  static String cookieString ='';
-  final Map<String, CancelToken> _activeTokens = {};  // 用于保存活跃的请求的 CancelToken
+  static String cookieString = '';
+  final Map<String, CancelToken> _activeTokens = {};
 
   RhttpUtils._internal() {
     _client = createRhttpClient();
   }
 
   Future<void> init() async {
-
     if (kIsWeb) {
       cookieJar = CookieJar();
     } else {
-      var cookiePath = '${(await getApplicationSupportDirectory())
-          .path}/.cookies/';
+      var cookiePath =
+          '${(await getApplicationSupportDirectory()).path}/.cookies/';
       cookieJar = PersistCookieJar(storage: FileStorage(cookiePath));
     }
 
     _initCookies();
   }
 
-
-  Future <void> _initCookies() async {
-    if ((await cookieJar
-        .loadForRequest(Uri.parse(ApiConstants.bilibiliBase)))
+  Future<void> _initCookies() async {
+    if ((await cookieJar.loadForRequest(Uri.parse(ApiConstants.bilibiliBase)))
         .isEmpty) {
       try {
         await _client.get(ApiConstants.bilibiliBase); //获取默认cookie
@@ -63,7 +59,7 @@ class RhttpUtils {
     }
   }
 
-  Future<void> resetCookies() async{
+  Future<void> resetCookies() async {
     clearCookies();
     final respsonse = await _client.get(ApiConstants.bilibiliBase);
 
@@ -71,14 +67,38 @@ class RhttpUtils {
   }
 
   Future<String> getCookiesString() async {
-    if(cookieString.isEmpty){
-      List<Cookie> cookies = await cookieJar.loadForRequest(Uri.parse(ApiConstants.bilibiliBase));
-      cookieString = cookies.map((cookie) => '${cookie.name}=${cookie.value}').join('; ');
+    if (cookieString.isEmpty) {
+      List<Cookie> cookies =
+          await cookieJar.loadForRequest(Uri.parse(ApiConstants.bilibiliBase));
+      cookieString =
+          cookies.map((cookie) => '${cookie.name}=${cookie.value}').join('; ');
     }
     return cookieString;
   }
 
-  Future<HttpTextResponse> get(String url,{
+  Future<void> setProxy(ProxyTypeEnum type,
+      {String? host, String? port, String? username, String? password}) async {
+    switch (type) {
+      case ProxyTypeEnum.none:
+        _client = await RhttpClient.create(
+          settings: const ClientSettings(
+            proxySettings: ProxySettings.noProxy(),
+          ),
+        );
+        break;
+      case ProxyTypeEnum.HTTP:
+      // TODO: Handle this case.
+      case ProxyTypeEnum.SOCKS4:
+      // TODO: Handle this case.
+      case ProxyTypeEnum.SOCKS5:
+      // TODO: Handle this case.
+    }
+
+    _client = createRhttpClient();
+  }
+
+  Future<HttpTextResponse> get(
+    String url, {
     Map<String, String>? query,
     HttpHeaders? headers,
   }) async {
@@ -89,9 +109,13 @@ class RhttpUtils {
     });
     headers = headers != null
         ? headers
-            .copyWith(name: HttpHeaderName.userAgent, value: Constants.defaultUserAgent)
-            .copyWith(name: HttpHeaderName.referer, value: ApiConstants.bilibiliBase)
-            .copyWith(name: HttpHeaderName.cookie, value: await getCookiesString())
+            .copyWith(
+                name: HttpHeaderName.userAgent,
+                value: Constants.defaultUserAgent)
+            .copyWith(
+                name: HttpHeaderName.referer, value: ApiConstants.bilibiliBase)
+            .copyWith(
+                name: HttpHeaderName.cookie, value: await getCookiesString())
         : defaultHttpHeaders;
 
     final response = await _client.get(
@@ -102,7 +126,8 @@ class RhttpUtils {
     return response;
   }
 
-  Future<HttpTextResponse> post(String url,{
+  Future<HttpTextResponse> post(
+    String url, {
     Map<String, String> query = const {},
     // required Map<String, dynamic> data,
     HttpHeaders? headers,
@@ -114,9 +139,13 @@ class RhttpUtils {
     });
     headers = headers != null
         ? headers
-        .copyWith(name: HttpHeaderName.userAgent, value: Constants.defaultUserAgent)
-        .copyWith(name: HttpHeaderName.referer, value: ApiConstants.bilibiliBase)
-        .copyWith(name: HttpHeaderName.cookie, value: await getCookiesString())
+            .copyWith(
+                name: HttpHeaderName.userAgent,
+                value: Constants.defaultUserAgent)
+            .copyWith(
+                name: HttpHeaderName.referer, value: ApiConstants.bilibiliBase)
+            .copyWith(
+                name: HttpHeaderName.cookie, value: await getCookiesString())
         : defaultHttpHeaders;
 
     final response = await _client.post(
@@ -129,12 +158,11 @@ class RhttpUtils {
   }
 
   //cancelToken.cancel();
-  Future<void> downloadBiliAudio({
-    required String url,
-    required void Function(double progress) onSendProgress,
-    required String id,
-    required String tempPath
-  }) async {
+  Future<void> downloadBiliAudio(
+      {required String url,
+      required void Function(double progress) onSendProgress,
+      required String id,
+      required String tempPath}) async {
     CancelToken cancelToken = CancelToken();
     _activeTokens[id] = cancelToken;
 
@@ -152,23 +180,28 @@ class RhttpUtils {
         cancelToken: cancelToken,
       );
 
-      if (response.statusCode == HttpStatus.ok ) {
+      if (response.statusCode == HttpStatus.ok) {
         // 文件内容流
         final file = File(tempPath);
         await file.writeAsBytes(response.body);
 
-
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('download file success, save path:$tempPath');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('download file success, save path:$tempPath');
         });
       } else {
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('download file fail, code:${response.statusCode}');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('download file fail, code:${response.statusCode}');
         });
       }
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('download file fail, Request error: $e');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('download file fail, Request error: $e');
       });
     }
     _activeTokens.remove(id);
@@ -179,40 +212,43 @@ class RhttpUtils {
     required String savePath,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
-  })async{
+  }) async {
     try {
-      container.read(commonLoggerProvider.notifier).addLog('start download file $url\n'
-          'savePath: $savePath');
+      container
+          .read(commonLoggerProvider.notifier)
+          .addLog('start download file $url\n'
+              'savePath: $savePath');
 
-      final response = await _client.getBytes(url
-      ,onReceiveProgress: onReceiveProgress,
-        cancelToken: cancelToken
-      );
+      final response = await _client.getBytes(url,
+          onReceiveProgress: onReceiveProgress, cancelToken: cancelToken);
 
-      if (response.statusCode == HttpStatus.ok ) {
+      if (response.statusCode == HttpStatus.ok) {
         // 文件内容流
         final file = File(savePath);
         await file.writeAsBytes(response.body);
 
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('download file $url success, save path:$savePath');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('download file $url success, save path:$savePath');
         });
         return response.body;
       } else {
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('download file $url fail, code:${response.statusCode}');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('download file $url fail, code:${response.statusCode}');
         });
       }
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('download file $url fail, Request error: $e');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('download file $url fail, Request error: $e');
       });
     }
     return null;
   }
-
-
-
 
   // 关闭rhttp流
   void cancelRequests(String requestId) {
@@ -223,17 +259,23 @@ class RhttpUtils {
   }
 }
 
-RhttpClient createRhttpClient() {
+RhttpClient createRhttpClient(
+    {ProxyTypeEnum type = ProxyTypeEnum.none,
+    String? host,
+    String? port,
+    String? username,
+    String? password}) {
   return RhttpClient.createSync(
     settings: ClientSettings(
       timeoutSettings: TimeoutSettings(
         connectTimeout: const Duration(seconds: 5),
       ),
-      // proxySettings: ProxySettings.list([
-      //   StaticProxy(
-      //     url: 'http://localhost:8080',
-      //     condition: ProxyCondition.onlyHttp,
-      //   ),
+      // proxySettings: switch (type) {
+      //   ProxyTypeEnum.none => ProxySettings.noProxy(),
+      //   ProxyTypeEnum.HTTP => ProxySettings.proxy('http://localhost:8080'),
+      //   ProxyTypeEnum.SOCKS4 => throw UnimplementedError(),
+      //   ProxyTypeEnum.SOCKS5 => throw UnimplementedError(),
+      // },
       //   StaticProxy(
       //     url: 'http://localhost:8081',
       //     condition: ProxyCondition.onlyHttps,
@@ -253,21 +295,20 @@ class RhttpInterceptor extends Interceptor {
 
   @override
   Future<InterceptorResult<HttpRequest>> beforeRequest(
-      HttpRequest request,
-      ) async {
-
-    return Interceptor.next(
-        request
-            .addHeader(name: HttpHeaderName.acceptEncoding, value: 'gzip')
-            .addHeader(name: HttpHeaderName.contentType, value: 'application/json')
-    );
+    HttpRequest request,
+  ) async {
+    return Interceptor.next(request
+        .addHeader(name: HttpHeaderName.acceptEncoding, value: 'gzip')
+        .addHeader(
+            name: HttpHeaderName.contentType, value: 'application/json'));
   }
 
   @override
   Future<InterceptorResult<HttpResponse>> afterResponse(
-      HttpResponse response,
-      ) async {
-    container.read(httpLogsProvider.notifier).addLog('rhttp request: ${response.request.url} , status: ${response.statusCode}');
+    HttpResponse response,
+  ) async {
+    container.read(httpLogsProvider.notifier).addLog(
+        'rhttp request: ${response.request.url} , status: ${response.statusCode}');
 
     response.headers
         .where((header) => header.$1.toLowerCase() == 'set-cookie')
@@ -286,14 +327,13 @@ class RhttpInterceptor extends Interceptor {
 
   @override
   Future<InterceptorResult<RhttpException>> onError(
-      RhttpException exception,
-      ) async {
-
+    RhttpException exception,
+  ) async {
     if (exception is RhttpStatusCodeException && exception.statusCode == 401) {
       // Log out
     }
 
-    if (exception is RhttpCancelException ) {
+    if (exception is RhttpCancelException) {
       // post流取消
     }
 
@@ -317,11 +357,11 @@ class RefreshTokenInterceptor extends RetryInterceptor {
 
   @override
   Future<HttpRequest?> beforeRetry(
-      int attempt,
-      HttpRequest request,
-      HttpResponse? response,
-      RhttpException? exception,
-      ) async {
+    int attempt,
+    HttpRequest request,
+    HttpResponse? response,
+    RhttpException? exception,
+  ) async {
     // ref.read(authProvider.notifier).state = await refresh();
     return null;
   }

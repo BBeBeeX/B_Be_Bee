@@ -2,7 +2,6 @@ import 'package:b_be_bee_app/config/theme.dart';
 import 'package:b_be_bee_app/widget/dialogs/change_settings_destination_path_dialog.dart';
 import 'package:flutter/material.dart';
 
-
 class SettingsEntry extends StatelessWidget {
   final String label;
   final Widget child;
@@ -60,10 +59,10 @@ class BooleanEntry extends StatelessWidget {
               child: Switch(
                 value: value,
                 onChanged: onChanged,
-
                 activeTrackColor: theme.colorScheme.secondary.withOpacity(0.6),
                 activeColor: theme.colorScheme.onSecondary,
-                inactiveThumbColor: theme.colorScheme.secondary.withOpacity(0.6),
+                inactiveThumbColor:
+                    theme.colorScheme.secondary.withOpacity(0.6),
                 inactiveTrackColor: theme.colorScheme.surface,
               ),
             ),
@@ -91,7 +90,8 @@ class ButtonEntry extends StatelessWidget {
       label: label,
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+          backgroundColor:
+              Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
           foregroundColor: Theme.of(context).colorScheme.onSurface,
         ),
@@ -126,11 +126,13 @@ class EditableTextEntry extends StatelessWidget {
       label: label,
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+          backgroundColor:
+              Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
           foregroundColor: Theme.of(context).colorScheme.onSurface,
         ),
-        onPressed: () async => ChangeSettingsDestinationPathDialog.open(context,label,value,onChanged),
+        onPressed: () async => ChangeSettingsDestinationPathDialog.open(
+            context, label, value, onChanged),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Text(
@@ -143,7 +145,41 @@ class EditableTextEntry extends StatelessWidget {
       ),
     );
   }
+}
 
+class TextEntry extends StatelessWidget {
+  final String label;
+  final String value;
+  final ValueChanged<String> onChanged;
+
+  const TextEntry({
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SettingsEntry(
+      label: label,
+      child: TextField(
+        controller: TextEditingController(text: value),
+        style: TextStyle(
+          backgroundColor:
+              Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+          // shape: RoundedRectangleBorder(borderRadius: borderRadius),
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        cursorRadius: Radius.circular(5),
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+          border: OutlineInputBorder(borderRadius: borderRadius),
+          hintText: label,
+        ),
+      ),
+    );
+  }
 }
 
 class SettingsSection extends StatelessWidget {

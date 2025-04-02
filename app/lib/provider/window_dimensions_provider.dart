@@ -10,6 +10,9 @@ import 'package:screen_retriever/screen_retriever.dart';
 const Size _minimalSize = Size(400, 500);
 const Size _defaultSize = Size(900, 600);
 
+// const Size _minimalSize = Size(1170, 620);
+// const Size _defaultSize = Size(1170, 620);
+
 class WindowDimensions {
   final Offset position;
   final Size size;
@@ -25,27 +28,31 @@ final windowDimensionProvider = Provider<WindowDimensionsController>((ref) {
 });
 
 class WindowDimensionsController {
-
   WindowDimensionsController();
 
   Future<void> initDimensionsConfiguration() async {
-
     final useSavedPlacement = HiveHelper.getSaveWindowPlacement();
     final persistedDimensions = HiveHelper.getWindowLastDimensions();
     Size initSize = _defaultSize;
     Offset position = Offset(0, 0);
 
-    if (useSavedPlacement && persistedDimensions != null && await isInScreenBounds(persistedDimensions.position, persistedDimensions.size)) {
+    if (useSavedPlacement &&
+        persistedDimensions != null &&
+        await isInScreenBounds(
+            persistedDimensions.position, persistedDimensions.size)) {
       initSize = persistedDimensions.size;
       position = persistedDimensions.position;
     } else {
       final primaryDisplay = await ScreenRetriever.instance.getPrimaryDisplay();
-      final hasEnoughWidthForDefaultSize = primaryDisplay.digestedSize.width >= 1200;
+      final hasEnoughWidthForDefaultSize =
+          primaryDisplay.digestedSize.width >= 1200;
       initSize = hasEnoughWidthForDefaultSize ? _defaultSize : _minimalSize;
     }
 
     await Future.microtask(() {
-      container.read(commonLoggerProvider.notifier).addLog('start: hidden in Tray');
+      container
+          .read(commonLoggerProvider.notifier)
+          .addLog('start: hidden in Tray');
     });
     doWhenWindowReady(() {
       appWindow.minSize = _minimalSize;
@@ -56,12 +63,16 @@ class WindowDimensionsController {
     });
   }
 
-  Future<bool> isInScreenBounds(Offset windowPosition, [Size? windowSize]) async {
+  Future<bool> isInScreenBounds(Offset windowPosition,
+      [Size? windowSize]) async {
     final displays = await ScreenRetriever.instance.getAllDisplays();
-    final sumWidth = displays.fold(0.0, (previousValue, element) => previousValue + element.digestedSize.width);
+    final sumWidth = displays.fold(0.0,
+        (previousValue, element) => previousValue + element.digestedSize.width);
     final maxHeight = displays.fold(
       0.0,
-      (previousValue, element) => previousValue > element.digestedSize.height ? previousValue : element.digestedSize.height,
+      (previousValue, element) => previousValue > element.digestedSize.height
+          ? previousValue
+          : element.digestedSize.height,
     );
     final minX = displays.fold(0.0, (previousValue, element) {
       final currX = element.visiblePosition?.dx ?? 0;
@@ -71,8 +82,10 @@ class WindowDimensionsController {
       final currY = element.visiblePosition?.dy ?? 0;
       return currY < previousValue ? currY : previousValue;
     });
-    final checkX = windowPosition.dx >= minX && windowPosition.dx + (windowSize?.width ?? 0) <= sumWidth;
-    final checkY = windowPosition.dy >= minY && windowPosition.dy + (windowSize?.height ?? 0) <= maxHeight;
+    final checkX = windowPosition.dx >= minX &&
+        windowPosition.dx + (windowSize?.width ?? 0) <= sumWidth;
+    final checkY = windowPosition.dy >= minY &&
+        windowPosition.dy + (windowSize?.height ?? 0) <= maxHeight;
 
     return checkX && checkY;
   }

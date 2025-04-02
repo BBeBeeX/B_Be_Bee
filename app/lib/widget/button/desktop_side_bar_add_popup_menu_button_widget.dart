@@ -7,20 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
-class DesktopSideBarAddPopupMenuButtonWidget extends ConsumerWidget{
+class DesktopSideBarAddPopupMenuButtonWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton<String>(
-      icon:  Icon(Icons.add,color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
+      tooltip: '创建/导入/下载歌曲或歌单',
+      icon: Icon(Icons.add,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
       onSelected: (value) async {
         if (value == 'add') {
           await InputNewCollectsDialog.open(context, ref);
         } else if (value == 'clipboard') {
           await ClipboardUtil.getClipboard(context, ref);
-        } else if(value == 'local'){
-          await context.push(()=>LocalAudioBrowserPage());
-        } else if(value == 'download'){
-          await context.push(()=>DownloadManagerPage());
+        } else if (value == 'local') {
+          await context.push(() => LocalAudioBrowserPage());
+        } else if (value == 'download') {
+          await context.push(() => DownloadManagerPage());
         }
       },
       itemBuilder: (BuildContext context) {
@@ -57,5 +59,4 @@ class DesktopSideBarAddPopupMenuButtonWidget extends ConsumerWidget{
       },
     );
   }
-
 }

@@ -77,6 +77,7 @@ class DesktopBottomBarWidget extends ConsumerWidget {
                   if (checkPlatform(
                       [TargetPlatform.windows, TargetPlatform.linux]))
                     IconButton(
+                        tooltip: '当前播放设备',
                         icon: Icon(Icons.speaker, size: 24),
                         color: Theme.of(context)
                             .colorScheme
@@ -85,6 +86,7 @@ class DesktopBottomBarWidget extends ConsumerWidget {
                         onPressed: () async =>
                             context.push(() => AudioDevicesPage())),
                   IconButton(
+                      tooltip: '队列',
                       icon: Icon(Icons.queue_music, size: 24),
                       color: Theme.of(context)
                           .colorScheme

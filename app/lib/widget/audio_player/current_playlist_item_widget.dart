@@ -13,6 +13,7 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
   final PlaylistState playlist;
   final bool isBottom;
   final Color? fontColor;
+  final double? fontSize;
 
   const CurrentPlaylistItemWidget(
       {super.key,
@@ -21,7 +22,8 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
       required this.title,
       required this.artistName,
       required this.playlist,
-      this.fontColor});
+      this.fontColor,
+      this.fontSize});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,7 +60,7 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
                   style: TextStyle(
                     color: fontColor ?? Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
-                    fontSize: isBottom ? 16.0 : 24.0,
+                    fontSize: fontSize ?? (isBottom ? 16.0 : 24.0),
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -67,7 +69,7 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
                   style: TextStyle(
                     color: fontColor?.withOpacity(0.7) ??
                         Theme.of(context).colorScheme.primary.withOpacity(0.7),
-                    fontSize: 16,
+                    fontSize: fontSize ?? 16,
                   ),
                   textAlign: TextAlign.left,
                   numberOfReps: 10,
@@ -92,6 +94,7 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
                     .toggleDefaultPlaylist(playlist.currentSong!);
               }
             },
+            tooltip: '加入/移除收藏',
           )
         ],
       ),

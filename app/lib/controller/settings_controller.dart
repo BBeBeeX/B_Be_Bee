@@ -17,6 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:routerino/routerino.dart';
 
 import '../model/enum/contrast_color_enum.dart';
+import '../model/enum/proxy_type_enum.dart';
 
 final settingsProvider =
     StateNotifierProvider<SettingsController, SettingsState>((ref) {
@@ -62,6 +63,11 @@ class SettingsController extends StateNotifier<SettingsState> {
       equalizerValue: HiveHelper.getEnableEqualizerValue(),
       isEnableAudioVisual: HiveHelper.isEnableAudioVisual(),
       userAgent: HiveHelper.getUserAgent(),
+      proxyType: await HiveHelper.getProxyType(),
+      proxyHost: HiveHelper.getProxyHost(),
+      proxyPort: HiveHelper.getProxyPort(),
+      proxyUsername: HiveHelper.getProxyUsername(),
+      proxyPassword: HiveHelper.getProxyPassword(),
       advancedSettings: HiveHelper.getAdvancedSettingsEnabled(),
     );
   }
@@ -266,6 +272,33 @@ class SettingsController extends StateNotifier<SettingsState> {
   Future<void> setUserAgent(String userAgent) async {
     state = state.copyWith(userAgent: userAgent);
     await HiveHelper.setUserAgent(userAgent);
+  }
+
+  Future<void> setProxyType(ProxyTypeEnum proxyType) async {
+    state = state.copyWith(
+      proxyType: proxyType,
+    );
+    await HiveHelper.setProxyType(proxyType);
+  }
+
+  Future<void> setProxyHost(String proxyHost) async {
+    state = state.copyWith(proxyHost: proxyHost);
+    await HiveHelper.setProxyHost(proxyHost);
+  }
+
+  Future<void> setProxyPort(int proxyPort) async {
+    state = state.copyWith(proxyPort: proxyPort);
+    await HiveHelper.setProxyPort(proxyPort);
+  }
+
+  Future<void> setProxyUsername(String proxyUsername) async {
+    state = state.copyWith(proxyUsername: proxyUsername);
+    await HiveHelper.setProxyUsername(proxyUsername);
+  }
+
+  Future<void> setProxyPassword(String proxyPassword) async {
+    state = state.copyWith(proxyPassword: proxyPassword);
+    await HiveHelper.setProxyPassword(proxyPassword);
   }
 
   Future<void> onToggleAutoUpdate() async {

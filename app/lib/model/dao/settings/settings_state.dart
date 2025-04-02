@@ -65,6 +65,7 @@ import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:flutter/material.dart';
 
 import '../../enum/contrast_color_enum.dart';
+import '../../enum/proxy_type_enum.dart';
 
 class SettingsState {
   ///通用
@@ -105,6 +106,11 @@ class SettingsState {
 
   ///网络
   final String userAgent;
+  final ProxyTypeEnum proxyType;
+  final String proxyHost;
+  final int proxyPort;
+  final String proxyUsername;
+  final String proxyPassword;
 
   /// 均衡器
 
@@ -160,6 +166,11 @@ class SettingsState {
     this.equalizerValue = const [0, 0, 0, 0, 0],
     this.isEnableAudioVisual = false,
     this.userAgent = Constants.defaultUserAgent,
+    this.proxyType = ProxyTypeEnum.none,
+    this.proxyHost = '',
+    this.proxyPort = 0,
+    this.proxyUsername = '',
+    this.proxyPassword = '',
     this.isAutoUpdate = true,
     this.isUpdateRemind = false,
     this.advancedSettings = false,
@@ -196,6 +207,11 @@ class SettingsState {
     List<double>? equalizerValue,
     bool? isEnableAudioVisual,
     String? userAgent,
+    ProxyTypeEnum? proxyType,
+    String? proxyHost,
+    int? proxyPort,
+    String? proxyUsername,
+    String? proxyPassword,
     bool? advancedSettings,
   }) {
     return SettingsState(
@@ -232,6 +248,11 @@ class SettingsState {
       equalizerValue: equalizerValue ?? this.equalizerValue,
       isEnableAudioVisual: isEnableAudioVisual ?? this.isEnableAudioVisual,
       userAgent: userAgent ?? this.userAgent,
+      proxyType: proxyType ?? this.proxyType,
+      proxyHost: proxyHost ?? this.proxyHost,
+      proxyPort: proxyPort ?? this.proxyPort,
+      proxyUsername: proxyUsername ?? this.proxyUsername,
+      proxyPassword: proxyPassword ?? this.proxyPassword,
       advancedSettings: advancedSettings ?? this.advancedSettings,
     );
   }

@@ -13,41 +13,44 @@ enum DownloadStatusEnum {
   @HiveField(2)
   pending, //等待
 
-  // 下载
   @HiveField(3)
-  downloadPaused,
+  init, //下载器初始化，下载ffmpeg
+
+  // 下载
   @HiveField(4)
-  downloading,
+  downloadPaused,
   @HiveField(5)
+  downloading,
+  @HiveField(6)
   downloadSuccess,
 
   // 下载歌词
-  @HiveField(6)
-  lyricsPaused,
   @HiveField(7)
-  lyrics,
+  lyricsPaused,
   @HiveField(8)
+  lyrics,
+  @HiveField(9)
   lyricsSuccess,
 
   // 下载图片
-  @HiveField(9)
-  imagePaused,
   @HiveField(10)
-  image,
+  imagePaused,
   @HiveField(11)
+  image,
+  @HiveField(12)
   imageSuccess,
 
   // 文件转换
-  @HiveField(12)
-  convertPaused,
   @HiveField(13)
-  converting,
+  convertPaused,
   @HiveField(14)
+  converting,
+  @HiveField(15)
   convertSuccess,
 
-  @HiveField(15)
-  completedPaused,
   @HiveField(16)
+  completedPaused,
+  @HiveField(17)
   completed, //完成
 }
 
@@ -61,11 +64,10 @@ const pausedStatuses = {
 
 extension DownloadStatusExtension on DownloadStatusEnum {
   bool isBefore(DownloadStatusEnum other) {
-    return index - other.index < 0 ? true : false ;
+    return index - other.index < 0 ? true : false;
   }
 
   bool isPaused() {
     return pausedStatuses.contains(this);
   }
-
 }

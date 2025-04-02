@@ -12,23 +12,29 @@ import '../custom_slider.dart';
 
 class CurrentPlaylistProgressBarWidget extends ConsumerWidget {
   final bool isColumn;
+  final bool onlyBar;
   final Color? fontColor;
 
   const CurrentPlaylistProgressBarWidget({
     super.key,
     this.isColumn = true,
+    this.onlyBar = false,
     this.fontColor,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: isColumn ? 24 : 12),
+      padding:
+          EdgeInsets.symmetric(horizontal: onlyBar ? 0 : (isColumn ? 24 : 12)),
       child: StreamBuilder<PlayerPositionData>(
         stream: CustomAudioHandler.instance.positionDataStream,
         builder: (context, snapshot) {
           Duration position = snapshot.data?.position ?? Duration.zero;
           Duration duration = snapshot.data?.duration ?? Duration.zero;
+          if (onlyBar) {
+            return _progressBar(context, ref, position, duration, false);
+          }
           if (isColumn) {
             return Column(
               mainAxisSize: MainAxisSize.min,

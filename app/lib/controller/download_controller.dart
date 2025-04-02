@@ -34,11 +34,11 @@ import 'package:path_provider/path_provider.dart';
 final downloadControllerProvider =
     StateNotifierProvider<DownloadController, DownloadState>((ref) {
   return DownloadController(ref);
-},name: 'downloadControllerProvider');
+}, name: 'downloadControllerProvider');
 
 class DownloadController extends StateNotifier<DownloadState> {
   Ref ref;
-  DownloadController(this.ref) : super(const DownloadState()) {
+  DownloadController(this.ref) : super(const DownloadState(isInit: false)) {
     _loadFromStorage();
   }
 
@@ -48,6 +48,10 @@ class DownloadController extends StateNotifier<DownloadState> {
       state = savedState;
       await _resumeUnfinishedTasks();
     }
+
+    state = state.copyWith(
+      isInit: await FfmpegUtils.checkDesktopFFmpeg(ref, needDownload: false),
+    );
   }
 
   Future<void> _saveToStorage() async {
@@ -55,6 +59,7 @@ class DownloadController extends StateNotifier<DownloadState> {
   }
 
   Future<void> _resumeUnfinishedTasks() async {
+    state = state.copyWith(isPaused: false);
     for (final task in state.tasks.values) {
       if (task.status == DownloadStatusEnum.downloading ||
           task.status == DownloadStatusEnum.pending) {
@@ -63,45 +68,44 @@ class DownloadController extends StateNotifier<DownloadState> {
     }
   }
 
-  Future<AudioPlayItem?> _getBiliAudio(AudioInfo audioInfo,AudioQuality targetQuality) async {
+  Future<AudioPlayItem?> _getBiliAudio(
+      AudioInfo audioInfo, AudioQuality targetQuality) async {
     final videoInfo = await BiliVideoPlayApi.getVideoInfo(audioInfo.onlineId);
 
     final video = await BiliVideoPlayApi.getVideoPlay(
         bvid: videoInfo.bvid ?? '',
         cid: videoInfo.cid ?? 0,
-        isVip: ref.read(biliUserProvider.notifier).isVip()
-    );
+        isVip: ref.read(biliUserProvider.notifier).isVip());
     final audioPlayItem = video
         .findBestAudioPlayItemByQuality(targetQuality)
-    ?.copyWith(audioType: AudioSourceTypeEnum.bili);
+        ?.copyWith(audioType: AudioSourceTypeEnum.bili);
 
     return audioPlayItem;
   }
 
   Future<void> addDownloads(List<AudioInfo> audioInfos) async {
     for (var audio in audioInfos) {
-       await addDownload(audio);
+      await addDownload(audio);
     }
   }
 
-
   Future<void> addDownload(AudioInfo audioInfo) async {
     await getFilePermission();
-    bool isPresentFFmpeg = await FfmpegUtils.checkDesktopFFmpeg();
+    bool isPresentFFmpeg = await FfmpegUtils.checkDesktopFFmpeg(ref);
 
     await Future.microtask(() {
-      container.read(commonLoggerProvider.notifier).addLog('Download: check ${isPresentFFmpeg? 'present':'not present'} ffmpeg');
+      container.read(commonLoggerProvider.notifier).addLog(
+          'Download: check ${isPresentFFmpeg ? 'present' : 'not present'} ffmpeg');
     });
-    if(!isPresentFFmpeg){
-      await ToastUtil.show('not install ffmpeg');
-      return;
-    }
 
-    AudioPlayItem? audioPlayItem = await getAudioPlayItemFromAudioInfo(audioInfo);
+    AudioPlayItem? audioPlayItem =
+        await getAudioPlayItemFromAudioInfo(audioInfo);
 
-    if(audioPlayItem == null){
+    if (audioPlayItem == null) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('get source type error: ${audioInfo.id}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('get source type error: ${audioInfo.id}');
       });
       final task = DownloadTask(
         id: audioInfo.id,
@@ -112,17 +116,20 @@ class DownloadController extends StateNotifier<DownloadState> {
         tasks: {...state.tasks, audioInfo.id: task},
         downloadQueue: [...state.downloadQueue, audioInfo.id],
       );
-
-    }else{
+    } else {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('start downloading: ${audioInfo.id}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('start downloading: ${audioInfo.id}');
       });
 
       final task = DownloadTask(
         id: audioInfo.id,
         audioInfo: audioInfo,
         audioItem: audioPlayItem,
-        status: DownloadStatusEnum.pending,
+        status: isPresentFFmpeg
+            ? DownloadStatusEnum.pending
+            : DownloadStatusEnum.init,
       );
 
       state = state.copyWith(
@@ -140,11 +147,17 @@ class DownloadController extends StateNotifier<DownloadState> {
 
   // 开始下载
   Future<void> _startDownload(String id) async {
-
     final task = state.tasks[id];
     if (task == null || task.audioItem == null) return;
 
-    if(task.status.isBefore(DownloadStatusEnum.downloadSuccess)){
+    if (task.status == DownloadStatusEnum.init) {
+      bool isPresentFFmpeg = await FfmpegUtils.checkDesktopFFmpeg(ref);
+      if (!isPresentFFmpeg) {
+        return;
+      }
+    }
+
+    if (task.status.isBefore(DownloadStatusEnum.downloadSuccess)) {
       final tempFile = await _downloadFile(task);
       if (tempFile == null) {
         return;
@@ -152,17 +165,17 @@ class DownloadController extends StateNotifier<DownloadState> {
     }
 
     String? lyrics;
-    if(task.status.isBefore(DownloadStatusEnum.lyricsSuccess)){
+    if (task.status.isBefore(DownloadStatusEnum.lyricsSuccess)) {
       lyrics = await _downloadLyrics(task);
     }
 
     bool hasImage = false;
-    if(task.status.isBefore(DownloadStatusEnum.imageSuccess)) {
+    if (task.status.isBefore(DownloadStatusEnum.imageSuccess)) {
       hasImage = await _downloadImage(task);
     }
 
-    if(task.status.isBefore(DownloadStatusEnum.convertSuccess)) {
-       await _convertFileFormat(task,hasImage,lyrics);
+    if (task.status.isBefore(DownloadStatusEnum.convertSuccess)) {
+      await _convertFileFormat(task, hasImage, lyrics);
     }
   }
 
@@ -178,7 +191,7 @@ class DownloadController extends StateNotifier<DownloadState> {
     state = state.copyWith(isPaused: false);
     for (final task in state.tasks.values) {
       if (task.status.isPaused()) {
-        await _pausedToDownloadStatus(task);
+        await _startDownload(task.id);
       }
     }
   }
@@ -189,7 +202,7 @@ class DownloadController extends StateNotifier<DownloadState> {
 
     // 从队列中移除
     final newQueue = List<String>.from(state.downloadQueue)..remove(id);
-    
+
     // 从任务列表中移除
     final newTasks = Map<String, DownloadTask>.from(state.tasks)..remove(id);
 
@@ -204,248 +217,263 @@ class DownloadController extends StateNotifier<DownloadState> {
     final task = state.tasks[id];
     if (task == null) return;
 
-    await _updateTask(
-      id,
-      status: DownloadStatusEnum.pending,
-      progress: 0.0,
-      error: null
-    );
-
-    if (!state.isPaused) {
-      await _startDownload(id);
-    }
+    addDownload(task.audioInfo);
   }
 
   Future<void> clearCompleted() async {
     final newTasks = Map<String, DownloadTask>.from(state.tasks)
       ..removeWhere((_, task) => task.status == DownloadStatusEnum.completed);
-    
+
     state = state.copyWith(tasks: newTasks);
     await _saveToStorage();
   }
 
   Future<void> clearAll() async {
-    state = const DownloadState();
+    state = DownloadState(isInit: state.isInit);
     await _saveToStorage();
   }
 
   Future<File?> _downloadFile(DownloadTask task) async {
     try {
-      await _updateTask(task.id,status: DownloadStatusEnum.downloading);
+      await _updateTask(task.id, status: DownloadStatusEnum.downloading);
 
       final tempPath = await _getTempFilePath(task.id);
       await _deleteFile(tempPath);
       final tempFile = File(tempPath);
       await _ensureDirectoryExists(tempPath);
 
-      switch(task.audioItem!.audioType){
+      switch (task.audioItem!.audioType) {
         case AudioSourceTypeEnum.local:
           break;
         case AudioSourceTypeEnum.bili_music:
         case AudioSourceTypeEnum.bili:
           await RhttpUtils().downloadBiliAudio(
-            url: task.audioItem!.urls.first,
-            onSendProgress: (progress) {
-              _updateTask(task.id, progress: progress);
-            },
-            id: task.id,
-            tempPath: tempPath
-          );
+              url: task.audioItem!.urls.first,
+              onSendProgress: (progress) {
+                _updateTask(task.id, progress: progress);
+              },
+              id: task.id,
+              tempPath: tempPath);
           break;
       }
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: download success ${task.id}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: download success ${task.id}');
       });
-      await _updateTask(task.id,status: DownloadStatusEnum.downloadSuccess);
+      await _updateTask(task.id, status: DownloadStatusEnum.downloadSuccess);
       return tempFile;
-
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: download fail ${task.id}\n${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: download fail ${task.id}\n${e.toString()}');
       });
 
-      await _updateTask(task.id,status: DownloadStatusEnum.error,error: e.toString());
+      await _updateTask(task.id,
+          status: DownloadStatusEnum.error, error: e.toString());
       return null;
     }
   }
 
-  Future<bool> _convertFileFormat(DownloadTask task,bool hasImage,String? lyrics) async {
+  Future<bool> _convertFileFormat(
+      DownloadTask task, bool hasImage, String? lyrics) async {
     try {
       await _updateTask(task.id, status: DownloadStatusEnum.converting);
 
-      final tempFilePath = await _getTempFilePath(task.id) ;
+      final tempFilePath = await _getTempFilePath(task.id);
       final destinationPath = await _getAudioFilePath(task.id);
       await _deleteFile(destinationPath);
       await _ensureDirectoryExists(destinationPath);
-      final imageSavePath = await _getImageFilePath(task.id,task.audioInfo.coverWebUrl);
+      final imageSavePath =
+          await _getImageFilePath(task.id, task.audioInfo.coverWebUrl);
 
-      await _convertFileFormatDetail(task,tempFilePath,hasImage,imageSavePath,lyrics,destinationPath);
-
+      await _convertFileFormatDetail(
+          task, tempFilePath, hasImage, imageSavePath, lyrics, destinationPath);
     } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: convert file failure : ${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: convert file failure : ${e.toString()}');
       });
-      await _updateTask(task.id, status: DownloadStatusEnum.error,error: t.controller.fileFormatConversionError);
+      await _updateTask(task.id,
+          status: DownloadStatusEnum.error,
+          error: t.controller.fileFormatConversionError);
     }
     return false;
   }
 
-  Future<bool> _convertFileFormatDetail(DownloadTask task,
+  Future<bool> _convertFileFormatDetail(
+      DownloadTask task,
       String tempFilePath,
       bool hasImage,
       String imageSavePath,
       String? lyrics,
-      String destinationPath)async{
-    try{
-
-      final ac = switch(ref.read(settingsProvider).downloadFileFormat) {
+      String destinationPath) async {
+    try {
+      final ac = switch (ref.read(settingsProvider).downloadFileFormat) {
         DownloadFileFormatEnum.mp4 =>
-            CustomArgument(['-c:a', 'copy', '-f', 'mp4']),
-        DownloadFileFormatEnum.flac =>
-            CustomArgument(['-c:a', 'flac']),
+          CustomArgument(['-c:a', 'copy', '-f', 'mp4']),
+        DownloadFileFormatEnum.flac => CustomArgument(['-c:a', 'flac']),
       };
       FFMpegCommand cliCommand = FFMpegCommand(
         inputs: [
           FFMpegInput.asset(tempFilePath),
-          if(hasImage)
-            FFMpegInput.asset(imageSavePath),
+          if (hasImage) FFMpegInput.asset(imageSavePath),
         ],
         args: [
           CustomArgument(['-y']),
           CustomArgument(['-map', '0:a']),
-          if(hasImage)
-            CustomArgument(['-map', '1:v']),
-          if(hasImage)
+          if (hasImage) CustomArgument(['-map', '1:v']),
+          if (hasImage)
             CustomArgument(['-c:v', 'libx264', '-tune', 'stillimage']),
-          if(hasImage)
-            CustomArgument(['-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p']),
+          if (hasImage)
+            CustomArgument(
+                ['-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p']),
           ac,
-          CustomArgument(['-metadata', 'title="${task.audioInfo.title.replaceAll('\'', '"')}"']),
-          CustomArgument(['-metadata', 'artist="${task.audioInfo.upper.name.replaceAll('\'', '"')}"']),
+          CustomArgument([
+            '-metadata',
+            'title="${task.audioInfo.title.replaceAll('\'', '"')}"'
+          ]),
+          CustomArgument([
+            '-metadata',
+            'artist="${task.audioInfo.upper.name.replaceAll('\'', '"')}"'
+          ]),
           CustomArgument(['-metadata', 'duration=${task.audioInfo.duration}']),
-          if(lyrics!=null)
-            CustomArgument(['-metadata', 'LYRICS="${lyrics.replaceAll('\'', '"')}"']),
-          if(hasImage)
-            CustomArgument(['-disposition:v:1', 'attached_pic']),
+          if (lyrics != null)
+            CustomArgument(
+                ['-metadata', 'LYRICS="${lyrics.replaceAll('\'', '"')}"']),
+          if (hasImage) CustomArgument(['-disposition:v:1', 'attached_pic']),
         ],
         outputFilepath: destinationPath,
       );
 
       print(cliCommand.toCli());
-      FFMpegHelperSession session = await FFMpegHelper.instance.runAsync(
-          cliCommand,
-          onComplete: (File? file) async {
-            if (file!=null) {
-              await _deleteFile(tempFilePath);
-              await _updateTask(task.id, status: DownloadStatusEnum.convertSuccess);
+      FFMpegHelperSession session = await FFMpegHelper.instance
+          .runAsync(cliCommand, onComplete: (File? file) async {
+        if (file != null) {
+          await _deleteFile(tempFilePath);
+          await _updateTask(task.id, status: DownloadStatusEnum.convertSuccess);
 
-              await Future.microtask(() {
-                container.read(commonLoggerProvider.notifier).addLog('Download: has convert audio type ${task.id}');
-              });
+          await Future.microtask(() {
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('Download: has convert audio type ${task.id}');
+          });
 
-              await _complete(task,hasImage);
-              return true;
-            } else {
-              await Future.microtask(() {
-                container.read(commonLoggerProvider.notifier).addLog('Download: convert file failure');
-              });
+          await _complete(task, hasImage);
+          return true;
+        } else {
+          await Future.microtask(() {
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('Download: convert file failure');
+          });
 
-              await _updateTask(task.id, status: DownloadStatusEnum.error,error: t.controller.fileFormatConversionError);
-            }
-          }
-      );
-
-    }catch(e){
-      await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: convert file failure : ${e.toString()}');
+          await _updateTask(task.id,
+              status: DownloadStatusEnum.error,
+              error: t.controller.fileFormatConversionError);
+        }
       });
-      await _updateTask(task.id, status: DownloadStatusEnum.error,error: t.controller.fileFormatConversionError);
+    } catch (e) {
+      await Future.microtask(() {
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: convert file failure : ${e.toString()}');
+      });
+      await _updateTask(task.id,
+          status: DownloadStatusEnum.error,
+          error: t.controller.fileFormatConversionError);
     }
     return false;
   }
 
-  Future<String?> _downloadLyrics(DownloadTask task) async{
-
-    try{
-      if(!ref.read(settingsProvider).isDownloadLyrics){
+  Future<String?> _downloadLyrics(DownloadTask task) async {
+    try {
+      if (!ref.read(settingsProvider).isDownloadLyrics) {
         await _updateTask(task.id, status: DownloadStatusEnum.lyricsSuccess);
       }
 
       await _updateTask(task.id, status: DownloadStatusEnum.lyrics);
-      final lyrics =await LyricsUtils.getAudioLyrics(ref,task.audioInfo);
+      final lyrics = await LyricsUtils.getAudioLyrics(ref, task.audioInfo);
       await _updateTask(task.id, status: DownloadStatusEnum.lyricsSuccess);
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: download lyrics success ${task.id}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: download lyrics success ${task.id}');
       });
       return lyrics;
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: download lyrics error : ${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: download lyrics error : ${e.toString()}');
       });
     }
     return null;
   }
 
   Future<bool> _downloadImage(DownloadTask task) async {
-
-    try{
-      if(!ref.read(settingsProvider).isDownloadCover){
+    try {
+      if (!ref.read(settingsProvider).isDownloadCover) {
         await _updateTask(task.id, status: DownloadStatusEnum.imageSuccess);
       }
 
       await _updateTask(task.id, status: DownloadStatusEnum.image);
 
       final imagePath = task.audioInfo.coverWebUrl;
-      final imageSavePath = await _getImageFilePath(task.id,imagePath);
+      final imageSavePath = await _getImageFilePath(task.id, imagePath);
       await _deleteFile(imageSavePath);
       await _ensureDirectoryExists(imageSavePath);
 
-      final imageBits = await RhttpUtils.downloadFile( url: imagePath, savePath: imageSavePath);
+      final imageBits = await RhttpUtils.downloadFile(
+          url: imagePath, savePath: imageSavePath);
 
-      if(imageBits != null){
+      if (imageBits != null) {
         await _updateTask(task.id, status: DownloadStatusEnum.imageSuccess);
 
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('Download: download cover success ${task.id}');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('Download: download cover success ${task.id}');
         });
         return true;
-      }else{
+      } else {
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('Download: download image : download cover error');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('Download: download image : download cover error');
         });
       }
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: download image : ${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('Download: download image : ${e.toString()}');
       });
     }
     return false;
   }
 
-  Future<File?> _complete(DownloadTask task,bool hasImage) async{
+  Future<File?> _complete(DownloadTask task, bool hasImage) async {
     final audioPath = await _getAudioFilePath(task.id);
     final imagePath = task.audioInfo.coverWebUrl;
-    final imageSavePath = await _getImageFilePath(task.id,imagePath);
+    final imageSavePath = await _getImageFilePath(task.id, imagePath);
 
-    final audios = task.audioItem?.copyWith(
-        urls: [audioPath],
-        audioType: AudioSourceTypeEnum.local
-    );
+    final audios = task.audioItem
+        ?.copyWith(urls: [audioPath], audioType: AudioSourceTypeEnum.local);
 
     final audioInfo = task.audioInfo.copyWith(
         audioCurrentType: AudioSourceTypeEnum.local,
         localPath: audioPath,
-        coverLocalUrl: hasImage?imageSavePath:''
-    );
+        coverLocalUrl: hasImage ? imageSavePath : '');
 
     await HiveHelper.saveAudioInfo(audioInfo);
 
-    await _updateTask(
-      task.id,
-      status: DownloadStatusEnum.completed,
-      audioInfo: audioInfo,
-      audioItem: audios
-    );
+    await _updateTask(task.id,
+        status: DownloadStatusEnum.completed,
+        audioInfo: audioInfo,
+        audioItem: audios);
     return null;
   }
 
@@ -484,8 +512,7 @@ class DownloadController extends StateNotifier<DownloadState> {
     final audioInfo = task.audioInfo.copyWith(
         audioCurrentType: task.audioInfo.audioSourceType,
         localPath: '',
-        coverLocalUrl: ''
-    );
+        coverLocalUrl: '');
     await HiveHelper.saveAudioInfo(audioInfo);
 
     final newTasks = Map<String, DownloadTask>.from(state.tasks);
@@ -494,25 +521,24 @@ class DownloadController extends StateNotifier<DownloadState> {
   }
 
   Future<void> _updateTask(
-      String taskId, {
-        DownloadStatusEnum? status,
-        double? progress,
-        String? error,
-        String? localPath,
-        AudioInfo? audioInfo,
-        AudioPlayItem? audioItem,
-      }) async {
+    String taskId, {
+    DownloadStatusEnum? status,
+    double? progress,
+    String? error,
+    String? localPath,
+    AudioInfo? audioInfo,
+    AudioPlayItem? audioItem,
+  }) async {
     final task = state.tasks[taskId];
     if (task == null) return;
 
     final updatedTask = task.copyWith(
-      status: status ?? task.status,
-      progress: progress ?? task.progress,
-      error: error ?? task.error,
-      localPath: localPath ?? task.localPath,
-        audioInfo: audioInfo?? task.audioInfo,
-        audioItem: audioItem ?? task.audioItem
-    );
+        status: status ?? task.status,
+        progress: progress ?? task.progress,
+        error: error ?? task.error,
+        localPath: localPath ?? task.localPath,
+        audioInfo: audioInfo ?? task.audioInfo,
+        audioItem: audioItem ?? task.audioItem);
 
     state = state.copyWith(
       tasks: {...state.tasks, taskId: updatedTask},
@@ -524,13 +550,13 @@ class DownloadController extends StateNotifier<DownloadState> {
   Future<void> _deleteFile(String path) async {
     final tempFile = File(path);
 
-    if(await tempFile.exists()){
-    await tempFile.delete();
+    if (await tempFile.exists()) {
+      await tempFile.delete();
     }
   }
 
-  Future<void> _downloadStatusToPaused(DownloadTask task)async {
-    switch(task.status) {
+  Future<void> _downloadStatusToPaused(DownloadTask task) async {
+    switch (task.status) {
       case DownloadStatusEnum.error:
       case DownloadStatusEnum.canceled:
       case DownloadStatusEnum.pending:
@@ -540,6 +566,7 @@ class DownloadController extends StateNotifier<DownloadState> {
       case DownloadStatusEnum.completed:
       case DownloadStatusEnum.completedPaused:
       case DownloadStatusEnum.lyricsPaused:
+      case DownloadStatusEnum.init:
         break;
       case DownloadStatusEnum.downloading:
         await _updateTask(task.id, status: DownloadStatusEnum.downloadPaused);
@@ -563,7 +590,7 @@ class DownloadController extends StateNotifier<DownloadState> {
   }
 
   Future<void> _pausedToDownloadStatus(DownloadTask task) async {
-    switch(task.status) {
+    switch (task.status) {
       case DownloadStatusEnum.error:
       case DownloadStatusEnum.canceled:
       case DownloadStatusEnum.pending:
@@ -577,6 +604,7 @@ class DownloadController extends StateNotifier<DownloadState> {
       case DownloadStatusEnum.downloadPaused:
       case DownloadStatusEnum.lyrics:
       case DownloadStatusEnum.lyricsSuccess:
+      case DownloadStatusEnum.init:
         await _updateTask(task.id, status: DownloadStatusEnum.downloading);
         break;
       case DownloadStatusEnum.completedPaused:
@@ -599,15 +627,18 @@ class DownloadController extends StateNotifier<DownloadState> {
 
   Future<String> _getAudioFilePath(String id) async {
     final format = ref.read(settingsProvider).downloadFileFormat;
-    return path.join(ref.read(settingsProvider).destination, 'audio', '$id.${format.label}');
+    return path.join(
+        ref.read(settingsProvider).destination, 'audio', '$id.${format.label}');
   }
 
-  Future<String> _getImageFilePath(String id,String imagePath) async {
-    return path.join(ref.read(settingsProvider).destination, 'image', '$id${path.extension(imagePath)}');
+  Future<String> _getImageFilePath(String id, String imagePath) async {
+    return path.join(ref.read(settingsProvider).destination, 'image',
+        '$id${path.extension(imagePath)}');
   }
 
   Future<void> _clearTempFiles() async {
-    final tempPath = path.join((await getTemporaryDirectory()).path, 'b_be_bee');
+    final tempPath =
+        path.join((await getTemporaryDirectory()).path, 'b_be_bee');
     final directory = Directory(tempPath);
 
     if (await directory.exists()) {
@@ -618,61 +649,73 @@ class DownloadController extends StateNotifier<DownloadState> {
           if (file is File) {
             await file.delete();
             await Future.microtask(() {
-              container.read(commonLoggerProvider.notifier).addLog('clean temp file ${file.path}');
+              container
+                  .read(commonLoggerProvider.notifier)
+                  .addLog('clean temp file ${file.path}');
             });
           }
         }
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('All files deleted in tempPath: $tempPath');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('All files deleted in tempPath: $tempPath');
         });
       } catch (e) {
-
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('clean temp file error: $e');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('clean temp file error: $e');
         });
       }
     } else {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('temp directory not exist');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('temp directory not exist');
       });
     }
   }
 
-  Future<void> _ensureDirectoryExists(String filePath)async {
+  Future<void> _ensureDirectoryExists(String filePath) async {
     String parentDir = path.dirname(filePath);
     Directory directory = Directory(parentDir);
     bool exists = await directory.exists();
 
     if (!exists) {
       await directory.create(recursive: true);
-      ref.read(commonLoggerProvider.notifier).addLog('create dir: ${directory.path}');
+      ref
+          .read(commonLoggerProvider.notifier)
+          .addLog('create dir: ${directory.path}');
     }
   }
 
-  Future<AudioPlayItem?> getAudioPlayItemFromAudioInfo(AudioInfo audioInfo)async{
+  Future<AudioPlayItem?> getAudioPlayItemFromAudioInfo(
+      AudioInfo audioInfo) async {
     AudioPlayItem? audioPlayItem;
     final needAudioQuality = ref.read(settingsProvider).downloadQuality;
 
-    switch(audioInfo.audioCurrentType){
+    switch (audioInfo.audioCurrentType) {
       case AudioSourceTypeEnum.local:
         break;
       case AudioSourceTypeEnum.bili_music:
       case AudioSourceTypeEnum.bili:
-        audioPlayItem = await _getBiliAudio(audioInfo,needAudioQuality);
+        audioPlayItem = await _getBiliAudio(audioInfo, needAudioQuality);
         break;
     }
 
-    if(audioPlayItem == null){
+    if (audioPlayItem == null) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('get current type error: ${audioInfo.id}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('get current type error: ${audioInfo.id}');
       });
 
-      switch(audioInfo.audioSourceType){
+      switch (audioInfo.audioSourceType) {
         case AudioSourceTypeEnum.local:
           break;
         case AudioSourceTypeEnum.bili_music:
         case AudioSourceTypeEnum.bili:
-          audioPlayItem = await _getBiliAudio(audioInfo,needAudioQuality);
+          audioPlayItem = await _getBiliAudio(audioInfo, needAudioQuality);
           break;
       }
     }
@@ -684,18 +727,23 @@ class DownloadController extends StateNotifier<DownloadState> {
     final song = HiveHelper.getAudioInfo(id);
     if (song == null) return false;
 
-    try{
+    try {
       if (!File(song.localPath).existsSync()) {
         return false;
       }
 
       return true;
-    }catch(e){
+    } catch (e) {
       Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('download controller checkFileExists id: $id error :${e.toString()}');
+        container.read(commonLoggerProvider.notifier).addLog(
+            'download controller checkFileExists id: $id error :${e.toString()}');
       });
       return false;
     }
+  }
+
+  Future<void> setInit() async {
+    state = state.copyWith(isInit: await FfmpegUtils.checkDesktopFFmpeg(ref));
   }
 
   ///暂时只支持安卓
@@ -707,37 +755,42 @@ class DownloadController extends StateNotifier<DownloadState> {
     String ringtonePath;
     String format;
 
-    if(audioInfo.audioSourceType == AudioSourceTypeEnum.local){
+    if (audioInfo.audioSourceType == AudioSourceTypeEnum.local) {
       final audioFile = File(audioInfo.localPath);
       if (!(await audioFile.exists())) {
         return;
       }
       format = path.extension(audioFile.path); // 获取文件后缀名
-      ringtonePath = '${Directory('/storage/emulated/0/Ringtones/').path}${audioInfo.title}.$format';
+      ringtonePath =
+          '${Directory('/storage/emulated/0/Ringtones/').path}${audioInfo.title}.$format';
       await _ensureDirectoryExists(ringtonePath);
       await _deleteFile(ringtonePath);
       await audioFile.copy(ringtonePath);
-    }else{
+    } else {
       await addDownload(audioInfo);
       final audioFile = File(await _getAudioFilePath(audioInfo.id));
       if (!(await audioFile.exists())) {
         return;
       }
       format = ref.read(settingsProvider).downloadFileFormat.label;
-      ringtonePath = '${Directory('/storage/emulated/0/Ringtones/').path}${audioInfo.title}.$format';
+      ringtonePath =
+          '${Directory('/storage/emulated/0/Ringtones/').path}${audioInfo.title}.$format';
       await _ensureDirectoryExists(ringtonePath);
       await _deleteFile(ringtonePath);
       await audioFile.copy(ringtonePath);
     }
 
-    try{
+    try {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('copy ringtone file success');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('copy ringtone file success');
       });
-
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog("copy ringtone file error: '${e.toString()}'.");
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog("copy ringtone file error: '${e.toString()}'.");
       });
       await ToastUtil.show(t.controller.setRingtoneFailedForCopyingFileError);
       return;
@@ -745,21 +798,19 @@ class DownloadController extends StateNotifier<DownloadState> {
 
     try {
       const MethodChannel ringtoneChannel = MethodChannel(Constants.channelId);
-      await ringtoneChannel.invokeMethod(
-          'setRingtone',
-          {'audioFilePath': ringtonePath,
-            'format': format,
-            'title':audioInfo.title,
-          });
+      await ringtoneChannel.invokeMethod('setRingtone', {
+        'audioFilePath': ringtonePath,
+        'format': format,
+        'title': audioInfo.title,
+      });
       await ToastUtil.show(t.controller.setRingtoneSuccess);
-
     } on PlatformException catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog("Failed to set ringtone: '${e.message}'.");
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog("Failed to set ringtone: '${e.message}'.");
       });
       await ToastUtil.show(t.controller.setRingtoneFailed);
     }
   }
-
 }
-

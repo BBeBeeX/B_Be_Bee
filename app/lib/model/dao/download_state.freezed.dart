@@ -26,6 +26,7 @@ mixin _$DownloadState {
   List<String> get downloadQueue => throw _privateConstructorUsedError;
   @HiveField(2)
   bool get isPaused => throw _privateConstructorUsedError;
+  bool get isInit => throw _privateConstructorUsedError;
 
   /// Serializes this DownloadState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +47,8 @@ abstract class $DownloadStateCopyWith<$Res> {
   $Res call(
       {@HiveField(0) Map<String, DownloadTask> tasks,
       @HiveField(1) List<String> downloadQueue,
-      @HiveField(2) bool isPaused});
+      @HiveField(2) bool isPaused,
+      bool isInit});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$DownloadStateCopyWithImpl<$Res, $Val extends DownloadState>
     Object? tasks = null,
     Object? downloadQueue = null,
     Object? isPaused = null,
+    Object? isInit = null,
   }) {
     return _then(_value.copyWith(
       tasks: null == tasks
@@ -80,6 +83,10 @@ class _$DownloadStateCopyWithImpl<$Res, $Val extends DownloadState>
       isPaused: null == isPaused
           ? _value.isPaused
           : isPaused // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isInit: null == isInit
+          ? _value.isInit
+          : isInit // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -96,7 +103,8 @@ abstract class _$$DownloadStateImplCopyWith<$Res>
   $Res call(
       {@HiveField(0) Map<String, DownloadTask> tasks,
       @HiveField(1) List<String> downloadQueue,
-      @HiveField(2) bool isPaused});
+      @HiveField(2) bool isPaused,
+      bool isInit});
 }
 
 /// @nodoc
@@ -115,6 +123,7 @@ class __$$DownloadStateImplCopyWithImpl<$Res>
     Object? tasks = null,
     Object? downloadQueue = null,
     Object? isPaused = null,
+    Object? isInit = null,
   }) {
     return _then(_$DownloadStateImpl(
       tasks: null == tasks
@@ -129,6 +138,10 @@ class __$$DownloadStateImplCopyWithImpl<$Res>
           ? _value.isPaused
           : isPaused // ignore: cast_nullable_to_non_nullable
               as bool,
+      isInit: null == isInit
+          ? _value.isInit
+          : isInit // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -139,7 +152,8 @@ class _$DownloadStateImpl implements _DownloadState {
   const _$DownloadStateImpl(
       {@HiveField(0) final Map<String, DownloadTask> tasks = const {},
       @HiveField(1) final List<String> downloadQueue = const [],
-      @HiveField(2) this.isPaused = false})
+      @HiveField(2) this.isPaused = false,
+      this.isInit = false})
       : _tasks = tasks,
         _downloadQueue = downloadQueue;
 
@@ -170,10 +184,13 @@ class _$DownloadStateImpl implements _DownloadState {
   @JsonKey()
   @HiveField(2)
   final bool isPaused;
+  @override
+  @JsonKey()
+  final bool isInit;
 
   @override
   String toString() {
-    return 'DownloadState(tasks: $tasks, downloadQueue: $downloadQueue, isPaused: $isPaused)';
+    return 'DownloadState(tasks: $tasks, downloadQueue: $downloadQueue, isPaused: $isPaused, isInit: $isInit)';
   }
 
   @override
@@ -185,7 +202,8 @@ class _$DownloadStateImpl implements _DownloadState {
             const DeepCollectionEquality()
                 .equals(other._downloadQueue, _downloadQueue) &&
             (identical(other.isPaused, isPaused) ||
-                other.isPaused == isPaused));
+                other.isPaused == isPaused) &&
+            (identical(other.isInit, isInit) || other.isInit == isInit));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -194,7 +212,8 @@ class _$DownloadStateImpl implements _DownloadState {
       runtimeType,
       const DeepCollectionEquality().hash(_tasks),
       const DeepCollectionEquality().hash(_downloadQueue),
-      isPaused);
+      isPaused,
+      isInit);
 
   /// Create a copy of DownloadState
   /// with the given fields replaced by the non-null parameter values.
@@ -216,7 +235,8 @@ abstract class _DownloadState implements DownloadState {
   const factory _DownloadState(
       {@HiveField(0) final Map<String, DownloadTask> tasks,
       @HiveField(1) final List<String> downloadQueue,
-      @HiveField(2) final bool isPaused}) = _$DownloadStateImpl;
+      @HiveField(2) final bool isPaused,
+      final bool isInit}) = _$DownloadStateImpl;
 
   factory _DownloadState.fromJson(Map<String, dynamic> json) =
       _$DownloadStateImpl.fromJson;
@@ -230,6 +250,8 @@ abstract class _DownloadState implements DownloadState {
   @override
   @HiveField(2)
   bool get isPaused;
+  @override
+  bool get isInit;
 
   /// Create a copy of DownloadState
   /// with the given fields replaced by the non-null parameter values.

@@ -21,14 +21,12 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
     final textController = ref.watch(searchTextControllerProvider);
 
     return SafeArea(
-          child: DragToMoveArea(
+        child: DragToMoveArea(
             child: Container(
                 height: 60,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
-
                 ),
-
                 child: SizedBox(
                     height: 100,
                     child: Row(
@@ -36,19 +34,47 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            SizedBox(width: 10,),
+                            SizedBox(
+                              width: 10,
+                            ),
                             DesktopTopNavigationBarOptionsWidget(),
                             IconButton(
-                              icon:  Icon(Icons.arrow_back,color: pageState.canGoBack ? Theme.of(context).colorScheme.primary.withOpacity(0.9) : Theme.of(context).colorScheme.primary.withOpacity(0.1) ,size: 30,),
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: pageState.canGoBack
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.9)
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.1),
+                                size: 30,
+                              ),
                               onPressed: () async {
                                 pageController.goBack();
                               },
+                              tooltip: '返回',
                             ),
                             IconButton(
-                              icon:  Icon(Icons.arrow_forward,color: pageState.canGoForward ? Theme.of(context).colorScheme.primary.withOpacity(0.9) : Theme.of(context).colorScheme.primary.withOpacity(0.1) ,size: 30,),
-                              onPressed: ()  async {
+                              icon: Icon(
+                                Icons.arrow_forward,
+                                color: pageState.canGoForward
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.9)
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.1),
+                                size: 30,
+                              ),
+                              onPressed: () async {
                                 pageController.goForward();
                               },
+                              tooltip: '前进',
                             ),
                           ],
                         ),
@@ -57,23 +83,33 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHigh,
                                 shape: BoxShape.circle,
                               ),
                               child: IconButton(
-                                icon: Icon(Icons.home, size: 30,),
-                                color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+                                icon: Icon(
+                                  Icons.home,
+                                  size: 30,
+                                ),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.9),
                                 onPressed: () async {
                                   pageController.goHome();
                                 },
+                                tooltip: '主页',
                               ),
                             ),
-
                             Container(
                               height: 48,
                               margin: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHigh,
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               child: Row(
@@ -82,7 +118,9 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                                   Icon(
                                     Icons.search,
                                     size: 30,
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   ),
                                   const SizedBox(width: 8),
                                   SizedBox(
@@ -94,13 +132,20 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                                         hintText: t.searchPage.wantHear,
                                         border: InputBorder.none,
                                         hintStyle: TextStyle(
-                                          color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.7),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant
+                                              .withOpacity(0.7),
                                         ),
                                       ),
                                       onSubmitted: (value) async {
-                                        await ref.read(searchControllerProvider.notifier).setQuery(value);
+                                        await ref
+                                            .read(searchControllerProvider
+                                                .notifier)
+                                            .setQuery(value);
 
-                                        await Routerino.context.push(() => SearchPage());
+                                        await Routerino.context
+                                            .push(() => SearchPage());
                                       },
                                     ),
                                   ),
@@ -108,34 +153,30 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                                     IconButton(
                                       icon: const Icon(Icons.close),
                                       onPressed: () {
-                                        ref.read(mainPageProvider.notifier).goBack();
+                                        ref
+                                            .read(mainPageProvider.notifier)
+                                            .goBack();
                                         textController.clear();
-                                        ref.read(searchControllerProvider.notifier).clearQuery();
+                                        ref
+                                            .read(searchControllerProvider
+                                                .notifier)
+                                            .clearQuery();
                                       },
                                     ),
                                 ],
                               ),
                             )
-
                           ],
                         ),
-
-
 
                         // 右侧按钮
                         Row(
                           children: [
-                            AccountEntryWidget(isDesktopTopBar:true),
+                            AccountEntryWidget(isDesktopTopBar: true),
                             WindowControlButtons()
                           ],
                         ),
                       ],
-                    )
-                )
-
-            )
-          )
-
-    );
+                    )))));
   }
 }

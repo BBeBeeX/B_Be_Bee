@@ -28,6 +28,7 @@ class AccountEntryWidget extends ConsumerWidget {
       return PopupMenuButton<String>(
         padding: const EdgeInsets.all(0),
         icon: const Icon(Icons.person_outline),
+        tooltip: '当前账户',
         onSelected: (value) async {
           if (value == 'bili') {
             if (biliUserState.isLogin) {

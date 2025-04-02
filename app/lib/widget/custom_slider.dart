@@ -54,17 +54,17 @@ class CustomSlider extends ConsumerWidget {
 
     final displayValue = draggingValue ?? value;
     final beginValue = displayValue <= 0 ? 0.0 : displayValue - 1;
-    final endValue = displayValue > max ? max : displayValue;
+    final endValue = displayValue + 1 > max ? max : displayValue + 1;
 
     return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: beginValue, end: endValue),
+      tween: Tween<double>(begin: displayValue, end: endValue),
       duration: const Duration(seconds: 1),
       curve: Curves.linear,
       builder: (context, animatedValue, child) {
         return Slider(
           value: animatedValue,
           min: 0.0,
-          max: max,
+          max: max + 1,
           onChanged: (value) {
             ref.read(seekDragingProvider.notifier).startDragging(value);
           },

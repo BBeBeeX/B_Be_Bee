@@ -26,6 +26,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget {
       children: [
         // 播放模式
         IconButton(
+          tooltip: '播放顺序',
           icon: Icon(
             playlist.repeatMode.icon,
             size: isColumn ? 24 : 20,
@@ -46,6 +47,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget {
                   Theme.of(context).colorScheme.primary.withOpacity(0.9),
               onPressed: () async =>
                   playlistController.skipToPrevious(isCutSong: true),
+              tooltip: '上一首',
             ),
             const SizedBox(width: 16),
             StreamBuilder<bool>(
@@ -55,6 +57,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget {
               builder: (context, snapshot) {
                 final playing = snapshot.data ?? true;
                 return IconButton(
+                  tooltip: '播放/暂停',
                   icon: Icon(
                     playing
                         ? Icons.pause_circle_filled
@@ -70,6 +73,7 @@ class CurrentPlaylistControlButtonsWidget extends ConsumerWidget {
             ),
             const SizedBox(width: 16),
             IconButton(
+              tooltip: '下一首',
               icon: Icon(Icons.skip_next, size: isColumn ? 36 : 24),
               color: fontColor?.withOpacity(0.9) ??
                   Theme.of(context).colorScheme.primary.withOpacity(0.9),

@@ -3,41 +3,41 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:b_be_bee_app/config/init.dart';
-import 'package:b_be_bee_app/gen/strings.g.dart';
+import 'package:b_be_bee_app/controller/settings_controller.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/upper.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
-import 'package:b_be_bee_app/widget/dialogs/download_ffmpeg_linux_dialog.dart';
-import 'package:b_be_bee_app/widget/dialogs/download_ffmpeg_windows_dialog.dart';
 import 'package:crypto/crypto.dart';
 import 'package:ffmpeg_helper/ffmpeg_helper.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:routerino/routerino.dart';
 
+import '../controller/download_controller.dart';
+import '../gen/strings.g.dart';
+import '../widget/dialogs/download_ffmpeg_linux_dialog.dart';
+
 class FfmpegUtils {
-
   static Future<AudioInfo?> getLocalAudioMetaData(FileSystemEntity file) async {
-
     final coverPath = await _saveCover(file);
 
     MediaInformation? res = await FFMpegHelper.instance.runProbe(file.path);
     if (res != null) {
       final tags = res.getFormatProperty('tags');
       return AudioInfo(
-        title: tags['title'] ?? file.uri.pathSegments.last?? 'Unknown song',
-        id: 'local_audios_${tags['title'] ?? file.hashCode}',
-        duration: double.parse(res.getDuration() ?? '0').toInt(),
-        audioCurrentType: AudioSourceTypeEnum.local,
-        audioSourceType: AudioSourceTypeEnum.local,
-        localPath: file.path,
-        upper: Upper(name: tags['artist'] ?? ''),
-        coverLocalUrl: coverPath ?? '',
-          lyrics: tags['lyrics']
-      );
+          title: tags['title'] ?? file.uri.pathSegments.last ?? 'Unknown song',
+          id: 'local_audios_${tags['title'] ?? file.hashCode}',
+          duration: double.parse(res.getDuration() ?? '0').toInt(),
+          audioCurrentType: AudioSourceTypeEnum.local,
+          audioSourceType: AudioSourceTypeEnum.local,
+          localPath: file.path,
+          upper: Upper(name: tags['artist'] ?? ''),
+          coverLocalUrl: coverPath ?? '',
+          lyrics: tags['lyrics']);
     } else {
       await Future.microtask(() {
         container.read(commonLoggerProvider.notifier).addLog('ffprobe null');
@@ -46,68 +46,105 @@ class FfmpegUtils {
     return null;
   }
 
-  static Future<void> downloadFFMpeg() async {
-    if (Platform.isWindows) {
-      await ToastUtil.show('${t.utils.downloading} ffmpeg...');
+  static Future<void> downloadFFMpeg(Ref ref) async {
+    isDownloadingFFmpeg = true;
 
-      await DownloadFfmpegWindowsDialog.open(Routerino.context);
-
-      Future<bool> isSuccess = FFMpegHelper.instance.setupFFMpegOnWindows(
-        onProgress: (FFMpegProgress progress) {
-          downloadFFmpegProgress.value = progress;
-          print('progress ${progress.downloaded}');
-        },
-      );
-
-      bool ffmpegPresent = await isSuccess;
-
-      Navigator.of(Routerino.context).pop();
-
-      if (ffmpegPresent) {
-        await ToastUtil.show(t.utils.downloadFFmpegSuccess);
-
+    try {
+      if (Platform.isWindows) {
+        await ToastUtil.show('${t.utils.downloading} ffmpeg...');
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog('Download: download ffmpeg : success');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog(' download ffmpeg...');
         });
-      } else {
-        await ToastUtil.show(t.utils.downloadFFmpegFailed);
+
+        // await DownloadFfmpegWindowsDialog.open(Routerino.context);
+        final settings = ref.read(settingsProvider);
+        bool isSuccess = await FFMpegHelper.instance.setupFFMpegOnWindows(
+            onProgress: (FFMpegProgress progress) {
+              downloadFFmpegProgress.value = progress;
+
+              // Future.microtask(() {
+              //   container.read(commonLoggerProvider.notifier).addLog(
+              //       'download ffmpeg: ${progress.downloaded}/${progress.fileSize}  - ${progress.phase} ');
+              // });
+            },
+            proxyType: settings.proxyType.name,
+            proxyHost: settings.proxyHost,
+            proxyPort: settings.proxyPort.toString(),
+            proxyUsername: settings.proxyUsername,
+            proxyPassword: settings.proxyPassword);
+
+        // Navigator.of(Routerino.context).pop();
+
+        if (isSuccess) {
+          await ToastUtil.show(t.utils.downloadFFmpegSuccess);
+
+          await Future.microtask(() {
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('Download: download ffmpeg : success');
+
+            ref.read(downloadControllerProvider.notifier).resumeAll();
+
+            ref.read(downloadControllerProvider.notifier).setInit();
+          });
+        } else {
+          await ToastUtil.show(t.utils.downloadFFmpegFailed);
+
+          await Future.microtask(() {
+            container
+                .read(commonLoggerProvider.notifier)
+                .addLog('Download: download ffmpeg : fail');
+          });
+        }
+      } else if (Platform.isLinux) {
+        await DownloadFfmpegLinuxDialog.open(Routerino.context);
 
         await Future.microtask(() {
-          container.read(commonLoggerProvider.notifier).addLog(
-              'Download: download ffmpeg : fail');
+          container
+              .read(commonLoggerProvider.notifier)
+              .addLog('Download: linux system not present ffmpeg');
         });
       }
-
-
-    } else if (Platform.isLinux) {
-      await DownloadFfmpegLinuxDialog.open(Routerino.context);
-
+    } catch (e) {
+      isDownloadingFFmpeg = false;
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('Download: linux system not present ffmpeg');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('downloadFFMpeg fail: $e');
       });
     }
+    isDownloadingFFmpeg = false;
   }
 
-  static Future<bool> checkDesktopFFmpeg() async{
+  static bool isDownloadingFFmpeg = false;
+  static Future<bool> checkDesktopFFmpeg(Ref ref,
+      {bool needDownload = true}) async {
     final isPresent = await FFMpegHelper.instance.isFFMpegPresent();
-
-    if(!isPresent){
-      await FfmpegUtils.downloadFFMpeg();
+    if (needDownload) {
+      if (!isPresent && !isDownloadingFFmpeg) {
+        Future.microtask(() {
+          FfmpegUtils.downloadFFMpeg(ref);
+        });
+      }
+      return await FFMpegHelper.instance.isFFMpegPresent();
+    } else {
+      return isPresent;
     }
-    return await FFMpegHelper.instance.isFFMpegPresent();
   }
-
 
   static Future<String?> _saveCover(FileSystemEntity file) async {
     final fileName = file.uri.pathSegments.last;
     final directory = await getTemporaryDirectory();
-    final saveCoverPath = path.join(directory.path, '${getMd5Hash(fileName)}.jpg');
+    final saveCoverPath =
+        path.join(directory.path, '${getMd5Hash(fileName)}.jpg');
 
     if (File(saveCoverPath).existsSync()) {
       return saveCoverPath;
     }
 
-    try{
+    try {
       FFMpegCommand cliCommand = FFMpegCommand(
         inputs: [
           FFMpegInput.asset(file.path),
@@ -129,16 +166,18 @@ class FfmpegUtils {
         await Future.delayed(Duration(milliseconds: 50));
       }
 
-      if(exitCode == ReturnCode.success || (exitCodem?.isValueSuccess() ??false)){
+      if (exitCode == ReturnCode.success ||
+          (exitCodem?.isValueSuccess() ?? false)) {
         return saveCoverPath;
       }
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('_saveCover error : ${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('_saveCover error : ${e.toString()}');
       });
     }
     return null;
-
   }
 
   static String getMd5Hash(String input) {
@@ -146,11 +185,10 @@ class FfmpegUtils {
     final hash = md5.convert(bytes);
     return hash.toString();
   }
-
 }
 
 ValueNotifier<FFMpegProgress> downloadFFmpegProgress =
-ValueNotifier<FFMpegProgress>(FFMpegProgress(
+    ValueNotifier<FFMpegProgress>(FFMpegProgress(
   downloaded: 0,
   fileSize: 0,
   phase: FFMpegProgressPhase.inactive,

@@ -13,10 +13,10 @@ class CollectsListWidgetSortPopupMenuButtonWidget extends ConsumerWidget {
     required this.collectsStateSortMode,
   });
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton<SortMethodEnum>(
+      tooltip: '排序模式',
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         child: Row(
@@ -26,11 +26,19 @@ class CollectsListWidgetSortPopupMenuButtonWidget extends ConsumerWidget {
               visible: !isSearching,
               child: Text(
                 collectsStateSortMode.label,
-                style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.8)),
+                style: TextStyle(
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.8)),
               ),
             ),
-            SizedBox(width: 4,),
-            Icon(Icons.format_list_bulleted,color: Theme.of(context).colorScheme.primary.withOpacity(0.8),size: 20,),
+            SizedBox(
+              width: 4,
+            ),
+            Icon(
+              Icons.format_list_bulleted,
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              size: 20,
+            ),
           ],
         ),
       ),
@@ -51,10 +59,9 @@ class CollectsListWidgetSortPopupMenuButtonWidget extends ConsumerWidget {
     );
   }
 
-
   PopupMenuItem<SortMethodEnum> _buildSortMenuItem(
-      SortMethodEnum mode,
-      ) {
+    SortMethodEnum mode,
+  ) {
     final isSelected = mode == collectsStateSortMode;
 
     return PopupMenuItem(
@@ -80,7 +87,4 @@ class CollectsListWidgetSortPopupMenuButtonWidget extends ConsumerWidget {
       ),
     );
   }
-
-
 }
-

@@ -19,12 +19,14 @@ import 'package:b_be_bee_app/util/native/autostart_helper.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_socks_proxy/socks_proxy.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../model/enum/contrast_color_enum.dart';
+import '../model/enum/proxy_type_enum.dart';
 
 const _commonBoxName = 'bbb_box';
 const _collectsBoxName = 'bbb_collects_box';
@@ -74,6 +76,11 @@ const _playlistRepeatMode = 'bbb_playlist_repeatMode';
 const _playlistCurrentIndex = 'bbb_playlist_currentIndex';
 
 const _userAgent = 'bbb_userAgent';
+const _proxyType = 'bbb_proxyType';
+const _proxyHost = 'bbb_proxyHost';
+const _proxyPort = 'bbb_proxyPort';
+const _proxyUsername = 'bbb_proxyUsername';
+const _proxyPassword = 'bbb_proxyPassword';
 
 const _biliRefreshToken = 'bili_refresh_token';
 const _biliRefreshTokenLastTime = 'bbb_refresh_token_last_time';
@@ -110,6 +117,7 @@ class HiveHelper {
       ..registerAdapter(AudioQualityAdapter()) //10
       ..registerAdapter(CollectTypeEnumAdapter()) //11
       ..registerAdapter(ContrastColorEnumAdapter()) //12
+      ..registerAdapter(ProxyTypeEnumAdapter()) //13
       ..registerAdapter(PlayStatisticsAdapter()); //17
 
     _box = await Hive.openBox(_commonBoxName);
@@ -761,6 +769,97 @@ class HiveHelper {
       await _box.delete(_userAgent);
     } else {
       await _box.put(_userAgent, userAgent);
+    }
+  }
+
+  static Future<void> setProxyType(ProxyTypeEnum? type) async {
+    if (type == null) {
+      await _box.delete(_proxyType);
+    } else {
+      await _box.put(_proxyType, type.index);
+    }
+  }
+
+  static Future<ProxyTypeEnum> getProxyType() async {
+    final index = _box.get(_proxyType);
+    if (index == null) {
+      return ProxyTypeEnum.none;
+    } else {
+      final type = ProxyTypeEnum.values[index];
+      String cert = '';
+      final username = getProxyUsername() ?? '';
+      final password = getProxyPassword() ?? '';
+
+      if (username.isNotEmpty && password.isNotEmpty) {
+        cert = '$username:$password@';
+      }
+
+      switch (type) {
+        case ProxyTypeEnum.HTTP:
+          SocksProxy.initProxy(
+              proxy: 'PROXY $cert${getProxyHost()}:${getProxyPort()}');
+          break;
+        case ProxyTypeEnum.SOCKS4:
+          SocksProxy.initProxy(
+              proxy:
+                  'SOCKS4 ${username.isNotEmpty ? '$username@' : null}${getProxyHost()}:${getProxyPort()}');
+          break;
+        case ProxyTypeEnum.SOCKS5:
+          SocksProxy.initProxy(
+              proxy: 'SOCKS5 $cert${getProxyHost()}:${getProxyPort()}');
+          break;
+        case ProxyTypeEnum.none:
+        // SocksProxy.initProxy(proxy: 'DIRECT');
+      }
+      return type;
+    }
+  }
+
+  static String? getProxyHost() {
+    return _box.get(_proxyHost);
+  }
+
+  static Future<void> setProxyHost(String? proxyHost) async {
+    if (proxyHost == null) {
+      await _box.delete(_proxyHost);
+    } else {
+      await _box.put(_proxyHost, proxyHost);
+    }
+  }
+
+  static int? getProxyPort() {
+    return _box.get(_proxyPort);
+  }
+
+  static Future<void> setProxyPort(int? proxyPort) async {
+    if (proxyPort == null) {
+      await _box.delete(_proxyPort);
+    } else {
+      await _box.put(_proxyPort, proxyPort);
+    }
+  }
+
+  static String? getProxyUsername() {
+    return _box.get(_proxyUsername);
+  }
+
+  static Future<void> setProxyUsername(String? proxyUsername) async {
+    if (proxyUsername == null) {
+      await _box.delete(_proxyUsername);
+    } else {
+      await _box.put(_proxyUsername, proxyUsername);
+    }
+  }
+
+  static String? getProxyPassword() {
+    return _box.get(_proxyPassword);
+  }
+
+  static Future<void> setProxyPassword(String? proxyPassword) async {
+    if (proxyPassword == null) {
+      await _box.delete(_proxyPassword);
+    } else {
+      await _box.put(_proxyUsername, proxyPassword);
     }
   }
 
