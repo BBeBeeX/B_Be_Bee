@@ -1,5 +1,3 @@
-
-
 import 'package:b_be_bee_app/common/api/bili/bili_login_api.dart';
 import 'package:b_be_bee_app/common/bili_error_message.dart';
 import 'package:b_be_bee_app/common/coutry_id.dart';
@@ -16,7 +14,6 @@ import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
-
 
 class BiliSmsLoginVm {
   final TextEditingController phoneController;
@@ -50,20 +47,21 @@ class BiliSmsLoginVm {
   }
 }
 
-
-final biliSmsLoginProvider = StateNotifierProvider<BiliSmsLoginNotifier, BiliSmsLoginVm>((ref) {
+final biliSmsLoginProvider =
+    StateNotifierProvider<BiliSmsLoginNotifier, BiliSmsLoginVm>((ref) {
   return BiliSmsLoginNotifier(ref);
-},name: 'smsLoginProvider');
+}, name: 'smsLoginProvider');
 
 class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
   final Ref ref;
 
-  BiliSmsLoginNotifier(this.ref) : super(BiliSmsLoginVm(
-    phoneController: TextEditingController(),
-    codeController: TextEditingController(),
-    countryItems: _initCountryItems(),
-    countryId: 86,
-  ));
+  BiliSmsLoginNotifier(this.ref)
+      : super(BiliSmsLoginVm(
+          phoneController: TextEditingController(),
+          codeController: TextEditingController(),
+          countryItems: _initCountryItems(),
+          countryId: 86,
+        ));
 
   void updateCountryId(int newCountryId) {
     state = state.copyWith(countryId: newCountryId);
@@ -79,14 +77,10 @@ class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
       items.add(DropdownMenuItem(
           value: i,
           child: SizedBox(
-              width: 100,
-              child: Text("+${i['country_id']} ${i['cname']}")
-          )
-      ));
+              width: 100, child: Text("+${i['country_id']} ${i['cname']}"))));
     }
     return items;
   }
-
 
   Future<void> submitSmsLogin(BuildContext context) async {
     final phoneText = state.phoneController.text;
@@ -99,8 +93,8 @@ class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
     final phoneNumber = int.parse(phoneText);
     final codeNumber = int.parse(codeText);
 
-    if (state.smsRequestResult == null ) {
-      await ToastUtil.show( t.controller.bili.login.captchaDataGetError);
+    if (state.smsRequestResult == null) {
+      await ToastUtil.show(t.controller.bili.login.captchaDataGetError);
       return;
     }
 
@@ -109,45 +103,44 @@ class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
           state.countryId,
           phoneNumber,
           codeNumber,
-          state.smsRequestResult!.data!.captcha_key
-      );
+          state.smsRequestResult!.data!.captcha_key);
 
       if (smsLoginResult.code == 0) {
-        final  userInfo = await BiliLoginApi.getLoginUserInfo();
+        final userInfo = await BiliLoginApi.getLoginUserInfo();
 
         await Future.microtask(() async {
           await ref.read(biliUserProvider.notifier).login(
-            username: userInfo.name,
-            userLevel: userInfo.levelInfo.current_level ?? 0 ,
-            avatarUrl: userInfo.avatarUrl,
-              vip: userInfo.vip
-          );
+              username: userInfo.name,
+              userLevel: userInfo.levelInfo.current_level ?? 0,
+              avatarUrl: userInfo.avatarUrl,
+              vip: userInfo.vip);
 
-          if(smsLoginResult.data.refresh_token.isNotEmpty){
-            await HiveHelper.setBiliRefreshToken(smsLoginResult.data.refresh_token);
+          if (smsLoginResult.data.refresh_token.isNotEmpty) {
+            await HiveHelper.setBiliRefreshToken(
+                smsLoginResult.data.refresh_token);
           }
         });
 
-        await ToastUtil.show( t.general.loginSuccess);
+        await ToastUtil.show(t.general.loginSuccess);
         context.popUntilRoot();
-
       } else {
         final message = BiliErrorMessage.getErrorMessage(smsLoginResult.code);
-        await ToastUtil.show( message);
+        await ToastUtil.show(message);
       }
     } catch (e) {
-      await ToastUtil.show(t.controller.bili.login.smsNetworkError,notShow:'$e');
+      await ToastUtil.show(t.controller.bili.login.smsNetworkError,
+          notShow: '$e');
     }
   }
 
   Future<void> onSendSmsCode(BuildContext context) async {
     final phoneText = state.phoneController.text;
     print(phoneText);
-    if (phoneText.isEmpty ) {
+    if (phoneText.isEmpty) {
       return;
     }
 
-    await RhttpUtils().resetCookies();
+    await RhttpUtils.instance.resetCookies();
 
     final phoneNumber = int.parse(phoneText);
 
@@ -168,19 +161,20 @@ class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
                 captchaResult.validate!,
                 captchaResult.seccode!);
 
-            if(result.data == null){
+            if (result.data == null) {
               final message = result.message;
-              await ToastUtil.show( t.controller.bili.login.smsError,notShow:'，$message');
+              await ToastUtil.show(t.controller.bili.login.smsError,
+                  notShow: '，$message');
               return;
             }
 
             updateSmsRequestResult(result);
 
             final message = BiliErrorMessage.getErrorMessage(result.code);
-            ToastUtil.show( message);
-          }
-          catch (e) {
-            await ToastUtil.show( t.controller.bili.login.smsError,notShow:'$e');
+            ToastUtil.show(message);
+          } catch (e) {
+            await ToastUtil.show(t.controller.bili.login.smsError,
+                notShow: '$e');
             return;
           }
         },
@@ -190,9 +184,10 @@ class BiliSmsLoginNotifier extends StateNotifier<BiliSmsLoginVm> {
         SnackBar(content: Text(e.toString())),
       );
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('error occurred: $e');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('error occurred: $e');
       });
     }
   }
 }
-

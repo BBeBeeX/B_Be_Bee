@@ -1,4 +1,3 @@
-
 import 'package:b_be_bee_app/common/api_constants.dart';
 import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
@@ -9,22 +8,22 @@ import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:b_be_bee_app/util/string_utils.dart';
 
-class BiliSearchApi{
+class BiliSearchApi {
   static Future<dynamic> _requestSearch({
     required String keyword,
     required int page,
     required bool isSearchUser,
   }) async {
-    var response = await RhttpUtils().get(
+    var response = await RhttpUtils.instance.get(
       ApiConstants.searchWithType,
       query: {
         'keyword': keyword,
-        'search_type': isSearchUser?'bili_user':'video',
+        'search_type': isSearchUser ? 'bili_user' : 'video',
         'page': page.toString(),
       },
     );
     if (response.bodyToJson['code'] != 0) {
-      throw "getSearch bili ${isSearchUser?'user':'video'} error: code:${response.bodyToJson['code']}, message:${response.bodyToJson['message']}";
+      throw "getSearch bili ${isSearchUser ? 'user' : 'video'} error: code:${response.bodyToJson['code']}, message:${response.bodyToJson['message']}";
     }
     return response.bodyToJson['data']?['result'] ?? [];
   }
@@ -35,8 +34,12 @@ class BiliSearchApi{
     required int page,
   }) async {
     List<SearchResult> list = [];
-    try{
-      final response =await _requestSearch(keyword: keyWord, page: page, isSearchUser: false,);
+    try {
+      final response = await _requestSearch(
+        keyword: keyWord,
+        page: page,
+        isSearchUser: false,
+      );
       if (response == null || response.length == 0) {
         return list;
       }
@@ -47,42 +50,48 @@ class BiliSearchApi{
             id: i['bvid'] ?? '',
             title: title,
             subtitle: i['author'] ?? '',
-            imageUrl:  "http:${i['pic'] ?? ""}",
+            imageUrl: "http:${i['pic'] ?? ""}",
             type: SearchItemTypeEnum.biliVideo,
-          audioInfo: AudioInfo(
+            audioInfo: AudioInfo(
               id: 'bili_video_${i['bvid']}',
               title: title,
-            upper: Upper(
+              upper: Upper(
                 id: i['mid'].toString(),
                 name: i['author'],
-            ),
-              coverWebUrl:"http:${i['pic'] ?? ""}",
+              ),
+              coverWebUrl: "http:${i['pic'] ?? ""}",
               duration: StringUtils.parseTimeStringToSeconds(i['duration']),
-            onlineId: i['bvid'],
-            audioCurrentType: AudioSourceTypeEnum.bili,
-            audioSourceType: AudioSourceTypeEnum.bili,
-          )
-        ));
+              onlineId: i['bvid'],
+              audioCurrentType: AudioSourceTypeEnum.bili,
+              audioSourceType: AudioSourceTypeEnum.bili,
+            )));
       }
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('getSearchVideos error : ${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('getSearchVideos error : ${e.toString()}');
       });
       return list;
     }
 
     await Future.microtask(() {
-      container.read(commonLoggerProvider.notifier).addLog('getSearchVideosLen: ${list.length} $list');
+      container
+          .read(commonLoggerProvider.notifier)
+          .addLog('getSearchVideosLen: ${list.length} $list');
     });
     return list;
   }
 
-
   static Future<List<SearchResult>> getSearchUsers(
       {required String keyWord, required int page}) async {
     List<SearchResult> list = [];
-    try{
-      final response = await _requestSearch(keyword: keyWord, page: page, isSearchUser: true,);
+    try {
+      final response = await _requestSearch(
+        keyword: keyWord,
+        page: page,
+        isSearchUser: true,
+      );
       if (response == null || response.length == 0) {
         return list;
       }
@@ -93,12 +102,13 @@ class BiliSearchApi{
             title: i['uname'],
             imageUrl: "http:${i['upic']}",
             subtitle: i['usign'],
-            type: SearchItemTypeEnum.biliUser
-        ));
+            type: SearchItemTypeEnum.biliUser));
       }
-    }catch(e){
+    } catch (e) {
       await Future.microtask(() {
-        container.read(commonLoggerProvider.notifier).addLog('getSearchVideos error : ${e.toString()}');
+        container
+            .read(commonLoggerProvider.notifier)
+            .addLog('getSearchVideos error : ${e.toString()}');
       });
       return list;
     }

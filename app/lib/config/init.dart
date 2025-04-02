@@ -41,7 +41,7 @@ Future<void> preInit(List<String> args) async {
 
   await Rhttp.init();
 
-  await RhttpUtils().init();
+  await RhttpUtils.instance.init();
   await HiveHelper.init();
 
   if (checkPlatformIsDesktop()) {

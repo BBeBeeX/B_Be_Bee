@@ -160,10 +160,20 @@ class TextEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _controller = TextEditingController(text: value);
+    final _focusNode = FocusNode();
+
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        onChanged(_controller.text);
+      }
+    });
+
     return SettingsEntry(
       label: label,
       child: TextField(
-        controller: TextEditingController(text: value),
+        controller: _controller,
+        focusNode: _focusNode,
         style: TextStyle(
           backgroundColor:
               Theme.of(context).colorScheme.secondary.withOpacity(0.2),
@@ -171,7 +181,6 @@ class TextEntry extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurface,
         ),
         cursorRadius: Radius.circular(5),
-        onChanged: onChanged,
         decoration: InputDecoration(
           fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           border: OutlineInputBorder(borderRadius: borderRadius),

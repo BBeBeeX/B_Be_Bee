@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:b_be_bee_app/common/api_constants.dart';
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/model/dao/audio_info.dart';
@@ -8,11 +9,10 @@ import 'package:b_be_bee_app/model/dto/upper/upper_notice_dto.dart';
 import 'package:b_be_bee_app/model/dto/video/bili_upper_all_videos_dto.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 
-abstract class BiliUpperApi{
+abstract class BiliUpperApi {
   static Future<String> getUpperNotice(String uid) async {
-    final response = await RhttpUtils().get(
+    final response = await RhttpUtils.instance.get(
       ApiConstants.upperNotice,
-
       query: {
         'mid': uid.toString(),
       },
@@ -20,15 +20,16 @@ abstract class BiliUpperApi{
     return UpperNoticeDto.fromJson(response.bodyToJson).data ?? '';
   }
 
-  static Future<BiliSeasonsAndSeriesDtoItemsLists> getSeasonsAndSeries(String uid) async {
+  static Future<BiliSeasonsAndSeriesDtoItemsLists> getSeasonsAndSeries(
+      String uid) async {
     int currentPage = 1;
     int pageSize = 20;
     bool hasMore = true;
-    List<BiliSeasonsList>? seasonsList =[];
+    List<BiliSeasonsList>? seasonsList = [];
     List<BiliSeriesList>? seriesList = [];
 
-    while(hasMore){
-      final response = await RhttpUtils().get(
+    while (hasMore) {
+      final response = await RhttpUtils.instance.get(
         ApiConstants.getSeasonsAndSeries,
         query: {
           'mid': uid.toString(),
@@ -37,17 +38,19 @@ abstract class BiliUpperApi{
         },
       );
 
-      final dto = BiliSeasonsAndSeriesDto.fromJson(response.bodyToJson).data?.items_lists ?? BiliSeasonsAndSeriesDtoItemsLists();
+      final dto = BiliSeasonsAndSeriesDto.fromJson(response.bodyToJson)
+              .data
+              ?.items_lists ??
+          BiliSeasonsAndSeriesDtoItemsLists();
       seriesList = [...?seriesList, ...?dto.series_list];
       seasonsList = [...?seasonsList, ...?dto.seasons_list];
 
-      hasMore = ((dto.page?.total??0) - seasonsList.length - seriesList.length) > 0;
+      hasMore =
+          ((dto.page?.total ?? 0) - seasonsList.length - seriesList.length) > 0;
     }
 
     return BiliSeasonsAndSeriesDtoItemsLists(
-        seasons_list:seasonsList,
-      series_list: seriesList
-    );
+        seasons_list: seasonsList, series_list: seriesList);
   }
 
   static Future<List<AudioInfo>> getUpperAllVideosByUid(String uid) async {
@@ -57,7 +60,7 @@ abstract class BiliUpperApi{
     bool hasMore = true;
 
     while (hasMore) {
-      final allVideosResponse = await RhttpUtils().get(
+      final allVideosResponse = await RhttpUtils.instance.get(
         ApiConstants.getAllVideosByUid,
         query: {
           'mid': uid.toString(),
@@ -67,7 +70,9 @@ abstract class BiliUpperApi{
         },
       );
 
-    final biliUpperAllVideosDtoData = BiliUpperAllVideosDto.fromJson(jsonDecode(allVideosResponse.body)).data;
+      final biliUpperAllVideosDtoData =
+          BiliUpperAllVideosDto.fromJson(jsonDecode(allVideosResponse.body))
+              .data;
       final archives = biliUpperAllVideosDtoData?.archives;
       final page = biliUpperAllVideosDtoData?.page;
 
@@ -75,18 +80,17 @@ abstract class BiliUpperApi{
         allVideos.addAll(archives);
       }
 
-      hasMore = pageSize * currentPage < (page?.total ?? 0) ;
+      hasMore = pageSize * currentPage < (page?.total ?? 0);
       currentPage++;
     }
 
     return AudioInfo.convertBiliSeasonResponseArchivesToAudioInfoList(
-        allVideos
-    );
+        allVideos);
   }
 
-  static Future<List<AudioInfo>> getUpperAllVideosSampleByUid(String uid) async {
-
-    final allVideosResponse = await RhttpUtils().get(
+  static Future<List<AudioInfo>> getUpperAllVideosSampleByUid(
+      String uid) async {
+    final allVideosResponse = await RhttpUtils.instance.get(
       ApiConstants.getAllVideosByUid,
       query: {
         'mid': uid.toString(),
@@ -96,11 +100,10 @@ abstract class BiliUpperApi{
       },
     );
 
-    final biliUpperAllVideosDtoData = BiliUpperAllVideosDto.fromJson(jsonDecode(allVideosResponse.body)).data;
+    final biliUpperAllVideosDtoData =
+        BiliUpperAllVideosDto.fromJson(jsonDecode(allVideosResponse.body)).data;
     final archives = biliUpperAllVideosDtoData?.archives;
 
-    return AudioInfo.convertBiliSeasonResponseArchivesToAudioInfoList(
-        archives
-    );
+    return AudioInfo.convertBiliSeasonResponseArchivesToAudioInfoList(archives);
   }
 }

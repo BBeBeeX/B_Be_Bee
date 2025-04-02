@@ -4,52 +4,26 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b7b044f-c108-45e9-b882-a4545bdfd288" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/B_Be_Bee.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/.idea/dictionaries/Administrator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/lib/model/enum/proxy_type_enum.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/lib/pages/play_statistics_page.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/lib/widget/music_player_pad_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/app.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="5b7b044f-c108-45e9-b882-a4545bdfd288" name="Changes" comment="fix: download_manager_page.dart do not display uninitialized interfaces after initialization;">
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/dialogs/proxy_test_dialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_audio_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_audio_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_collects_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_collects_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_login_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_login_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_search_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_search_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_upper_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_upper_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_user_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_user_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/bili/bili_video_play_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/bili/bili_video_play_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/common/api/github_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/common/api/github_api.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/config/init.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/config/init.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/controller/bili/bili_user_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/bili/bili_user_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/controller/bili/login/bili_sms_login_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/bili/login/bili_sms_login_controller.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/lib/controller/download_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/download_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/controller/playlist_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/playlist_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/controller/settings_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/settings_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/model/dao/download_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/model/dao/download_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/model/dao/download_state.freezed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/model/dao/download_state.freezed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/model/dao/download_state.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/model/dao/download_state.g.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/model/dao/settings/settings_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/model/dao/settings/settings_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/model/enum/download_status_enum.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/model/enum/download_status_enum.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/model/enum/download_status_enum.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/model/enum/download_status_enum.g.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/pages/download_manager_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/pages/download_manager_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/pages/main_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/pages/main_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/lib/pages/settings/settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/pages/settings/settings_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/provider/window_dimensions_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/provider/window_dimensions_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/util/ffmpeg_utils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/util/ffmpeg_utils.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/lib/util/hive_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/util/hive_helper.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/lib/util/rhttp_utils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/util/rhttp_utils.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/account_entry_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/account_entry_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_control_buttons_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_control_buttons_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_item_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_item_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_progress_bar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_progress_bar_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/bottom_navigation_bar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/bottom_navigation_bar_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/button/collects_list_widget_sort_popup_menu_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/button/collects_list_widget_sort_popup_menu_button_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/button/desktop_side_bar_add_popup_menu_button_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/button/desktop_side_bar_add_popup_menu_button_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/collects_list_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/collects_list_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/custom_slider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/custom_slider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/desktop_bottom_bar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/desktop_bottom_bar_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/desktop_side_bar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/desktop_side_bar_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/desktop_top_navigation_bar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/desktop_top_navigation_bar_widget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/lib/widget/settings_entry.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/settings_entry.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pubspec.yaml" afterDir="false" />
     </list>
@@ -107,6 +81,37 @@
       <option name="presentableId" value="Default" />
       <updated>1743580714043</updated>
     </task>
+    <task id="LOCAL-00001" summary="feat add tooltips;&#10;feat add pad layout;&#10;feat add proxy;&#10;feat add play statistics page;&#10;fix smooth the progress of the playback bar;&#10;fix adapt player page font color;&#10;fix modify the download ffmpeg add download_manager_page.dart;">
+      <option name="closed" value="true" />
+      <created>1743588523928</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743588523928</updated>
+    </task>
+    <task id="LOCAL-00002" summary="release: 0.1.0">
+      <option name="closed" value="true" />
+      <created>1743588721353</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743588721353</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix: download_manager_page.dart do not display uninitialized interfaces after initialization;">
+      <option name="closed" value="true" />
+      <created>1743598463062</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743598463062</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat add tooltips;&#10;feat add pad layout;&#10;feat add proxy;&#10;feat add play statistics page;&#10;fix smooth the progress of the playback bar;&#10;fix adapt player page font color;&#10;fix modify the download ffmpeg add download_manager_page.dart;" />
+    <MESSAGE value="release: 0.1.0" />
+    <MESSAGE value="fix: download_manager_page.dart do not display uninitialized interfaces after initialization;" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: download_manager_page.dart do not display uninitialized interfaces after initialization;" />
   </component>
 </project>

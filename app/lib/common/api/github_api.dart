@@ -4,8 +4,9 @@ import 'package:b_be_bee_app/util/rhttp_utils.dart';
 
 class GithubApi {
   static Future<GithubReleasesItemModel> requestLatestRelease() async {
-    var response = await RhttpUtils().get(ApiConstants.githubLatestRelease,
-        );
+    var response = await RhttpUtils.instance.get(
+      ApiConstants.githubLatestRelease,
+    );
     return GithubReleasesItemModel.fromJson(response.bodyToJson);
   }
 }

@@ -17,7 +17,8 @@ import 'package:rhttp/rhttp.dart';
 class RhttpUtils {
   static final RhttpUtils _instance = RhttpUtils._internal();
 
-  factory RhttpUtils() => _instance;
+  static RhttpUtils get instance => _instance;
+
   static late RhttpClient _client;
   static late final CookieJar cookieJar;
   static String cookieString = '';
@@ -78,23 +79,15 @@ class RhttpUtils {
 
   Future<void> setProxy(ProxyTypeEnum type,
       {String? host, String? port, String? username, String? password}) async {
-    switch (type) {
-      case ProxyTypeEnum.none:
-        _client = await RhttpClient.create(
-          settings: const ClientSettings(
-            proxySettings: ProxySettings.noProxy(),
-          ),
-        );
-        break;
-      case ProxyTypeEnum.HTTP:
-      // TODO: Handle this case.
-      case ProxyTypeEnum.SOCKS4:
-      // TODO: Handle this case.
-      case ProxyTypeEnum.SOCKS5:
-      // TODO: Handle this case.
-    }
+    final proxySettings = _client.settings.proxySettings;
+    print('proxySettings: ${proxySettings.toString()}');
 
-    _client = createRhttpClient();
+    _client = createRhttpClient(
+        type: type,
+        host: host,
+        port: port,
+        username: username,
+        password: password);
   }
 
   Future<HttpTextResponse> get(
@@ -265,17 +258,33 @@ RhttpClient createRhttpClient(
     String? port,
     String? username,
     String? password}) {
+  String proxy = '';
+  if (type != ProxyTypeEnum.none) {
+    proxy += '${type.name.toLowerCase()}://';
+
+    if (username != null && username.isNotEmpty) {
+      proxy += username;
+      if (password != null && password.isNotEmpty) {
+        proxy += ':$password';
+      }
+      proxy += '@';
+    }
+
+    proxy += '$host:$port';
+  }
+  print('proxy: $proxy');
+
   return RhttpClient.createSync(
     settings: ClientSettings(
       timeoutSettings: TimeoutSettings(
         connectTimeout: const Duration(seconds: 5),
       ),
-      // proxySettings: switch (type) {
-      //   ProxyTypeEnum.none => ProxySettings.noProxy(),
-      //   ProxyTypeEnum.HTTP => ProxySettings.proxy('http://localhost:8080'),
-      //   ProxyTypeEnum.SOCKS4 => throw UnimplementedError(),
-      //   ProxyTypeEnum.SOCKS5 => throw UnimplementedError(),
-      // },
+      proxySettings: switch (type) {
+        ProxyTypeEnum.none => ProxySettings.noProxy(),
+        ProxyTypeEnum.HTTP => ProxySettings.proxy(proxy),
+        ProxyTypeEnum.SOCKS4 => ProxySettings.proxy(proxy),
+        ProxyTypeEnum.SOCKS5 => ProxySettings.proxy(proxy),
+      },
       //   StaticProxy(
       //     url: 'http://localhost:8081',
       //     condition: ProxyCondition.onlyHttps,

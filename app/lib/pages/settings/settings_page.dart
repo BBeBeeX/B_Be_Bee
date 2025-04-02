@@ -18,13 +18,12 @@ import 'package:b_be_bee_app/widget/slider_overlay_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_socks_proxy/socks_proxy.dart';
-import 'package:rhttp/rhttp.dart';
 import 'package:routerino/routerino.dart';
 
 import '../../model/enum/contrast_color_enum.dart';
 import '../../model/enum/proxy_type_enum.dart';
 import '../../util/rhttp_utils.dart';
+import '../../widget/dialogs/proxy_test_dialog.dart';
 import '../play_statistics_page.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -473,46 +472,39 @@ class SettingsPage extends ConsumerWidget {
                         ],
                       )),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    String cert = '';
-                    final username = settings.proxyUsername ?? '';
-                    final password = settings.proxyPassword ?? '';
-
-                    if (username.isNotEmpty && password.isNotEmpty) {
-                      cert = '$username:$password@';
-                    }
-
-                    switch (settings.proxyType) {
-                      case ProxyTypeEnum.HTTP:
-                        SocksProxy.initProxy(
-                            proxy:
-                                'PROXY $cert${settings.proxyHost}:${settings.proxyPort}');
-                        break;
-                      case ProxyTypeEnum.SOCKS4:
-                        SocksProxy.initProxy(
-                            proxy:
-                                'SOCKS4 ${username.isNotEmpty ? '$username@' : null}${settings.proxyHost}:${settings.proxyPort}');
-                        break;
-                      case ProxyTypeEnum.SOCKS5:
-                        SocksProxy.initProxy(
-                            proxy:
-                                'SOCKS5 $cert${settings.proxyHost}:${settings.proxyPort}');
-                        break;
-                      case ProxyTypeEnum.none:
-                        SocksProxy.initProxy(proxy: 'DIRECT');
-                    }
-                  },
-                  child: Text("更新代理"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: ButtonEntry(
+                        label: '',
+                        buttonLabel: '更新代理',
+                        onTap: () async {
+                          RhttpUtils.instance.setProxy(
+                            settings.proxyType,
+                            host: settings.proxyHost,
+                            port: settings.proxyPort.toString(),
+                            username: settings.proxyUsername,
+                            password: settings.proxyPassword,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    HttpTextResponse response =
-                        await RhttpUtils().get('http://www.google.com');
-
-                    print(response);
-                  },
-                  child: Text("test proxy"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: ButtonEntry(
+                        label: '',
+                        buttonLabel: '测试代理',
+                        onTap: () async {
+                          ProxyTestDialog.open(context);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

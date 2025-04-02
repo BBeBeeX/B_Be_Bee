@@ -247,7 +247,7 @@ class DownloadController extends StateNotifier<DownloadState> {
           break;
         case AudioSourceTypeEnum.bili_music:
         case AudioSourceTypeEnum.bili:
-          await RhttpUtils().downloadBiliAudio(
+          await RhttpUtils.instance.downloadBiliAudio(
               url: task.audioItem!.urls.first,
               onSendProgress: (progress) {
                 _updateTask(task.id, progress: progress);
@@ -482,7 +482,7 @@ class DownloadController extends StateNotifier<DownloadState> {
     if (task == null) return;
 
     await _updateTask(taskId, status: DownloadStatusEnum.canceled);
-    RhttpUtils().cancelRequests(taskId);
+    RhttpUtils.instance.cancelRequests(taskId);
   }
 
   Future<void> deleteTask(String taskId) async {

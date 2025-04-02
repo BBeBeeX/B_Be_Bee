@@ -25,7 +25,7 @@ abstract class BiliCollectsApi {
     List<CollectsDataDto> allCollects = [];
 
     while (hasMore) {
-      final createdList = await RhttpUtils().get(
+      final createdList = await RhttpUtils.instance.get(
         ApiConstants.createdList,
         query: {
           'up_mid': userId,
@@ -52,7 +52,7 @@ abstract class BiliCollectsApi {
       String userId) async {
     // final mid = await CookieUtils.getUserId();
 
-    final createdListAll = await RhttpUtils()
+    final createdListAll = await RhttpUtils.instance
         .get(ApiConstants.createdListAll, query: {'up_mid': userId});
 
     return CreatedListAll.fromJson(createdListAll.bodyToJson).data ??
@@ -61,7 +61,8 @@ abstract class BiliCollectsApi {
 
   //获取收藏夹封面信息
   static Future<CollectsDataDto> getCollectsInfo(int collectId) async {
-    final collectsInfo = await RhttpUtils().get(ApiConstants.resourceInfo,
+    final collectsInfo = await RhttpUtils.instance.get(
+        ApiConstants.resourceInfo,
         query: {'media_id': collectId.toString()});
     return ResponseCollectsInfo.fromJson(collectsInfo.bodyToJson).data ??
         CollectsDataDto(cover: Constants.bili_video_default_cover);
@@ -111,7 +112,7 @@ abstract class BiliCollectsApi {
     int ps = 20; //每页20条
 
     final collectsResource =
-        await RhttpUtils().get(ApiConstants.resourceList, query: {
+        await RhttpUtils.instance.get(ApiConstants.resourceList, query: {
       'media_id': mid.toString(),
       'ps': ps.toString(),
       'pn': pn.toString(),
@@ -124,7 +125,8 @@ abstract class BiliCollectsApi {
   //获取当前用户创建的所有合集信息
   static Future<CollectsListAllDto> getAllCreatedCollects2(
       String userId) async {
-    final createdListAll = await RhttpUtils().get(ApiConstants.collect2ListAll,
+    final createdListAll = await RhttpUtils.instance.get(
+        ApiConstants.collect2ListAll,
         query: {'up_mid': userId, 'ps': '70', 'pn': '1', 'platform': 'web'});
 
     return CreatedListAll.fromJson(createdListAll.bodyToJson).data ??
@@ -223,7 +225,7 @@ abstract class BiliCollectsApi {
   static Future<BiliSeasonResponseData> _getSeasons(
       int seasonId, int pn, int ps) async {
     final collectsResource =
-        await RhttpUtils().get(ApiConstants.getSeasons, query: {
+        await RhttpUtils.instance.get(ApiConstants.getSeasons, query: {
       'season_id': seasonId.toString(),
       'mid': '1',
       'page_size': ps.toString(),
@@ -260,7 +262,7 @@ abstract class BiliCollectsApi {
   static Future<BiliSeriesResponseDtoData> _getAllSeries(
       String uid, int seriesId, int pn, int ps) async {
     final collectsResource =
-        await RhttpUtils().get(ApiConstants.getSeasons, query: {
+        await RhttpUtils.instance.get(ApiConstants.getSeasons, query: {
       'series_id': seriesId.toString(),
       'mid': uid,
       'page_size': ps.toString(),

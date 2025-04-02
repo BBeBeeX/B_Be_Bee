@@ -68,7 +68,7 @@ class BiliUserNotifier extends StateNotifier<BiliUser> {
     HiveHelper.setLocalBiliUser(state);
 
     //清cookie
-    RhttpUtils().clearCookies();
+    RhttpUtils.instance.clearCookies();
 
     ToastUtil.show('登出成功');
   }

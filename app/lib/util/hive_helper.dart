@@ -17,9 +17,9 @@ import 'package:b_be_bee_app/model/enum/repeat_mode_enum.dart';
 import 'package:b_be_bee_app/provider/window_dimensions_provider.dart';
 import 'package:b_be_bee_app/util/native/autostart_helper.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
+import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_socks_proxy/socks_proxy.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:path/path.dart' as path;
@@ -786,31 +786,12 @@ class HiveHelper {
       return ProxyTypeEnum.none;
     } else {
       final type = ProxyTypeEnum.values[index];
-      String cert = '';
-      final username = getProxyUsername() ?? '';
-      final password = getProxyPassword() ?? '';
+      RhttpUtils.instance.setProxy(type,
+          host: getProxyHost(),
+          port: getProxyPort().toString(),
+          username: getProxyUsername(),
+          password: getProxyPassword());
 
-      if (username.isNotEmpty && password.isNotEmpty) {
-        cert = '$username:$password@';
-      }
-
-      switch (type) {
-        case ProxyTypeEnum.HTTP:
-          SocksProxy.initProxy(
-              proxy: 'PROXY $cert${getProxyHost()}:${getProxyPort()}');
-          break;
-        case ProxyTypeEnum.SOCKS4:
-          SocksProxy.initProxy(
-              proxy:
-                  'SOCKS4 ${username.isNotEmpty ? '$username@' : null}${getProxyHost()}:${getProxyPort()}');
-          break;
-        case ProxyTypeEnum.SOCKS5:
-          SocksProxy.initProxy(
-              proxy: 'SOCKS5 $cert${getProxyHost()}:${getProxyPort()}');
-          break;
-        case ProxyTypeEnum.none:
-        // SocksProxy.initProxy(proxy: 'DIRECT');
-      }
       return type;
     }
   }

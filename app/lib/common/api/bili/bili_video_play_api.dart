@@ -1,5 +1,3 @@
-
-
 import 'package:b_be_bee_app/common/api_constants.dart';
 import 'package:b_be_bee_app/model/dto/subtitle/bili_subtitle_dto.dart';
 import 'package:b_be_bee_app/model/dto/video/audio_info_response.dart';
@@ -11,27 +9,25 @@ import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
 import 'package:b_be_bee_app/util/subtitle_utils.dart';
 
-
 class BiliVideoPlayApi {
-
   static Future<VideoPlayResponse> _requestVideoPlay(
-      {required String bvid,
-      required int cid,
-      required bool isVip}) async {
-    var response = await RhttpUtils().get(ApiConstants.videoPlay,
-        query: {
-          // 'avid':
-          'bvid': bvid,
-          'cid': cid.toString(),
-          'qn': '127',  // 视频清晰度
-          // 'qn': isVip? '127':'80',  // 视频清晰度
-          'fnval': '4048',
-          'fnver': '0',
-          'fourk': '1',
-          // 'session':
-          'platform': 'pc',
-          // 'high_quality':
-        },);
+      {required String bvid, required int cid, required bool isVip}) async {
+    var response = await RhttpUtils.instance.get(
+      ApiConstants.videoPlay,
+      query: {
+        // 'avid':
+        'bvid': bvid,
+        'cid': cid.toString(),
+        'qn': '127', // 视频清晰度
+        // 'qn': isVip? '127':'80',  // 视频清晰度
+        'fnval': '4048',
+        'fnver': '0',
+        'fourk': '1',
+        // 'session':
+        'platform': 'pc',
+        // 'high_quality':
+      },
+    );
 
     return VideoPlayResponse.fromJson(response.bodyToJson);
   }
@@ -41,8 +37,7 @@ class BiliVideoPlayApi {
     required int cid,
     required bool isVip,
   }) async {
-    var response =
-        await _requestVideoPlay(bvid: bvid, cid: cid,isVip:isVip );
+    var response = await _requestVideoPlay(bvid: bvid, cid: cid, isVip: isVip);
     if (response.code != 0) {
       throw 'getVideoPlay: code:${response.code}, message:${response.message}';
     }
@@ -100,49 +95,45 @@ class BiliVideoPlayApi {
     }
 
     return AudioPlayInfo.fromBili(
-        supportAudioQualities: supportAudioQualities,
-        audios: prioritizedAudioList,
+      supportAudioQualities: supportAudioQualities,
+      audios: prioritizedAudioList,
     );
   }
 
   static Future<AudioInfoResponseData> getVideoInfo(String bvid) async {
-    final audioInfoResponse = await RhttpUtils().get(
-        ApiConstants.videoInfo,
-        query: {'bvid': bvid}
-    );
+    final audioInfoResponse = await RhttpUtils.instance
+        .get(ApiConstants.videoInfo, query: {'bvid': bvid});
 
-    return AudioInfoResponse.fromJson(audioInfoResponse.bodyToJson).data ?? AudioInfoResponseData();
+    return AudioInfoResponse.fromJson(audioInfoResponse.bodyToJson).data ??
+        AudioInfoResponseData();
   }
 
   static Future<List<AudioPagelistData>> getAudioPagelist(String bvid) async {
-    final audioPagelistResponse = await RhttpUtils().get(
-        ApiConstants.audioPagelist,
-        query: {'bvid': bvid}
-    );
+    final audioPagelistResponse = await RhttpUtils.instance
+        .get(ApiConstants.audioPagelist, query: {'bvid': bvid});
 
     return AudioPagelist.fromJson(audioPagelistResponse.bodyToJson).data ?? [];
   }
 
-  static Future<String?> getBiliLyrics(String bvid,int? cid) async {
-    if(cid == null || cid == 0){
+  static Future<String?> getBiliLyrics(String bvid, int? cid) async {
+    if (cid == null || cid == 0) {
       cid = (await getVideoInfo(bvid)).cid;
     }
 
-    var res = await RhttpUtils().get(ApiConstants.getSubtitle,
-        query: {
+    var res = await RhttpUtils.instance.get(ApiConstants.getSubtitle, query: {
       'cid': cid.toString(),
       'bvid': bvid,
     });
     try {
       if (res.bodyToJson['code'] == 0) {
-        final biliSubtitleDto = BiliSubtitleDto.fromJson(res.bodyToJson['data']);
+        final biliSubtitleDto =
+            BiliSubtitleDto.fromJson(res.bodyToJson['data']);
         if (biliSubtitleDto.subtitles!.isNotEmpty) {
           final subtitles = biliSubtitleDto.subtitles;
           await getDanmaku(subtitles!);
-          if(subtitles.isNotEmpty){
+          if (subtitles.isNotEmpty) {
             final a = await SubtitleUtils.biliConvertToWebVTT(subtitles);
             return a;
-
           }
         }
       }
@@ -154,7 +145,6 @@ class BiliVideoPlayApi {
 
   static Future<String?> getDanmaku(List<SubTitlteItemModel> subtitles) async {
     if (subtitles.isNotEmpty) {
-
       for (var i in subtitles) {
         // final Map<String, dynamic> res = await getSubtitleContent(
         //   i.subtitleUrl,
@@ -169,12 +159,11 @@ class BiliVideoPlayApi {
   }
 
   static Future<List> getSubtitleContent(url) async {
-    var res = await RhttpUtils().get('https:$url');
+    var res = await RhttpUtils.instance.get('https:$url');
     // final String content = await SubtitleUtils.biliConvertToWebVTT(res.bodyToJson['body']);
     final List body = res.bodyToJson['body'];
     return body;
   }
-
 }
 
 ///视频流格式标识
