@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../util/time_utils.dart';
+import '../widget/dialogs/play_statistics_page_show_clean_dialog.dart';
 
 class PlayStatisticsPage extends ConsumerWidget {
   const PlayStatisticsPage({super.key});
@@ -67,7 +68,7 @@ class PlayStatisticsPage extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_outline),
-            onPressed: () => _showClearDialog(context, controller),
+            onPressed: () => PlayStaticsPageShowCleanDialog.open(controller),
             tooltip: '清除所有统计',
           ),
         ],
@@ -762,30 +763,6 @@ class PlayStatisticsPage extends ConsumerWidget {
           isExpanded: pageState.isSongExpanded,
         ),
       ],
-    );
-  }
-
-  void _showClearDialog(
-      BuildContext context, PlayStatisticsController controller) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('清除所有统计'),
-        content: const Text('确定要清除所有播放统计数据吗？此操作不可撤销。'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('取消'),
-          ),
-          TextButton(
-            onPressed: () {
-              controller.clearAllStats();
-              Navigator.of(context).pop();
-            },
-            child: const Text('确定'),
-          ),
-        ],
-      ),
     );
   }
 }
