@@ -27,7 +27,10 @@ class AccountEntryWidget extends ConsumerWidget {
     if (isDesktopTopBar) {
       return PopupMenuButton<String>(
         padding: const EdgeInsets.all(0),
-        icon: const Icon(Icons.person_outline),
+        icon: Icon(
+          Icons.person_outline,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+        ),
         tooltip: '当前账户',
         onSelected: (value) async {
           if (value == 'bili') {

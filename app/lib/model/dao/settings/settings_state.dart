@@ -60,8 +60,8 @@
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
-import 'package:b_be_bee_app/model/enum/color_mode_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../enum/contrast_color_enum.dart';
@@ -70,7 +70,7 @@ import '../../enum/proxy_type_enum.dart';
 class SettingsState {
   ///通用
   final ThemeMode theme;
-  final ColorModeEnum colorMode;
+  final FlexScheme colorMode;
   final AppLocale? locale;
   final bool minimizeToTray; //最小化到系统托盘
   final bool saveWindowPlacement;
@@ -140,7 +140,7 @@ class SettingsState {
   // 构造函数
   SettingsState({
     this.theme = ThemeMode.dark,
-    this.colorMode = ColorModeEnum.system,
+    this.colorMode = FlexScheme.greys,
     this.locale,
     this.minimizeToTray = true,
     this.saveWindowPlacement = true,
@@ -179,7 +179,7 @@ class SettingsState {
   // copyWith 方法
   SettingsState copyWith({
     ThemeMode? theme,
-    ColorModeEnum? colorMode,
+    FlexScheme? colorMode,
     AppLocale? locale,
     bool? minimizeToTray,
     bool? saveWindowPlacement,

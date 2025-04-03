@@ -24,6 +24,7 @@ import '../../model/enum/contrast_color_enum.dart';
 import '../../model/enum/proxy_type_enum.dart';
 import '../../util/rhttp_utils.dart';
 import '../../widget/dialogs/proxy_test_dialog.dart';
+import '../../widget/flex_color_scheme/input_colors_popup_menu.dart';
 import '../play_statistics_page.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -109,6 +110,10 @@ class SettingsPage extends ConsumerWidget {
                   }).toList(),
                   onChanged: (theme) async => controller.setTheme(theme),
                 ),
+              ),
+              SettingsEntry(
+                label: '颜色',
+                child: InputColorsPopupMenu(),
               ),
               // SettingsEntry(
               //   label: t.settingsTab.general.color,

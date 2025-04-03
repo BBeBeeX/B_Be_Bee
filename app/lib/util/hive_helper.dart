@@ -10,7 +10,6 @@ import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/model/enum/bili_vip_label_enum.dart';
 import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
-import 'package:b_be_bee_app/model/enum/color_mode_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_status_enum.dart';
 import 'package:b_be_bee_app/model/enum/repeat_mode_enum.dart';
@@ -18,6 +17,7 @@ import 'package:b_be_bee_app/provider/window_dimensions_provider.dart';
 import 'package:b_be_bee_app/util/native/autostart_helper.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/util/rhttp_utils.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
@@ -224,15 +224,15 @@ class HiveHelper {
     }
   }
 
-  static ColorModeEnum? getColorMode() {
+  static FlexScheme? getColorMode() {
     final value = _box.get(_colorKey);
     if (value == null) {
       return null;
     }
-    return ColorModeEnum.values.firstWhere((color) => color.name == value);
+    return FlexScheme.values.firstWhere((color) => color.name == value);
   }
 
-  static Future<void> setColorMode(ColorModeEnum? color) async {
+  static Future<void> setColorMode(FlexScheme? color) async {
     if (color == null) {
       await _box.delete(_colorKey);
     } else {

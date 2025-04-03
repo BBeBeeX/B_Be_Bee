@@ -44,6 +44,8 @@ class b_be_beeApp extends ConsumerWidget {
     CustomAudioHandler.setRef(ref);
     RouterObserver().setRef(ref);
 
+    final color = ref.watch(settingsProvider.select((s) => s.colorMode));
+
     return ProviderScope(
         child: TrayWatcher(
       child: WindowWatcher(
@@ -72,8 +74,8 @@ class b_be_beeApp extends ConsumerWidget {
               supportedLocales: AppLocaleUtils.supportedLocales,
               localizationsDelegates: GlobalMaterialLocalizations.delegates,
               debugShowCheckedModeBanner: false,
-              theme: FlexThemeData.light(scheme: FlexScheme.greys),
-              darkTheme: FlexThemeData.dark(scheme: FlexScheme.greys),
+              theme: FlexThemeData.light(scheme: color),
+              darkTheme: FlexThemeData.dark(scheme: color),
               themeMode: ref.watch(settingsProvider).theme,
               navigatorKey: globalNavigationKey,
               navigatorObservers: [RouterObserver()],

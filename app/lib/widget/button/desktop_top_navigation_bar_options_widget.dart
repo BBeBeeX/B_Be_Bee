@@ -1,17 +1,16 @@
-
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/util/shortcut_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton<String>(
-      icon: Icon(Icons.more_horiz_outlined, color: Theme.of(context).colorScheme.primary.withOpacity(0.9)),
+      icon: Icon(Icons.more_horiz_outlined,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.9)),
       onSelected: (subValue) async {
-        await ShortcutUtils.handleShortcut(context,ref,subValue);
+        await ShortcutUtils.handleShortcut(context, ref, subValue);
       },
       itemBuilder: (BuildContext context) {
         return [
@@ -21,10 +20,13 @@ class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
               offset: const Offset(100, -10),
               child: ListTile(
                 title: Text(t.general.files),
-                trailing: Icon(Icons.keyboard_arrow_right, size: 15, color: Theme.of(context).colorScheme.primary.withOpacity(0.9)),
+                trailing: Icon(Icons.keyboard_arrow_right,
+                    size: 15,
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.9)),
               ),
               onSelected: (subValue) async {
-                await ShortcutUtils.handleShortcut(context,ref,subValue);
+                await ShortcutUtils.handleShortcut(context, ref, subValue);
               },
               itemBuilder: (BuildContext context) {
                 return [
@@ -52,10 +54,14 @@ class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
               offset: const Offset(100, -10),
               child: ListTile(
                 title: Text(t.general.play),
-                trailing: Icon(Icons.keyboard_arrow_right, size: 15, color: Colors.grey.shade300),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  size: 15,
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+                ),
               ),
               onSelected: (subValue) async {
-                await ShortcutUtils.handleShortcut(context,ref,subValue);
+                await ShortcutUtils.handleShortcut(context, ref, subValue);
               },
               itemBuilder: (BuildContext context) {
                 return [
@@ -67,7 +73,6 @@ class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
                     ),
                   ),
                   PopupMenuDivider(),
-
                   PopupMenuItem<String>(
                     value: 'skip',
                     child: ListTile(
@@ -78,34 +83,28 @@ class DesktopTopNavigationBarOptionsWidget extends ConsumerWidget {
                   PopupMenuItem<String>(
                     value: 'previous',
                     child: ListTile(
-                      title: Text(t.general.previous),
-                      trailing: Text('Ctrl+Left Arrow')
-                    ),
+                        title: Text(t.general.previous),
+                        trailing: Text('Ctrl+Left Arrow')),
                   ),
                   PopupMenuDivider(),
-
                   PopupMenuItem<String>(
                     value: 'cycle_repeat_mode',
                     child: ListTile(
-                      title: Text(t.general.changePlayMode),
-                      trailing: Text('Ctrl+R')
-                    ),
+                        title: Text(t.general.changePlayMode),
+                        trailing: Text('Ctrl+R')),
                   ),
                   PopupMenuDivider(),
-
                   PopupMenuItem<String>(
                     value: 'volume_up',
                     child: ListTile(
-                      title: Text(t.general.volumeUp),
-                      trailing: Text('Ctrl+Up Arrow')
-                    ),
+                        title: Text(t.general.volumeUp),
+                        trailing: Text('Ctrl+Up Arrow')),
                   ),
                   PopupMenuItem<String>(
                     value: 'volume_down',
                     child: ListTile(
-                      title: Text(t.general.volumeDown),
-                      trailing: Text('Ctrl+Down Arrow')
-                    ),
+                        title: Text(t.general.volumeDown),
+                        trailing: Text('Ctrl+Down Arrow')),
                   ),
                 ];
               },

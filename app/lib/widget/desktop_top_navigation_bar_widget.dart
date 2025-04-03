@@ -120,7 +120,8 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                                     size: 30,
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .onSurfaceVariant,
+                                        .primary
+                                        .withOpacity(0.9),
                                   ),
                                   const SizedBox(width: 8),
                                   SizedBox(
@@ -134,7 +135,7 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
                                         hintStyle: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onSurfaceVariant
+                                              .primary
                                               .withOpacity(0.7),
                                         ),
                                       ),

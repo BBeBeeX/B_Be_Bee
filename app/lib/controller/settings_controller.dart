@@ -2,13 +2,13 @@ import 'package:b_be_bee_app/config/init.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/model/dao/settings/settings_state.dart';
 import 'package:b_be_bee_app/model/enum/audio_quality_enum.dart';
-import 'package:b_be_bee_app/model/enum/color_mode_enum.dart';
 import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:b_be_bee_app/pages/settings/language_page.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/native/autostart_helper.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
@@ -79,7 +79,7 @@ class SettingsController extends StateNotifier<SettingsState> {
     await HiveHelper.setTheme(theme);
   }
 
-  Future<void> setColorMode(ColorModeEnum mode) async {
+  Future<void> setColorMode(FlexScheme mode) async {
     state = state.copyWith(
       colorMode: mode,
     );
