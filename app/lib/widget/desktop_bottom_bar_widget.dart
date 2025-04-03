@@ -36,6 +36,7 @@ class DesktopBottomBarWidget extends ConsumerWidget {
     return SafeArea(
       child: Container(
         height: 80,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.onPrimary,
         ),

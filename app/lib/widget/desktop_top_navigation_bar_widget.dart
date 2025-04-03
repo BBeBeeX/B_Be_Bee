@@ -24,6 +24,7 @@ class DesktopTopNavigationBarWidget extends ConsumerWidget {
         child: DragToMoveArea(
             child: Container(
                 height: 60,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
