@@ -17,11 +17,7 @@ const List<Map<String, String>> allRecommends = [
   {'id': '2671401', 'type': 'bili_season', 'title': '推荐歌单 合集·霉霉神现场合集'},
   {'id': '3755783', 'type': 'bili_season', 'title': '推荐歌单 合集·全是洗脑神曲啊'},
   {'id': '3502852', 'type': 'bili_season', 'title': '推荐歌单 合集·奥运会歌曲'},
-  {
-    'id': '328371',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·今晚村口集合！劲舞团还是QQ飞车随你挑'
-  },
+  {'id': '328371','type': 'bili_season','title': '推荐歌单 合集·今晚村口集合！劲舞团还是QQ飞车随你挑'},
   {'id': '874587', 'type': 'bili_season', 'title': '推荐歌单 合集·世界杯名曲合集'},
   {'id': '1598546', 'type': 'bili_season', 'title': '推荐歌单 合集·身临其境！一起来大合唱吧'},
   {'id': '230679', 'type': 'bili_season', 'title': '推荐歌单 合集·王菲：你快乐所以我快乐'},
@@ -44,11 +40,7 @@ const List<Map<String, String>> allRecommends = [
   {'id': '1740963', 'type': 'bili_season', 'title': '推荐歌单 合集·经典漫曲'},
   {'id': '1519400', 'type': 'bili_season', 'title': '推荐歌单 合集·高达'},
   {'id': '120812', 'type': 'bili_season', 'title': '推荐歌单 合集·千禧年之前的经典金曲'},
-  {
-    'id': '3866786',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Live (2024 From Zero 世界巡演) - 林肯公园'
-  },
+  {'id': '3866786','type': 'bili_season','title': '推荐歌单 合集·Live (2024 From Zero 世界巡演) - 林肯公园'},
   {'id': '4796717', 'type': 'bili_season', 'title': '推荐歌单 合集·纵贯线'},
   {'id': '1406317', 'type': 'bili_season', 'title': '推荐歌单 合集·周杰伦'},
   {'id': '4355599', 'type': 'bili_season', 'title': '推荐歌单 合集·林俊杰'},
@@ -70,11 +62,7 @@ const List<Map<String, String>> allRecommends = [
   {'id': '417471', 'type': 'bili_season', 'title': '推荐歌单 合集·艺人合作'},
   {'id': '13325', 'type': 'bili_season', 'title': '推荐歌单 合集·1989 World Tour'},
   {'id': '1969319', 'type': 'bili_season', 'title': '推荐歌单 合集·Ayase-YOASOBI·MV'},
-  {
-    'id': '2006067',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Ayase-YOASOBI·LIVE'
-  },
+  {'id': '2006067','type': 'bili_season','title': '推荐歌单 合集·Ayase-YOASOBI·LIVE'},
   {'id': '189745', 'type': 'bili_season', 'title': '推荐歌单 合集·净慈寺合集'},
   {'id': '71510', 'type': 'bili_season', 'title': '推荐歌单 合集·雨声合集'},
   {'id': '1363249', 'type': 'bili_season', 'title': '推荐歌单 合集·番茄学习'},
@@ -95,72 +83,20 @@ const List<Map<String, String>> allRecommends = [
   {'id': '4803179', 'type': 'bili_season', 'title': '推荐歌单 合集·森林雷雨'},
   {'id': '4803612', 'type': 'bili_season', 'title': '推荐歌单 合集·城市暴雨'},
   {'id': '4803555', 'type': 'bili_season', 'title': '推荐歌单 合集·江南烟雨'},
-  {
-    'id': '243526',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【千禧年电台】1990年至2015年氛围白噪音【二〇〇〇年过去了，我很怀念它】'
-  },
-  {
-    'id': '1293012',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【四季电台】白日梦想家_工作_学习_助眠_与世隔绝'
-  },
-  {
-    'id': '2085272',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【爵士电台】唯有爵士乐不可辜负_工作_学习_助眠_与世隔绝'
-  },
-  {
-    'id': '243543',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【末日电台】地球上最后一个人_避难所/战争/超现实/游戏白噪音'
-  },
-  {
-    'id': '243552',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【昭和电台】东京夜未眠_工作_学习_助眠_与世隔绝'
-  },
-  {
-    'id': '3588091',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·奇异人生Life is Strange 专注陪伴音乐'
-  },
-  {
-    'id': '2332063',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《冥想催眠》系列-来自宇宙的声音牵引灵魂走向宁静的深处'
-  },
-  {
-    'id': '2468426',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《Cozy Ambient Jazz》系列——阅读、放松、发呆、做家务的音乐伴侣'
-  },
-  {
-    'id': '2331536',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《寺院诵唱》系列-伴随着木鱼声颂钵声纯粹本真吟诵佛经'
-  },
+  {'id': '243526','type': 'bili_season','title': '推荐歌单 合集·【千禧年电台】1990年至2015年氛围白噪音【二〇〇〇年过去了，我很怀念它】'},
+  {'id': '1293012','type': 'bili_season','title': '推荐歌单 合集·【四季电台】白日梦想家_工作_学习_助眠_与世隔绝'},
+  {'id': '2085272','type': 'bili_season','title': '推荐歌单 合集·【爵士电台】唯有爵士乐不可辜负_工作_学习_助眠_与世隔绝'},
+  {'id': '243543','type': 'bili_season','title': '推荐歌单 合集·【末日电台】地球上最后一个人_避难所/战争/超现实/游戏白噪音'},
+  {'id': '243552','type': 'bili_season','title': '推荐歌单 合集·【昭和电台】东京夜未眠_工作_学习_助眠_与世隔绝'},
+  {'id': '3588091','type': 'bili_season','title': '推荐歌单 合集·奇异人生Life is Strange 专注陪伴音乐'},
+  {'id': '2332063','type': 'bili_season','title': '推荐歌单 合集·《冥想催眠》系列-来自宇宙的声音牵引灵魂走向宁静的深处'},
+  {'id': '2468426','type': 'bili_season','title': '推荐歌单 合集·《Cozy Ambient Jazz》系列——阅读、放松、发呆、做家务的音乐伴侣' },
+  {'id': '2331536','type': 'bili_season', 'title': '推荐歌单 合集·《寺院诵唱》系列-伴随着木鱼声颂钵声纯粹本真吟诵佛经'},
   {'id': '3842790', 'type': 'bili_season', 'title': '推荐歌单 合集·复古格调·城市漫步'},
-  {
-    'id': '2318216',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《佛教音乐》系列-经文与音乐构筑的佛音启迪'
-  },
-  {
-    'id': '2279134',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《艺术共鸣》系列-融合世界名画与疗愈音乐'
-  },
-  {
-    'id': '2389253',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《星际穿越》系列-跟随音乐和画面穿越时空星际，受撼于赛博末世，一起放空沉浸'
-  },
-  {
-    'id': '2340196',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·《迷失虚妄》系列-跟随Lofi音乐的鼓点和节拍摇摆躯体和灵魂'
-  },
+  {'id': '2318216','type': 'bili_season','title': '推荐歌单 合集·《佛教音乐》系列-经文与音乐构筑的佛音启迪'},
+  {'id': '2279134','type': 'bili_season', 'title': '推荐歌单 合集·《艺术共鸣》系列-融合世界名画与疗愈音乐'},
+  {'id': '2389253','type': 'bili_season', 'title': '推荐歌单 合集·《星际穿越》系列-跟随音乐和画面穿越时空星际，受撼于赛博末世，一起放空沉浸'},
+  {'id': '2340196','type': 'bili_season','title': '推荐歌单 合集·《迷失虚妄》系列-跟随Lofi音乐的鼓点和节拍摇摆躯体和灵魂'},
   {'id': '2448672', 'type': 'bili_season', 'title': '推荐歌单 合集·佛歌曲'},
   {'id': '1499661', 'type': 'bili_season', 'title': '推荐歌单 合集·醉美禅音'},
   {'id': '4539173', 'type': 'bili_season', 'title': '推荐歌单 合集·大悲咒'},
@@ -168,16 +104,8 @@ const List<Map<String, String>> allRecommends = [
   {'id': '4458095', 'type': 'bili_season', 'title': '推荐歌单 合集·2025年维也纳新年音乐会'},
   {'id': '4211719', 'type': 'bili_season', 'title': '推荐歌单 合集·齐默尔曼'},
   {'id': '4190729', 'type': 'bili_season', 'title': '推荐歌单 合集·[中字]【海顿】创世记'},
-  {
-    'id': '3917499',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·德沃夏克第九交响曲 卡拉扬维也纳爱乐乐团'
-  },
-  {
-    'id': '3820666',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·三大男高音（帕瓦罗蒂 多明戈 卡雷拉斯）'
-  },
+  {'id': '3917499', 'type': 'bili_season', 'title': '推荐歌单 合集·德沃夏克第九交响曲 卡拉扬维也纳爱乐乐团'},
+  {'id': '3820666','type': 'bili_season', 'title': '推荐歌单 合集·三大男高音（帕瓦罗蒂 多明戈 卡雷拉斯）'},
   {'id': '3789112', 'type': 'bili_season', 'title': '推荐歌单 合集·【普契尼歌剧】图兰朵 紫禁城版'},
   {'id': '3784103', 'type': 'bili_season', 'title': '推荐歌单 合集·普契尼歌剧【图兰朵】'},
   {'id': '3764922', 'type': 'bili_season', 'title': '推荐歌单 合集·柏林森林音乐会'},
@@ -195,11 +123,7 @@ const List<Map<String, String>> allRecommends = [
   {'id': '431910', 'type': 'bili_season', 'title': '推荐歌单 合集·马勒'},
   {'id': '436887', 'type': 'bili_season', 'title': '推荐歌单 合集·柴可夫斯基'},
   {'id': '436915', 'type': 'bili_season', 'title': '推荐歌单 合集·巴赫'},
-  {
-    'id': '436989',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·小提琴 | 大提琴 | 钢琴 | 美声 | 交响乐 | 古典音乐'
-  },
+  {'id': '436989','type': 'bili_season','title': '推荐歌单 合集·小提琴 | 大提琴 | 钢琴 | 美声 | 交响乐 | 古典音乐'},
   {'id': '3629748', 'type': 'bili_season', 'title': '推荐歌单 合集·AI修复郭德纲相声'},
   {'id': '3644679', 'type': 'bili_season', 'title': '推荐歌单 合集·AI修复郭德纲单口相声'},
   {'id': '3629182', 'type': 'bili_season', 'title': '推荐歌单 合集·郭德纲无唱助眠相声'},
@@ -217,11 +141,7 @@ const List<Map<String, String>> allRecommends = [
   {'id': '35431', 'type': 'bili_season', 'title': '推荐歌单 合集·4k修复 西游记'},
   {'id': '2947877', 'type': 'bili_season', 'title': '推荐歌单 合集·马季'},
   {'id': '2940957', 'type': 'bili_season', 'title': '推荐歌单 合集·陈佩斯'},
-  {
-    'id': '189166',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Beyond 黄家驹、黄贯中、黄家强、叶世荣'
-  },
+  {'id': '189166','type': 'bili_season','title': '推荐歌单 合集·Beyond 黄家驹、黄贯中、黄家强、叶世荣'},
   {'id': '2947924', 'type': 'bili_season', 'title': '推荐歌单 合集·姜昆'},
   {'id': '114764', 'type': 'bili_season', 'title': '推荐歌单 合集·张学友（Jacky Cheung）'},
   {'id': '1374170', 'type': 'bili_season', 'title': '推荐歌单 合集·古典音乐'},
@@ -246,16 +166,8 @@ const List<Map<String, String>> allRecommends = [
   {'id': '2787260', 'type': 'bili_season', 'title': '推荐歌单 合集·狐狸与少女'},
   {'id': '1647617', 'type': 'bili_season', 'title': '推荐歌单 合集·LOFI敲代码系列'},
   {'id': '1817781', 'type': 'bili_season', 'title': '推荐歌单 合集·ET LOFI studio'},
-  {
-    'id': '4720896',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【轻音乐歌单】| 学习 放松 治愈'
-  },
-  {
-    'id': '4092430',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【Playlist歌单】| 私藏宝藏歌单'
-  },
+  {'id': '4720896','type': 'bili_season','title': '推荐歌单 合集·【轻音乐歌单】| 学习 放松 治愈'},
+  {'id': '4092430','type': 'bili_season','title': '推荐歌单 合集·【Playlist歌单】| 私藏宝藏歌单'},
   {'id': '2877786', 'type': 'bili_season', 'title': '推荐歌单 合集·五音療疾'},
   {'id': '1680358', 'type': 'bili_season', 'title': '推荐歌单 合集·疗愈舒缓'},
   {'id': '4511241', 'type': 'bili_season', 'title': '推荐歌单 合集·专辑'},
@@ -274,86 +186,34 @@ const List<Map<String, String>> allRecommends = [
   {'id': '1855821', 'type': 'bili_season', 'title': '推荐歌单 合集·进击的巨人音乐盘点合集'},
   {'id': '32658', 'type': 'bili_season', 'title': '推荐歌单 合集·凯哥学英语'},
   {'id': '2836893', 'type': 'bili_season', 'title': '推荐歌单 合集·久石让曲目精选'},
-  {
-    'id': '2798585',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Taylor Swift-THE TORTURED POETS DEPARTMENT'
-  },
-  {
-    'id': '1910387',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·摇滚与流行｜我们的经典，我们的摇滚'
-  },
-  {
-    'id': '1847641',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·1989 (Taylor\'s Version)歌词MV合集'
-  },
-  {
-    'id': '1806326',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【Troye Sivan】新专《Something To Give Each Other》'
-  },
-  {
-    'id': '1380315',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Taylor Swift泰勒·斯威夫特官方MV精选'
-  },
-  {
-    'id': '1973224',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Taylor Swift "The Eras Tour"时代巡回演唱会'
-  },
-  {
-    'id': '1616825',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·嘻哈50年 | 传世经典的自由宣言'
-  },
+  {'id': '2798585','type': 'bili_season','title': '推荐歌单 合集·Taylor Swift-THE TORTURED POETS DEPARTMENT'},
+  {'id': '1910387','type': 'bili_season','title': '推荐歌单 合集·摇滚与流行｜我们的经典，我们的摇滚'},
+  {'id': '1847641','type': 'bili_season','title': '推荐歌单 合集·1989 (Taylor\'s Version)歌词MV合集'},
+  {'id': '1806326','type': 'bili_season','title': '推荐歌单 合集·【Troye Sivan】新专《Something To Give Each Other》'},
+  {'id': '1380315','type': 'bili_season','title': '推荐歌单 合集·Taylor Swift泰勒·斯威夫特官方MV精选'},
+  {'id': '1973224','type': 'bili_season','title': '推荐歌单 合集·Taylor Swift "The Eras Tour"时代巡回演唱会'},
+  {'id': '1616825','type': 'bili_season','title': '推荐歌单 合集·嘻哈50年 | 传世经典的自由宣言'},
   {'id': '1625207', 'type': 'bili_season', 'title': '推荐歌单 合集·Beyond｜40年光辉岁月'},
   {'id': '1358751', 'type': 'bili_season', 'title': '推荐歌单 合集·环球音乐J-POP精选'},
   {'id': '2623786', 'type': 'bili_season', 'title': '推荐歌单 合集·张国荣·永远的哥哥风华绝代'},
-  {
-    'id': '1449094',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Justin Bieber贾斯汀·比伯官方MV精选'
-  },
+  {'id': '1449094','type': 'bili_season','title': '推荐歌单 合集·Justin Bieber贾斯汀·比伯官方MV精选'},
   {'id': '1380269', 'type': 'bili_season', 'title': '推荐歌单 合集·陈奕迅官方现场精选'},
   {'id': '1304816', 'type': 'bili_season', 'title': '推荐歌单 合集·Avicii艾维奇的电音经典'},
   {'id': '1260237', 'type': 'bili_season', 'title': '推荐歌单 合集·日韩4K修复'},
   {'id': '1255767', 'type': 'bili_season', 'title': '推荐歌单 合集·欧美4K修复'},
   {'id': '1260240', 'type': 'bili_season', 'title': '推荐歌单 合集·华语4K修复'},
-  {
-    'id': '46418',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【4K修复】Nightwish夜愿乐队2005时代终结演唱会'
-  },
-  {
-    'id': '103735',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【4K修复】枪炮与玫瑰1992东京演唱会'
-  },
+  {'id': '46418','type': 'bili_season','title': '推荐歌单 合集·【4K修复】Nightwish夜愿乐队2005时代终结演唱会'},
+  {'id': '103735','type': 'bili_season','title': '推荐歌单 合集·【4K修复】枪炮与玫瑰1992东京演唱会'},
   {'id': '215809', 'type': 'bili_season', 'title': '推荐歌单 合集·【霉霉】泰勒·斯威夫特音乐合集'},
-  {
-    'id': '8008',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【4K修复】Nightwish夜愿乐队Wacken 2013演唱会'
-  },
-  {
-    'id': '1003508',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·日本歌手合集：中岛美雪、滨崎步、美依礼芽、米津玄师、仓木麻衣、坂井泉水、Wands'
-  },
+  {'id': '8008','type': 'bili_season','title': '推荐歌单 合集·【4K修复】Nightwish夜愿乐队Wacken 2013演唱会'},
+  {'id': '1003508','type': 'bili_season','title': '推荐歌单 合集·日本歌手合集：中岛美雪、滨崎步、美依礼芽、米津玄师、仓木麻衣、坂井泉水、Wands'},
   {'id': '1282981', 'type': 'bili_season', 'title': '推荐歌单 合集·那些经典的动漫歌曲'},
   {'id': '2069904', 'type': 'bili_season', 'title': '推荐歌单 合集·ost歌曲合集'},
   {'id': '4704429', 'type': 'bili_season', 'title': '推荐歌单 合集·唐宋摇滚'},
   {'id': '1707990', 'type': 'bili_season', 'title': '推荐歌单 合集·『GUNDAM MUSIC』'},
   {'id': '2852940', 'type': 'bili_season', 'title': '推荐歌单 合集·『MUSIC LIVE』'},
   {'id': '3095846', 'type': 'bili_season', 'title': '推荐歌单 合集·『影视原声音乐』'},
-  {
-    'id': '4445811',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·TOKYO ASMR MASSAGE 合集'
-  },
+  {'id': '4445811','type': 'bili_season','title': '推荐歌单 合集·TOKYO ASMR MASSAGE 合集'},
   {'id': '2966', 'type': 'bili_season', 'title': '推荐歌单 合集·迈克尔·杰克逊超清合集'},
   {'id': '510637', 'type': 'bili_season', 'title': '推荐歌单 合集·后街男孩超清合集'},
   {'id': '3278', 'type': 'bili_season', 'title': '推荐歌单 合集·皇后乐队超清合集'},
@@ -361,92 +221,83 @@ const List<Map<String, String>> allRecommends = [
   {'id': '4201012', 'type': 'bili_season', 'title': '推荐歌单 合集·梶浦由记'},
   {'id': '3654466', 'type': 'bili_season', 'title': '推荐歌单 合集·动画MV'},
   {'id': '3403831', 'type': 'bili_season', 'title': '推荐歌单 合集·高达'},
-  {
-    'id': '1097290',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Whiskey | Jazz | Blues'
-  },
-  {
-    'id': '4772899',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Jazzy x Lofi 自习岛 | 学习 工作 放松 氛围'
-  },
+  {'id': '1097290','type': 'bili_season','title': '推荐歌单 合集·Whiskey | Jazz | Blues'},
+  {'id': '4772899','type': 'bili_season','title': '推荐歌单 合集·Jazzy x Lofi 自习岛 | 学习 工作 放松 氛围'},
   {'id': '1109355', 'type': 'bili_season', 'title': '推荐歌单 合集·City-Pop° | 城市流行'},
-  {
-    'id': '1369602',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·FUNK MEGA MIX | 放克风格| G-funk | 放克爵士 | 放克摇滚 | 电子放克'
-  },
+  {'id': '1369602','type': 'bili_season','title': '推荐歌单 合集·FUNK MEGA MIX | 放克风格| G-funk | 放克爵士 | 放克摇滚 | 电子放克'},
   {'id': '4904693', 'type': 'bili_season', 'title': '推荐歌单 合集·「收藏向」全球顶流音乐歌手合集'},
   {'id': '1213636', 'type': 'bili_season', 'title': '推荐歌单 合集·Classical | 古典音乐'},
-  {
-    'id': '1208544',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Film | 经典电影原声带 | 配乐 | 插曲 | 歌曲'
-  },
-  {
-    'id': '1124528',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Baroque | 【艺术瑰宝】巴洛克音乐，古典音乐的黄金时代'
-  },
-  {
-    'id': '1109249',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Anime BGM | OST Collection Full | 经典动漫音乐歌曲合集'
-  },
-  {
-    'id': '1264953',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Sweet Dreams ＳＬＥＥＰＹ  | Lofi hip hop睡眠 学习 放松'
-  },
-  {
-    'id': '1102076',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Chill-hop | 低保真 | Lo-Fi Hip Hop | Jazz复古 氛围'
-  },
-  {
-    'id': '1097605',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·泽野弘之 | Sawano Hiroyuki 动漫原声合集［nZk］'
-  },
-  {
-    'id': '1264819',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·【幻想乡的邀请】东方Project 探索幻想乡的秘密'
-  },
-  {
-    'id': '1218878',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Driving Music | 驾驶音乐'
-  },
-  {
-    'id': '1517778',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·「百大电音DJ」各类风格电音MIX 抖腿节奏向★玩游戏必备电音BUFF✈『NIGHT CLUB』'
-  },
-  {
-    'id': '1367257',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Country Music | 美国乡村音乐 | 民谣 | 牛仔音乐 | 西部摇摆乐'
-  },
-  {
-    'id': '1170820',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Opera | 歌剧合集 | 不定期更新'
-  },
-  {
-    'id': '1111544',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·史诗战斗音乐 | 管弦Epic Mix'
-  },
-  {
-    'id': '1124561',
-    'type': 'bili_season',
-    'title': '推荐歌单 合集·Impressionist | 印象音乐'
-  },
+  {'id': '1208544','type': 'bili_season','title': '推荐歌单 合集·Film | 经典电影原声带 | 配乐 | 插曲 | 歌曲'},
+  {'id': '1124528','type': 'bili_season','title': '推荐歌单 合集·Baroque | 【艺术瑰宝】巴洛克音乐，古典音乐的黄金时代'},
+  {'id': '1109249','type': 'bili_season','title': '推荐歌单 合集·Anime BGM | OST Collection Full | 经典动漫音乐歌曲合集'},
+  {'id': '1264953','type': 'bili_season','title': '推荐歌单 合集·Sweet Dreams ＳＬＥＥＰＹ  | Lofi hip hop睡眠 学习 放松'},
+  {'id': '1102076','type': 'bili_season','title': '推荐歌单 合集·Chill-hop | 低保真 | Lo-Fi Hip Hop | Jazz复古 氛围'},
+  {'id': '1097605','type': 'bili_season','title': '推荐歌单 合集·泽野弘之 | Sawano Hiroyuki 动漫原声合集［nZk］'},
+  {'id': '1264819','type': 'bili_season','title': '推荐歌单 合集·【幻想乡的邀请】东方Project 探索幻想乡的秘密'},
+  {'id': '1218878','type': 'bili_season','title': '推荐歌单 合集·Driving Music | 驾驶音乐'},
+  {'id': '1517778','type': 'bili_season','title': '推荐歌单 合集·「百大电音DJ」各类风格电音MIX 抖腿节奏向★玩游戏必备电音BUFF✈『NIGHT CLUB』'},
+  {'id': '1367257','type': 'bili_season','title': '推荐歌单 合集·Country Music | 美国乡村音乐 | 民谣 | 牛仔音乐 | 西部摇摆乐'},
+  {'id': '1170820','type': 'bili_season','title': '推荐歌单 合集·Opera | 歌剧合集 | 不定期更新'},
+  {'id': '1111544','type': 'bili_season','title': '推荐歌单 合集·史诗战斗音乐 | 管弦Epic Mix'},
+  {'id': '1124561','type': 'bili_season','title': '推荐歌单 合集·Impressionist | 印象音乐'},
+  {'id': '269636', 'type': 'bili_season', 'title': '推荐歌单 合集·吹唢呐是吧？！'},
+  {'id': '4733530', 'type': 'bili_season', 'title': '推荐歌单 合集·邓丽君经典歌曲'},
+  {'id': '2062575', 'type': 'bili_season', 'title': '推荐歌单 合集·「耳机歌单」私藏音乐'},
+  {'id': '4934263', 'type': 'bili_season', 'title': '推荐歌单 合集·全球经典MV(二）'},
+  {'id': '1865288', 'type': 'bili_season', 'title': '推荐歌单 合集·全球经典现场'},
+  {'id': '1831934', 'type': 'bili_season', 'title': '推荐歌单 合集·全球经典MV(一)'},
+  {'id': '4246329', 'type': 'bili_season', 'title': '推荐歌单 合集·理查德·克莱德曼'},
+  {'id': '2572058', 'type': 'bili_season', 'title': '推荐歌单 合集·中华名曲'},
+  {'id': '3427065', 'type': 'bili_season', 'title': '推荐歌单 合集·‌◢◤A神 Avicii艾维奇作品'},
+  {'id': '4208377', 'type': 'bili_season', 'title': '推荐歌单 合集·Aimer'},
+  {'id': '3415202', 'type': 'bili_season', 'title': '推荐歌单 合集·YOASOBI'},
+  {'id': '3634243', 'type': 'bili_season', 'title': '推荐歌单 合集·LiSA / 织部里沙'},
+  {'id': '4208403', 'type': 'bili_season', 'title': '推荐歌单 合集·米津玄师'},
+  {'id': '4078099', 'type': 'bili_season', 'title': '推荐歌单 合集·澤野弘之/泽野弘之'},
+  {'id': '3425395', 'type': 'bili_season', 'title': '推荐歌单 合集·FF14 BGM循环'},
+  {'id': '1342069', 'type': 'bili_season', 'title': '推荐歌单 合集·【Aimer Live】4K中日双字幕合集'},
+  {'id': '4141127', 'type': 'bili_season', 'title': '推荐歌单 合集·如果你也只是想安静的听会歌'},
+  {'id': '4522992', 'type': 'bili_season', 'title': '推荐歌单 合集·杜比全景声'},
+  {'id': '4830088', 'type': 'bili_season', 'title': '推荐歌单 合集·欧美HiRes摇滚音乐唱片合集'},
+  {'id': '4830449', 'type': 'bili_season', 'title': '推荐歌单 合集·欧美流行音乐HiRes无损臻品合集'},
+  {'id': '3194098', 'type': 'bili_season', 'title': '推荐歌单 合集·游戏/影视原声大碟 '},
+  {'id': '2049406', 'type': 'bili_season', 'title': '推荐歌单 合集·中国摇滚精品合集'},
+  {'id': '2017729', 'type': 'bili_season', 'title': '推荐歌单 合集·中国流行音乐合集'},
+  {'id': '4337064', 'type': 'bili_season', 'title': '推荐歌单 合集·李克勤 / 谭咏麟 '},
+  {'id': '3491876', 'type': 'bili_season', 'title': '推荐歌单 合集·Peter Murphy 彼得·墨菲 '},
+  {'id': '1688885', 'type': 'bili_season', 'title': '推荐歌单 合集·我在B站听窦唯'},
+  {'id': '2690049', 'type': 'bili_season', 'title': '推荐歌单 合集·纵贯线『罗大佑、李宗盛、周华健、张震岳』'},
+  {'id': '2041551', 'type': 'bili_season', 'title': '推荐歌单 合集·Beyond / 黄贯中 / 叶世荣 / 黄家强'},
+  {'id': '2269458', 'type': 'bili_season', 'title': '推荐歌单 合集·Lube/柳拜'},
+  {'id': '2328688', 'type': 'bili_season', 'title': '推荐歌单 合集·中岛美雪'},
+  {'id': '4499800', 'type': 'bili_season', 'title': '推荐歌单 合集·A妹'},
+  {'id': '1633674', 'type': 'bili_season', 'title': '推荐歌单 合集·摇滚/乐队'},
+  {'id': '1269304', 'type': 'bili_season', 'title': '推荐歌单 合集·霉霉'},
+  {'id': '4512435', 'type': 'bili_season', 'title': '推荐歌单 合集·嘎'},
+  {'id': '4512279', 'type': 'bili_season', 'title': '推荐歌单 合集·牛'},
+  {'id': '4512315', 'type': 'bili_season', 'title': '推荐歌单 合集·西法德俄...'},
+  {'id': '1633578', 'type': 'bili_season', 'title': '推荐歌单 合集·Hip-hop'},
+  {'id': '3203527', 'type': 'bili_season', 'title': '推荐歌单 合集·OneRepublic'},
+  {'id': '1173063', 'type': 'bili_season', 'title': '推荐歌单 合集·器乐古典'},
+  {'id': '3876810', 'type': 'bili_season', 'title': '推荐歌单 合集·经典R&B'},
+  {'id': '3352264', 'type': 'bili_season', 'title': '推荐歌单 合集·瑞鸣音乐之旅'},
+  {'id': '1633398', 'type': 'bili_season', 'title': '推荐歌单 合集·经典摇滚'},
+  {'id': '1717275', 'type': 'bili_season', 'title': '推荐歌单 合集·音乐剧/歌剧'},
+  {'id': '4512705', 'type': 'bili_season', 'title': '推荐歌单 合集·蹲'},
+  {'id': '977181', 'type': 'bili_season', 'title': '推荐歌单 合集·霸榜盆'},
+  {'id': '1422841', 'type': 'bili_season', 'title': '推荐歌单 合集·电音'},
+  {'id': '1199802', 'type': 'bili_season', 'title': '推荐歌单 合集·绝爵'},
+  {'id': '4503168', 'type': 'bili_season', 'title': '推荐歌单 合集·梨'},
+  {'id': '1269724', 'type': 'bili_season', 'title': '推荐歌单 合集·Adele'},
+  {'id': '1337162', 'type': 'bili_season', 'title': '推荐歌单 合集·City Pop'},
+  {'id': '773698', 'type': 'bili_season', 'title': '推荐歌单 合集·打雷弃曲'},
+  {'id': '4512657', 'type': 'bili_season', 'title': '推荐歌单 合集·果'},
   {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
   {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
   {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
   {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
   {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
+  {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
+  {'id': '', 'type': 'bili_season', 'title': '推荐歌单 '},
+
 ];
