@@ -27,7 +27,7 @@ class DownloadManagerPage extends ConsumerWidget {
             automaticallyImplyLeading: checkPlatformIsDesktop() ? false : true),
         body: Column(
           children: [
-            if (isInitialized) _buildInitializationStatus(ref),
+            if (isInitialized && checkPlatform([TargetPlatform.linux, TargetPlatform.windows])) _buildInitializationStatus(ref),
             Expanded(
               child: ListView.builder(
                 itemCount: downloadState.tasks.length,

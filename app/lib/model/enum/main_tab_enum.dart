@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 enum MainTabEnum {
   home(Icons.home_filled),
   collects(Icons.library_music),
-  settings(Icons.settings);
+  settings(Icons.account_circle);
 
   const MainTabEnum(this.icon);
 
@@ -17,7 +17,7 @@ enum MainTabEnum {
       case MainTabEnum.collects:
         return t.collectsPage.title;
       case MainTabEnum.settings:
-        return t.settingsPage.title;
+        return '相关账户';
     }
   }
 }

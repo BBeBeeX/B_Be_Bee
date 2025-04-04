@@ -2,6 +2,7 @@ import 'package:b_be_bee_app/config/theme.dart';
 import 'package:b_be_bee_app/controller/home_page_controller.dart';
 import 'package:b_be_bee_app/gen/strings.g.dart';
 import 'package:b_be_bee_app/pages/search_page.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/widget/bili/bili_music_rank_widget.dart';
 import 'package:b_be_bee_app/widget/button/load_share_popup_menu_button_widget.dart';
 import 'package:b_be_bee_app/widget/home_page_recommend_widget.dart';
@@ -17,7 +18,7 @@ class HomePage extends ConsumerWidget {
     final state = ref.watch(homePageProvider);
 
     return ResponsiveBuilder(builder: (sizingInformation) {
-      if (!sizingInformation.isDesktop) {
+      if (!checkPlatform([TargetPlatform.windows,TargetPlatform.linux])) {
         return Scaffold(
           appBar: AppBar(
             title: Text(t.homePage.title),
@@ -50,12 +51,12 @@ class HomePage extends ConsumerWidget {
                           size: 30,
                         ),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: Theme.of(context).colorScheme.primary,
                         border: OutlineInputBorder(
                           borderRadius: borderRadius,
                         ),
                         hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
                           fontSize: 16,
                         ),
                       ),
