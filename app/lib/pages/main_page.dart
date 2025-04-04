@@ -132,7 +132,7 @@ class MainPage extends ConsumerWidget {
                 body: Row(
                   children: [
                     Container(
-                        width: 200,
+                        width: 220,
                         height: MediaQuery.of(context).size.height,
                         color: Theme.of(context).colorScheme.surfaceContainer,
                         child: Column(
@@ -144,6 +144,10 @@ class MainPage extends ConsumerWidget {
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Column(
                                     children: [
+
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.height/20,
+                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -214,7 +218,7 @@ class MainPage extends ConsumerWidget {
                                 Column(
                                   children: [
                                     SizedBox(
-                                        width: 200,
+                                        width: 220,
                                         height: 400,
                                         child: MusicPlayerPadWidget())
                                   ],

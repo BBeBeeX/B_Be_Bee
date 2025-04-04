@@ -109,7 +109,7 @@ class UpdateUtils {
       await getGithubDetail();
     }
 
-    String osVersion = Platform.operatingSystemVersion.toLowerCase();
+    String osVersion = Platform.version.toLowerCase();
     String? downloadUrl;
 
     if (osVersion.contains('arm64') || osVersion.contains('aarch64')) {
@@ -126,7 +126,8 @@ class UpdateUtils {
           ?.browserDownloadUrl;
     } else if (osVersion.contains('x86_64') ||
         osVersion.contains('i686') ||
-        osVersion.contains('x86')) {
+        osVersion.contains('x86') ||
+        osVersion.contains('x64')) {
       //x86_64
       downloadUrl = model?.assets
           ?.firstWhere(

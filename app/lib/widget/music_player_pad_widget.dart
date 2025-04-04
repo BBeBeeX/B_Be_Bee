@@ -45,8 +45,8 @@ class MusicPlayerPadWidget extends ConsumerWidget {
               );
             },
             child: NetworkImageByCache(
-                width: 150,
-                height: 150,
+                width: 200,
+                height: 200,
                 imageUrl: coverResult,
                 defaultUrl: '',
                 errorIcon: const Icon(Icons.music_note)),
@@ -54,8 +54,8 @@ class MusicPlayerPadWidget extends ConsumerWidget {
           const SizedBox(width: 8),
           CurrentPlaylistItemWidget(
             coverUrl: null,
-            title: playlist.currentSong!.title,
-            artistName: playlist.currentSong!.upper.name,
+            title: playlist.currentSong?.title ?? '',
+            artistName: playlist.currentSong?.upper.name ?? '',
             playlist: playlist,
             fontColor: Theme.of(context).colorScheme.primary.withOpacity(0.9),
             fontSize: 10,
