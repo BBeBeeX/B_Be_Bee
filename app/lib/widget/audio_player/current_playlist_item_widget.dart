@@ -63,6 +63,7 @@ class CurrentPlaylistItemWidget extends ConsumerWidget {
                     fontSize: fontSize ?? (isBottom ? 16.0 : 24.0),
                   ),
                   textAlign: TextAlign.left,
+                  numberOfReps: 10,
                 ),
                 MarqueeCustom(
                   text: playlist.currentSong?.upper.name ?? '',

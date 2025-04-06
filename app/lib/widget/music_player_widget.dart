@@ -1,7 +1,7 @@
 import 'package:b_be_bee_app/common/constants.dart';
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/controller/settings_controller.dart';
-import 'package:b_be_bee_app/pages/audio_player_page.dart';
+import 'package:b_be_bee_app/pages/player_page/audio_player_page.dart';
 import 'package:b_be_bee_app/provider/image_color_provider.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/widget/bottom_sheet/open_playlist_bottom_sheet.dart';

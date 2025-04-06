@@ -10,7 +10,7 @@ import 'package:b_be_bee_app/model/dto/video/audio_info_response.dart';
 import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/model/enum/share_type_enum.dart';
 import 'package:b_be_bee_app/observer/route_observer.dart';
-import 'package:b_be_bee_app/pages/audio_player_page.dart';
+import 'package:b_be_bee_app/pages/player_page/audio_player_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';

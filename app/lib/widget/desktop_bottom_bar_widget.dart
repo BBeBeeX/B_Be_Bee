@@ -1,6 +1,6 @@
 import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:b_be_bee_app/pages/audio_devices_page.dart';
-import 'package:b_be_bee_app/pages/audio_player_page.dart';
+import 'package:b_be_bee_app/pages/player_page/audio_player_page.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/widget/audio_player/current_playlist_control_buttons_widget.dart';
 import 'package:b_be_bee_app/widget/audio_player/current_playlist_item_widget.dart';

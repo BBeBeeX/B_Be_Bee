@@ -3,7 +3,7 @@ import 'package:b_be_bee_app/controller/playlist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../pages/audio_player_page.dart';
+import '../pages/player_page/audio_player_page.dart';
 import '../util/audio_handler.dart';
 import 'audio_player/current_playlist_item_widget.dart';
 import 'audio_player/current_playlist_progress_bar_widget.dart';
