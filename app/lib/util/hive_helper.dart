@@ -25,6 +25,7 @@ import 'package:hive_ce_flutter/adapters.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../model/enum/audio_player_style_enum.dart';
 import '../model/enum/contrast_color_enum.dart';
 import '../model/enum/proxy_type_enum.dart';
 
@@ -53,7 +54,8 @@ const _autoStart = 'bbb_autoStart';
 const _autoStartLaunchHidden = 'bbb_autoStartLaunchHidden';
 const _autoSyncToLocal = 'bbb_autoSyncToLocal';
 const _playBarFontColorMode = 'bbb_playBarFontColorMode';
-const _playPageFontColorMode = 'bbb_playPageFontColorMode';
+const _playerPageFontColorMode = 'bbb_playPageFontColorMode';
+const _playerPageStyle = 'bbb_playerPageStyle';
 const _isAutoUpdate = 'bbb_isAutoUpdate';
 const _isUpdateRemind = 'bbb_isUpdateRemind';
 const _isEnableLoudnessEnhancer = 'bbb_is_enable_loudness_enhancer';
@@ -118,6 +120,7 @@ class HiveHelper {
       ..registerAdapter(CollectTypeEnumAdapter()) //11
       ..registerAdapter(ContrastColorEnumAdapter()) //12
       ..registerAdapter(ProxyTypeEnumAdapter()) //13
+      ..registerAdapter(AudioPlayerStyleEnumAdapter()) //13
       ..registerAdapter(PlayStatisticsAdapter()); //17
 
     _box = await Hive.openBox(_commonBoxName);
@@ -477,8 +480,8 @@ class HiveHelper {
     }
   }
 
-  static ContrastColorEnum? getPlayPageFontColorMode() {
-    final value = _box.get(_playPageFontColorMode);
+  static ContrastColorEnum? getPlayerPageFontColorMode() {
+    final value = _box.get(_playerPageFontColorMode);
     if (value == null) {
       return null;
     }
@@ -488,9 +491,26 @@ class HiveHelper {
   static Future<void> setPlayPageFontColorMode(
       ContrastColorEnum? playPageFontColorMode) async {
     if (playPageFontColorMode == null) {
-      await _box.delete(_playPageFontColorMode);
+      await _box.delete(_playerPageFontColorMode);
     } else {
-      await _box.put(_playPageFontColorMode, playPageFontColorMode.name);
+      await _box.put(_playerPageFontColorMode, playPageFontColorMode.name);
+    }
+  }
+
+  static AudioPlayerStyleEnum? getPlayerPageStyle() {
+    final value = _box.get(_playerPageStyle);
+    if (value == null) {
+      return null;
+    }
+    return AudioPlayerStyleEnum.values.firstWhere((theme) => theme.name == value);
+  }
+
+  static Future<void> setPlayerPageStyle(
+      AudioPlayerStyleEnum? playerPageStyle) async {
+    if (playerPageStyle == null) {
+      await _box.delete(_playerPageStyle);
+    } else {
+      await _box.put(_playerPageStyle, playerPageStyle.name);
     }
   }
 

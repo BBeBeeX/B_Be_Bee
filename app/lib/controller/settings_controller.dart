@@ -8,6 +8,7 @@ import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/native/autostart_helper.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:routerino/routerino.dart';
 
+import '../model/enum/audio_player_style_enum.dart';
 import '../model/enum/contrast_color_enum.dart';
 import '../model/enum/proxy_type_enum.dart';
 
@@ -43,7 +45,8 @@ class SettingsController extends StateNotifier<SettingsState> {
       autoStartLaunchHidden: HiveHelper.getAutoStartLaunchHidden(),
       autoSyncToLocal: HiveHelper.getAutoSyncToLocal(),
       playBarFontColorMode: HiveHelper.getPlayBarFontColorMode(),
-      playPageFontColorMode: HiveHelper.getPlayPageFontColorMode(),
+      playerPageFontColorMode: HiveHelper.getPlayerPageFontColorMode(),
+        playerPageStyle: HiveHelper.getPlayerPageStyle() ?? (checkPlatformIsDesktop() ? AudioPlayerStyleEnum.row1 : AudioPlayerStyleEnum.column1),
       destination: HiveHelper.getDestination() ?? destinationPath,
       isDownloadLyrics: HiveHelper.isDownloadLyrics(),
       isDownloadCover: HiveHelper.isDownloadCover(),
@@ -160,12 +163,19 @@ class SettingsController extends StateNotifier<SettingsState> {
     await HiveHelper.setPlayBarFontColorMode(playBarFontColorMode);
   }
 
-  Future<void> setPlayPageFontColorMode(
+  Future<void> setPlayerPageFontColorMode(
       ContrastColorEnum playPageFontColorMode) async {
     state = state.copyWith(
-      playPageFontColorMode: playPageFontColorMode,
+      playerPageFontColorMode: playPageFontColorMode,
     );
     await HiveHelper.setPlayPageFontColorMode(playPageFontColorMode);
+  }
+
+  Future<void> setPlayerPageStyle(AudioPlayerStyleEnum playerPageStyle)async{
+    state = state.copyWith(
+      playerPageStyle: playerPageStyle,
+    );
+    await HiveHelper.setPlayerPageStyle(playerPageStyle);
   }
 
   Future<void> setDestination(String destination) async {

@@ -64,6 +64,7 @@ import 'package:b_be_bee_app/model/enum/download_file_format_enum.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
+import '../../enum/audio_player_style_enum.dart';
 import '../../enum/contrast_color_enum.dart';
 import '../../enum/proxy_type_enum.dart';
 
@@ -83,6 +84,7 @@ class SettingsState {
   ///显示
   final ContrastColorEnum playBarFontColorMode; //播放栏字体颜色模式
   final ContrastColorEnum playPageFontColorMode; //播放页字体颜色模式
+  final AudioPlayerStyleEnum? playerPageStyle; //播放页样式
 
   ///下载
   final String destination; // 文件保存路径
@@ -149,6 +151,7 @@ class SettingsState {
     this.autoSyncToLocal = true,
     this.playBarFontColorMode = ContrastColorEnum.blackAndWhite,
     this.playPageFontColorMode = ContrastColorEnum.blackAndWhite,
+    this.playerPageStyle,
     this.destination = '',
     this.isDownloadLyrics = true,
     this.isDownloadCover = true,
@@ -187,7 +190,8 @@ class SettingsState {
     bool? autoStartLaunchHidden,
     bool? autoSyncToLocal,
     ContrastColorEnum? playBarFontColorMode,
-    ContrastColorEnum? playPageFontColorMode,
+    ContrastColorEnum? playerPageFontColorMode,
+    AudioPlayerStyleEnum? playerPageStyle,
     String? destination,
     bool? isDownloadLyrics,
     bool? isDownloadCover,
@@ -226,7 +230,8 @@ class SettingsState {
       autoSyncToLocal: autoSyncToLocal ?? this.autoSyncToLocal,
       playBarFontColorMode: playBarFontColorMode ?? this.playBarFontColorMode,
       playPageFontColorMode:
-          playPageFontColorMode ?? this.playPageFontColorMode,
+          playerPageFontColorMode ?? this.playPageFontColorMode,
+      playerPageStyle: playerPageStyle??this.playerPageStyle,
       destination: destination ?? this.destination,
       isDownloadLyrics: isDownloadLyrics ?? this.isDownloadLyrics,
       isDownloadCover: isDownloadCover ?? this.isDownloadCover,

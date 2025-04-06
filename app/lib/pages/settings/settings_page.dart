@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routerino/routerino.dart';
 
+import '../../model/enum/audio_player_style_enum.dart';
 import '../../model/enum/contrast_color_enum.dart';
 import '../../model/enum/proxy_type_enum.dart';
 import '../../util/rhttp_utils.dart';
@@ -259,7 +260,22 @@ class SettingsPage extends ConsumerWidget {
                     );
                   }).toList(),
                   onChanged: (playPageFontColorMode) async => controller
-                      .setPlayPageFontColorMode(playPageFontColorMode),
+                      .setPlayerPageFontColorMode(playPageFontColorMode),
+                ),
+              ),
+              SettingsEntry(
+                label: '播放页样式',
+                child: CustomDropdownButton<AudioPlayerStyleEnum>(
+                  value: settings.playerPageStyle!,
+                  items: AudioPlayerStyleEnum.values.map((playerStyleEnum) {
+                    return DropdownMenuItem(
+                      value: playerStyleEnum,
+                      alignment: Alignment.center,
+                      child: Text(playerStyleEnum.getLabel()),
+                    );
+                  }).toList(),
+                  onChanged: (playerStyleEnum) async => controller
+                      .setPlayerPageStyle(playerStyleEnum),
                 ),
               ),
             ],
