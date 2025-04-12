@@ -47,12 +47,6 @@ class PathProxyUtils {
     return filePath;
   }
 
-  static Future<String> getCacheAudioPath(String id,String url, String quality) async {
-    final filePath = await PathUtils.getCacheAudioPath(id,url, quality);
-    FileUtils.ifFolderUnExistAndCreate(filePath);
-    return filePath;
-  }
-
   static Future<String> getAppDocumentDirectory() async {
     final dirPath = await PathUtils.getAppDocumentDirectory();
     FileUtils.ifFolderUnExistAndCreate(dirPath);
@@ -63,22 +57,6 @@ class PathProxyUtils {
     final dirPath = await PathUtils.getLogsDirectory();
     FileUtils.ifFolderUnExistAndCreate(dirPath);
     return dirPath;
-  }
-
-  static Future<String> getFFmpegZipPathInWindows() async {
-    return await PathUtils.getFFmpegZipPathInWindows();
-  }
-
-  static Future<String> getFFmpegUnzipDirectoryInWindows() async {
-    final dirPath = await PathUtils.getFFmpegUnzipDirectoryInWindows();
-    FileUtils.ifFolderUnExistAndCreate(dirPath);
-    return dirPath;
-  }
-
-  static Future<String> getFFmpegPathInWindows() async {
-    final filePath = await PathUtils.getFFmpegPathInWindows();
-    FileUtils.ifFolderUnExistAndCreate(filePath);
-    return filePath;
   }
 
   static Future<String> getCookiesDirectory() async {

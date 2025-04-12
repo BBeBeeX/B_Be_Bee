@@ -36,19 +36,6 @@ class PathUtils{
     return path.join((await getDownloadsDirectory())?.path ??'',  'share_$vvid.png');
   }
 
-  static Future<String> getCacheAudioPath(String id,String url,String quality) async {
-    final tempFilePath = path.join((await getTemporaryDirectory()).absolute.path, 'b_be_bee', 'audio_cache', getCacheAudioName(id,url,quality));
-
-    final file = File(tempFilePath);
-
-    final parentDirectory = file.parent;
-
-    if (!parentDirectory.existsSync()) {
-      parentDirectory.createSync(recursive: true);
-    }
-    return tempFilePath;
-  }
-
   static String getCacheAudioName(String id,String url,String quality) {
     final uri = Uri.parse(url);
 
@@ -65,20 +52,6 @@ class PathUtils{
 
   static Future<String> getLogsDirectory()async{
     return path.join((await getApplicationDocumentsDirectory()).path, 'b_be_bee','logs');
-  }
-
-  static Future<String> getFFmpegZipPathInWindows()async{
-    String exePath = Platform.resolvedExecutable;
-    String exeDirectory = File(exePath).parent.path;
-    return path.join(exeDirectory,'ffmpeg-master-latest-win64-gpl-shared.zip');
-  }
-
-  static Future<String> getFFmpegUnzipDirectoryInWindows()async{
-    return path.join((await getApplicationDocumentsDirectory()).path, 'b_be_bee', "ffmpeg");
-  }
-
-  static Future<String> getFFmpegPathInWindows()async{
-    return path.join(await getFFmpegUnzipDirectoryInWindows(), "ffmpeg-master-latest-win64-gpl", "bin",'ffmpeg.exe');
   }
 
   static Future<String> getCookiesDirectory()async{
