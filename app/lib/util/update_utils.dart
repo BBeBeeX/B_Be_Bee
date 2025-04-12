@@ -16,8 +16,10 @@ import 'package:b_be_bee_app/widget/dialogs/update_incompatible_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:routerino/routerino.dart';
+
+import 'native/channel/path_proxy_utils.dart';
+import 'native/path_utils.dart';
 
 class UpdateUtils {
   static GithubReleasesItemModel? model;
@@ -151,7 +153,7 @@ class UpdateUtils {
     if (downloadUrl != null && downloadUrl.isNotEmpty) {
       await getFilePermission();
 
-      final savePath = await getSavePath(downloadUrl, platform);
+      final savePath = await PathProxyUtils.getSaveUpdatePath(downloadUrl, platform);
 
       container
           .read(commonLoggerProvider.notifier)
@@ -175,26 +177,6 @@ class UpdateUtils {
       if (!isSilent) {
         await ToastUtil.show('查询安装包错误');
       }
-    }
-  }
-
-  static Future<String> getSavePath(
-      String downloadUrl, TargetPlatform platform) async {
-    Directory? dir;
-    if (platform == TargetPlatform.android) {
-      dir = await getExternalStorageDirectory();
-    } else {
-      dir = await getDownloadsDirectory();
-    }
-    if (dir != null) {
-      String? suffix;
-      int dotIndex = downloadUrl.lastIndexOf('.');
-      if (dotIndex != -1) {
-        suffix = downloadUrl.substring(dotIndex + 1);
-      }
-      return '${dir.path}/downloaded_app.$suffix';
-    } else {
-      return '';
     }
   }
 }

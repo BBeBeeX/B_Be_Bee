@@ -19,11 +19,20 @@ import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/audio_handler.dart';
 import 'package:b_be_bee_app/util/hive_helper.dart';
 import 'package:b_be_bee_app/util/lyrics_utils.dart';
+import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
+import 'package:fftea/impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
+import 'package:path/path.dart' as path;
+
+import '../util/native/channel/path_proxy_utils.dart';
+import '../util/native/file_utils.dart';
+import '../util/native/taskbar_helper.dart';
+import '../util/native/tray_helper.dart';
+import '../util/rhttp_utils.dart';
 
 final playlistControllerProvider =
     StateNotifierProvider<PlaylistController, PlaylistState>((ref) {
@@ -58,6 +67,23 @@ class PlaylistController extends StateNotifier<PlaylistState> {
         skipToPrevious(isCutSong: true);
       }
     });
+
+    // 监听播放/暂停瞬间
+    if(checkPlatformIsDesktop()){
+      bool lastPlayingStatus = false;
+      CustomAudioHandler.player.playingStream.listen((isPlaying) {
+        if (lastPlayingStatus == false && isPlaying == true) {
+          TaskbarHelper.enableThumbnailToolbar(ref);
+          setTray(songName: state.currentSong?.title, isPlaying: true);
+          print('playing...');
+        }else if(lastPlayingStatus == true && isPlaying == false){
+          TaskbarHelper.pauseThumbnailToolbar(ref);
+          setTray(songName: state.currentSong?.title,isPlaying: false);
+          print('pausing...');
+        }
+        lastPlayingStatus = isPlaying;
+      });
+    }
   }
 
   // 从Hive加载播放列表状态

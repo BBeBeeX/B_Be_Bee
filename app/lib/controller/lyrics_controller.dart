@@ -143,13 +143,11 @@ class LyricsController extends StateNotifier<LyricsState> {
   }
 
   void parseLyrics(String? webvtt) {
-    print('webvtt: $webvtt');
+    // print('webvtt: $webvtt');
     if(webvtt == null){
-      print('null');
 
       state = state.copyWith(lyrics: []);
     }else{
-      print('else');
 
       final lyrics = LyricsUtils.parseWebVTT(webvtt);
       state = state.copyWith(

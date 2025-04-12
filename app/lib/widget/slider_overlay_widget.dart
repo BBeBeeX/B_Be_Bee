@@ -66,7 +66,7 @@ class _SliderOverlayWidgetState extends ConsumerState<SliderOverlayWidget> {
                         children: [
                           Expanded(
                             child: Slider(
-                              value: currentValue,
+                              value: currentValue.clamp(widget.min, widget.max),
                               min: widget.min,
                               max: widget.max,
                               divisions: widget.divisions,

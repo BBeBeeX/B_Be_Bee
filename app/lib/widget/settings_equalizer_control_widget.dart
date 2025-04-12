@@ -114,7 +114,7 @@ class VerticalSlider extends StatelessWidget {
           height: 400.0,
           alignment: Alignment.center,
           child: Slider(
-            value: value,
+            value: value.clamp(min, max),
             min: min,
             max: max,
             onChanged: onChanged,

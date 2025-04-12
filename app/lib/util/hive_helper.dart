@@ -23,11 +23,12 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../model/enum/audio_player_style_enum.dart';
 import '../model/enum/contrast_color_enum.dart';
 import '../model/enum/proxy_type_enum.dart';
+import 'native/channel/path_proxy_utils.dart';
+import 'native/path_utils.dart';
 
 const _commonBoxName = 'bbb_box';
 const _collectsBoxName = 'bbb_collects_box';
@@ -103,8 +104,8 @@ class HiveHelper {
   static late Box<PlayStatistics> _statisticsBox;
 
   static Future<void> init() async {
-    String docPath =
-        path.join((await getApplicationDocumentsDirectory()).path, 'b_be_bee');
+    String docPath = await PathProxyUtils.getAppDocumentDirectory();
+
     Hive
       ..init(docPath)
       ..registerAdapter(CollectPlaylistAdapter()) //1

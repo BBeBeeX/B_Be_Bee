@@ -25,7 +25,9 @@ import 'package:ffmpeg_helper/ffmpeg_helper.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
+
+import '../util/native/channel/path_proxy_utils.dart';
+import '../util/native/path_utils.dart';
 
 // 临时文件 (await getTemporaryDirectory()).path + task.id
 // audio文件 ref.read(settingsProvider).destination, 'audio', '${task.id}.${format.label}
@@ -237,7 +239,7 @@ class DownloadController extends StateNotifier<DownloadState> {
     try {
       await _updateTask(task.id, status: DownloadStatusEnum.downloading);
 
-      final tempPath = await _getTempFilePath(task.id);
+      final tempPath = await PathProxyUtils.getDownloadTempFilePath(task.id);
       await _deleteFile(tempPath);
       final tempFile = File(tempPath);
       await _ensureDirectoryExists(tempPath);
@@ -281,7 +283,7 @@ class DownloadController extends StateNotifier<DownloadState> {
     try {
       await _updateTask(task.id, status: DownloadStatusEnum.converting);
 
-      final tempFilePath = await _getTempFilePath(task.id);
+      final tempFilePath = await PathProxyUtils.getDownloadTempFilePath(task.id);
       final destinationPath = await _getAudioFilePath(task.id);
       await _deleteFile(destinationPath);
       await _ensureDirectoryExists(destinationPath);
@@ -496,7 +498,7 @@ class DownloadController extends StateNotifier<DownloadState> {
     }
 
     // 删除文件
-    final tempFile = File(await _getTempFilePath(task.id));
+    final tempFile = File(await PathProxyUtils.getDownloadTempFilePath(task.id));
     if (await tempFile.exists()) {
       await tempFile.delete();
     }
@@ -621,9 +623,6 @@ class DownloadController extends StateNotifier<DownloadState> {
     }
   }
 
-  Future<String> _getTempFilePath(String id) async {
-    return path.join((await getTemporaryDirectory()).path, 'b_be_bee', id);
-  }
 
   Future<String> _getAudioFilePath(String id) async {
     final format = ref.read(settingsProvider).downloadFileFormat;
@@ -637,8 +636,7 @@ class DownloadController extends StateNotifier<DownloadState> {
   }
 
   Future<void> _clearTempFiles() async {
-    final tempPath =
-        path.join((await getTemporaryDirectory()).path, 'b_be_bee');
+    final tempPath = await PathProxyUtils.getDownloadTempDirectory();
     final directory = Directory(tempPath);
 
     if (await directory.exists()) {

@@ -8,12 +8,18 @@ import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:tray_manager/tray_manager.dart' as tm;
+import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 
 final _logger = Logger('TrayHelper');
 
 enum TrayEntry {
   open,
+  song,
+  togglePlay,
+  previous,
+  next,
+  settings,
   close,
 }
 
@@ -41,25 +47,57 @@ Future<void> initTray() async {
       await tm.trayManager.setIcon(Assets.img.logo32.path);
     }
 
-    final items = [
-      tm.MenuItem(
-        key: TrayEntry.open.name,
-        label: t.tray.open,
-      ),
-      tm.MenuItem(
-        key: TrayEntry.close.name,
-        label: defaultTargetPlatform == TargetPlatform.windows ? t.tray.closeWindows : t.tray.close,
-      ),
-    ];
-    await tm.trayManager.setContextMenu(tm.Menu(items: items));
-    // No Linux implementation for setToolTip available as of tray_manager 0.2.2
-    // https://pub.dev/packages/tray_manager#api
+    await setTray();
+
     if (!checkPlatform([TargetPlatform.linux])) {
       await tm.trayManager.setToolTip(t.appName);
     }
   } catch (e) {
     _logger.warning('Failed to init tray', e);
   }
+}
+
+Future<void> setTray({String? songName,bool isPlaying = false})async{
+  final items = [
+
+    if(songName!=null)
+    tm.MenuItem(
+      key: TrayEntry.song.name,
+      label: songName,
+    ),
+
+    MenuItem.separator(),
+
+    tm.MenuItem(
+      key: TrayEntry.previous.name,
+      label: '上一首',
+    ),
+
+    tm.MenuItem(
+      key: TrayEntry.togglePlay.name,
+      label: isPlaying?'暂停':'播放',
+    ),
+
+    tm.MenuItem(
+      key: TrayEntry.next.name,
+      label: '下一首',
+    ),
+
+    MenuItem.separator(),
+
+    tm.MenuItem(
+      key: TrayEntry.settings.name,
+      label: '设置',
+    ),
+
+    MenuItem.separator(),
+
+    tm.MenuItem(
+      key: TrayEntry.close.name,
+      label: defaultTargetPlatform == TargetPlatform.windows ? t.tray.closeWindows : t.tray.close,
+    ),
+  ];
+  await tm.trayManager.setContextMenu(tm.Menu(items: items));
 }
 
 Future<void> hideToTray() async {

@@ -11,8 +11,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rhttp/rhttp.dart';
+
+import 'native/channel/path_proxy_utils.dart';
+import 'native/path_utils.dart';
 
 class RhttpUtils {
   static final RhttpUtils _instance = RhttpUtils._internal();
@@ -32,8 +34,7 @@ class RhttpUtils {
     if (kIsWeb) {
       cookieJar = CookieJar();
     } else {
-      var cookiePath =
-          '${(await getApplicationSupportDirectory()).path}/.cookies/';
+      var cookiePath = await PathProxyUtils.getCookiesDirectory();
       cookieJar = PersistCookieJar(storage: FileStorage(cookiePath));
     }
 
@@ -151,14 +152,17 @@ class RhttpUtils {
   }
 
   //cancelToken.cancel();
-  Future<void> downloadBiliAudio(
+  Future<bool> downloadBiliAudio(
       {required String url,
-      required void Function(double progress) onSendProgress,
-      required String id,
+       void Function(double progress)? onSendProgress,
+       String? id,
       required String tempPath}) async {
     CancelToken cancelToken = CancelToken();
-    _activeTokens[id] = cancelToken;
+    if(id != null){
+      _activeTokens[id] = cancelToken;
+    }
 
+    final file = File(tempPath);
     try {
       final response = await _client.getBytes(
         url,
@@ -175,7 +179,6 @@ class RhttpUtils {
 
       if (response.statusCode == HttpStatus.ok) {
         // 文件内容流
-        final file = File(tempPath);
         await file.writeAsBytes(response.body);
 
         await Future.microtask(() {
@@ -183,6 +186,7 @@ class RhttpUtils {
               .read(commonLoggerProvider.notifier)
               .addLog('download file success, save path:$tempPath');
         });
+        return true;
       } else {
         await Future.microtask(() {
           container
@@ -196,8 +200,12 @@ class RhttpUtils {
             .read(commonLoggerProvider.notifier)
             .addLog('download file fail, Request error: $e');
       });
-    }
-    _activeTokens.remove(id);
+    }finally{
+      if(id != null){
+        _activeTokens.remove(id);
+      }
+  }
+    return false;
   }
 
   static Future<Uint8List?> downloadFile({

@@ -13,13 +13,14 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:routerino/routerino.dart';
 
 import '../model/enum/audio_player_style_enum.dart';
 import '../model/enum/contrast_color_enum.dart';
 import '../model/enum/proxy_type_enum.dart';
+import '../util/native/channel/path_proxy_utils.dart';
+import '../util/native/path_utils.dart';
 
 final settingsProvider =
     StateNotifierProvider<SettingsController, SettingsState>((ref) {
@@ -32,8 +33,7 @@ class SettingsController extends StateNotifier<SettingsState> {
   }
 
   Future<void> _loadFromStorage() async {
-    final destinationPath =
-        path.join((await getApplicationDocumentsDirectory()).path, 'b_be_bee');
+    final destinationPath = await PathProxyUtils.getAppDocumentDirectory();
 
     state = state.copyWith(
       theme: HiveHelper.getTheme(),

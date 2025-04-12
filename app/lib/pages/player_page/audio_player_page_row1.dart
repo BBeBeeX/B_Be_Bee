@@ -151,7 +151,7 @@ class AudioPlayerPageRow1 extends ConsumerWidget {
                       builder: (context, snapshot) {
                         final position = snapshot.data ?? Duration.zero;
 
-                        if (lyrics == null) {
+                        if (lyrics == null || lyrics.isEmpty) {
                           return Center(
                             child: Text(
                               t.widget.noLyrics,
@@ -456,7 +456,7 @@ Widget slider(WidgetRef ref,double value,double max,ValueChanged<double> onChang
     curve: Curves.linear,
     builder: (context, animatedValue, child) {
       return Slider(
-        value: animatedValue,
+        value: animatedValue.clamp(0.0, endValue),
         min: 0.0,
         max: max + 1,
         onChanged: (value) {
