@@ -12,9 +12,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
+
+import '../util/native/channel/path_proxy_utils.dart';
+import '../util/native/path_utils.dart';
 
 class ShareAudioState {
   final int selectedColorIndex;
@@ -58,9 +60,8 @@ class ShareAudioController extends StateNotifier<ShareAudioState> {
           await image.toByteData(format: ui.ImageByteFormat.png);
       
       if (byteData != null) {
-        final tempDir = await getTemporaryDirectory();
-        final file = await File('${tempDir.path}/share_image.png')
-            .writeAsBytes(byteData.buffer.asUint8List());
+        final imagePath = await PathProxyUtils.getShareImagePath();
+        final file = await File(imagePath).writeAsBytes(byteData.buffer.asUint8List());
             
         await Share.shareXFiles(
           [XFile(file.path)],
@@ -100,8 +101,7 @@ class ShareAudioController extends StateNotifier<ShareAudioState> {
 
           Uint8List pngBytes = byteData.buffer.asUint8List();
 
-          Directory? directory = await getDownloadsDirectory();
-          String filePath = '${directory?.path}/share_${_uuid.v4()}.png';
+          String filePath = await PathProxyUtils.getShareImagePathByVVID4(_uuid.v4());
 
           File file = File(filePath);
           await file.writeAsBytes(pngBytes);

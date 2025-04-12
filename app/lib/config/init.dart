@@ -27,6 +27,9 @@ import 'package:logging/logging.dart';
 import 'package:rhttp/rhttp.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../util/ffmpeg_utils.dart';
+import '../util/native/taskbar_helper.dart';
+
 final _logger = Logger('Init');
 
 late final ProviderContainer container;
@@ -113,6 +116,15 @@ Future<void> postInit(Ref ref) async {
       _logger.warning('Setting high refresh rate failed', e);
     }
   }
+
+  if (checkPlatform([TargetPlatform.windows])) {
+    try {
+       TaskbarHelper.enableThumbnailToolbar(ref);
+    } catch (e) {
+      _logger.warning('Setting windows thumbnail toolbar failed', e);
+    }
+  }
+
 
   bool hasInitialShare = false;
 

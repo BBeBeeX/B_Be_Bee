@@ -1,44 +1,18 @@
 import 'package:b_be_bee_app/util/native/channel/macos_channel.dart';
 import 'package:b_be_bee_app/util/native/platform_check.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
+
+import '../../config/init.dart';
+import '../../controller/playlist_controller.dart';
+import '../../provider/logging/common_logs_provider.dart';
 
 enum TaskbarIcon { regular, error, success }
 
 class TaskbarHelper {
-  static final _isWindows = checkPlatform([TargetPlatform.windows]);
   static final _isMacos = checkPlatform([TargetPlatform.macOS]);
 
-  static Future<void> clearProgressBar() async {
-    if (_isWindows) {
-      await WindowsTaskbar.setProgressMode(TaskbarProgressMode.noProgress);
-    } else if (_isMacos) {
-      await updateDockProgress(1.0);
-    }
-  }
-
-  static Future<void> setProgressBar(int progress, int total) async {
-    // Scale down to 0-100 range because Windows Taskbar only supports 32-bit integers
-    // This ensures that files with a size of 2^32 bytes or greater can still be displayed correctly
-    final (digestedProgress, digestedTotal) = _scaleRange(progress, total);
-    if (total != double.minPositive.toInt() && total != double.maxFinite.toInt()) {
-      if (_isWindows) {
-        await WindowsTaskbar.setProgress(digestedProgress, digestedTotal);
-      } else if (_isMacos) {
-        await updateDockProgress(progress / total);
-      }
-    } else {
-      if (_isWindows) {
-        await WindowsTaskbar.setProgressMode(TaskbarProgressMode.indeterminate);
-      }
-    }
-  }
-
-  static Future<void> setProgressBarMode(int mode) async {
-    if (_isWindows) {
-      await WindowsTaskbar.setProgressMode(mode);
-    }
-  }
 
   static Future<void> setTaskbarIcon(TaskbarIcon icon) async {
     if (_isMacos) {
@@ -46,42 +20,70 @@ class TaskbarHelper {
     }
   }
 
-  // static Future<void> visualizeStatus(SessionStatus? status) async {
-  //   // macOS handling
-  //   switch (status) {
-  //     case SessionStatus.finished:
-  //       await TaskbarHelper.setTaskbarIcon(TaskbarIcon.success);
-  //       break;
-  //     case SessionStatus.declined:
-  //     case SessionStatus.recipientBusy:
-  //     case SessionStatus.finishedWithErrors:
-  //     case SessionStatus.canceledBySender:
-  //     case SessionStatus.canceledByReceiver:
-  //       await TaskbarHelper.setTaskbarIcon(TaskbarIcon.error);
-  //       break;
-  //     default:
-  //       await TaskbarHelper.setTaskbarIcon(TaskbarIcon.regular);
-  //   }
-  //
-  //   // Windows handling
-  //   switch (status) {
-  //     case SessionStatus.waiting:
-  //       await TaskbarHelper.setProgressBarMode(TaskbarProgressMode.indeterminate);
-  //       break;
-  //     case SessionStatus.declined:
-  //     case SessionStatus.recipientBusy:
-  //     case SessionStatus.finishedWithErrors:
-  //     case SessionStatus.canceledBySender:
-  //     case SessionStatus.canceledByReceiver:
-  //       await TaskbarHelper.setProgressBarMode(TaskbarProgressMode.error);
-  //       break;
-  //     default:
-  //       await TaskbarHelper.setProgressBarMode(TaskbarProgressMode.normal);
-  //   }
-  // }
+  static void enableThumbnailToolbar(Ref ref) {
+    try{
+      WindowsTaskbar.setThumbnailToolbar(
+        [
+          ThumbnailToolbarButton(
+            ThumbnailToolbarAssetIcon('assets/icons/previous_icon.ico'),
+            'previous',
+                () async {
+              await ref.read(playlistControllerProvider.notifier).skipToPrevious();
+            },
+          ),
+          ThumbnailToolbarButton(
+            ThumbnailToolbarAssetIcon('assets/icons/pause_icon.ico'),
+            'pause',
+                () async {
+              await ref.read(playlistControllerProvider.notifier).pause();
+            },
+          ),
+          ThumbnailToolbarButton(
+            ThumbnailToolbarAssetIcon('assets/icons/next_icon.ico'),
+            'next',
+                () async {
+              await ref.read(playlistControllerProvider.notifier).skipToNext();
+            },
+          ),
+        ],
+      );
+    }catch(e){
+      container.read(commonLoggerProvider.notifier)
+          .addLog('TaskbarHelper enableThumbnailToolbar error: $e');
+    }
+  }
+
+  static void pauseThumbnailToolbar(Ref ref) {
+    try{
+      WindowsTaskbar.setThumbnailToolbar(
+        [
+          ThumbnailToolbarButton(
+            ThumbnailToolbarAssetIcon('assets/icons/previous_icon.ico'),
+            'previous',
+                () async {
+              await ref.read(playlistControllerProvider.notifier).skipToPrevious();
+            },
+          ),
+          ThumbnailToolbarButton(
+            ThumbnailToolbarAssetIcon('assets/icons/play_icon.ico'),
+            'play',
+                () async {
+              await ref.read(playlistControllerProvider.notifier).play();
+            },
+          ),
+          ThumbnailToolbarButton(
+            ThumbnailToolbarAssetIcon('assets/icons/next_icon.ico'),
+            'next',
+                () async {
+              await ref.read(playlistControllerProvider.notifier).skipToNext();
+            },
+          ),
+        ],
+      );
+    }catch(e){
+      container.read(commonLoggerProvider.notifier)
+          .addLog('TaskbarHelper pauseThumbnailToolbar error: $e');
+    }
+  }
 }
 
-(int, int) _scaleRange(int progress, int total) {
-  final percentage = progress / total;
-  return ((percentage * 100).toInt(), 100);
-}

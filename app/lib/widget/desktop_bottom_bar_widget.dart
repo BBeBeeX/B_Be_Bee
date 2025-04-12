@@ -125,7 +125,7 @@ class DesktopBottomBarWidget extends ConsumerWidget {
                         thumbColor: Colors.transparent,
                       ),
                       child: Slider(
-                        value: volume,
+                        value: volume.clamp(0.0, 1.0),
                         min: 0.0,
                         max: 1.0,
                         onChanged: (value) async =>

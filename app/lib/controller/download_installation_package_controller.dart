@@ -7,8 +7,10 @@ import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rhttp/rhttp.dart';
+
+import '../util/native/channel/path_proxy_utils.dart';
+import '../util/native/path_utils.dart';
 
 
 final downloadInstallationPackageProvider = StateNotifierProvider<DownloadInstallationPackageController, DownloadState>(
@@ -47,9 +49,10 @@ class DownloadInstallationPackageController extends StateNotifier<DownloadState>
       if(platform == TargetPlatform.android){
         await OpenFilex.open(savePath);
       }else if(platform == TargetPlatform.windows){
-        // For Windows, we'll handle the update process
-        final appDir = Directory.current.path;
-        await replaceAndRestart(savePath, appDir);
+
+        String exePath = Platform.resolvedExecutable;
+        String exeDirectory = File(exePath).parent.path;
+        await replaceAndRestart(savePath, exeDirectory);
       }
 
     } catch (e) {
@@ -90,8 +93,7 @@ return true;
 
   Future<void> replaceAndRestart(String zipPath, String appPath) async {
     try {
-      final tempDir = await getTemporaryDirectory();
-      final extractDir = '${tempDir.path}/extracted';
+      final extractDir = await PathProxyUtils.getUpdateTempDirectory();
 
       // 解压文件
       final isZip = await unzipFile(zipPath, extractDir);
@@ -116,8 +118,7 @@ return true;
   }
   
   Future<String> _createBatchFile(String extractDir, String appPath, String executableName) async {
-    final tempDir = await getTemporaryDirectory();
-    final batchFilePath = '${tempDir.path}/update.bat';
+    final batchFilePath = await PathProxyUtils.getUpdateTempBat();
     
     // 创建批处理文件内容
     final batchContent = '''

@@ -9,15 +9,16 @@ import 'package:b_be_bee_app/model/enum/collect_type_enum.dart';
 import 'package:b_be_bee_app/pages/collects_playlist_page.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
 import 'package:b_be_bee_app/util/ffmpeg_utils.dart';
-import 'package:b_be_bee_app/util/native/directories.dart';
 import 'package:b_be_bee_app/util/native/permission_helper.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:b_be_bee_app/widget/dialogs/loading_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:routerino/routerino.dart';
+
+import '../util/native/channel/path_proxy_utils.dart';
+import '../util/native/path_utils.dart';
 
 class FolderInfo {
   final String path;
@@ -71,7 +72,7 @@ class LocalAudioBrowserController extends StateNotifier<LocalAudioBrowserState> 
 
       final defaultFolders = [
         FolderInfo(
-          path: await getDefaultDestinationDirectory(),
+          path: await PathProxyUtils.getDefaultDestinationDirectory(),
           canDelete: false,
         ),
         FolderInfo(
@@ -79,7 +80,7 @@ class LocalAudioBrowserController extends StateNotifier<LocalAudioBrowserState> 
           canDelete: false,
         ),
         FolderInfo(
-          path: (await getTemporaryDirectory()).path,
+          path: await PathProxyUtils.getTempDirectory(),
           canDelete: false,
         ),
       ];

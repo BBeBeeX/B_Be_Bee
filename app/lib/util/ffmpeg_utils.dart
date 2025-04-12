@@ -8,18 +8,19 @@ import 'package:b_be_bee_app/model/dao/audio_info.dart';
 import 'package:b_be_bee_app/model/dao/upper.dart';
 import 'package:b_be_bee_app/model/enum/audio_source_type_enum.dart';
 import 'package:b_be_bee_app/provider/logging/common_logs_provider.dart';
+import 'package:b_be_bee_app/util/native/file_utils.dart';
 import 'package:b_be_bee_app/util/toast_util.dart';
 import 'package:crypto/crypto.dart';
 import 'package:ffmpeg_helper/ffmpeg_helper.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:routerino/routerino.dart';
 
 import '../controller/download_controller.dart';
 import '../gen/strings.g.dart';
 import '../widget/dialogs/download_ffmpeg_linux_dialog.dart';
+import 'native/channel/path_proxy_utils.dart';
 
 class FfmpegUtils {
   static Future<AudioInfo?> getLocalAudioMetaData(FileSystemEntity file) async {
@@ -64,10 +65,10 @@ class FfmpegUtils {
             onProgress: (FFMpegProgress progress) {
               downloadFFmpegProgress.value = progress;
 
-              // Future.microtask(() {
-              //   container.read(commonLoggerProvider.notifier).addLog(
-              //       'download ffmpeg: ${progress.downloaded}/${progress.fileSize}  - ${progress.phase} ');
-              // });
+              Future.microtask(() {
+                container.read(commonLoggerProvider.notifier).addLog(
+                    'download ffmpeg: ${progress.downloaded}/${progress.fileSize}  - ${progress.phase} ');
+              });
             },
             proxyType: settings.proxyType.name,
             proxyHost: settings.proxyHost,
@@ -136,9 +137,7 @@ class FfmpegUtils {
 
   static Future<String?> _saveCover(FileSystemEntity file) async {
     final fileName = file.uri.pathSegments.last;
-    final directory = await getTemporaryDirectory();
-    final saveCoverPath =
-        path.join(directory.path, '${getMd5Hash(fileName)}.jpg');
+    final saveCoverPath = await PathProxyUtils.getCacheCoverPath(getMd5Hash(fileName));
 
     if (File(saveCoverPath).existsSync()) {
       return saveCoverPath;

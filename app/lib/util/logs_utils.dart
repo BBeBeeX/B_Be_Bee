@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:b_be_bee_app/model/pojo/log_entry.dart';
 import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
+
+import 'native/channel/path_proxy_utils.dart';
+import 'native/path_utils.dart';
 
 class LogsUtils{
   static Future<void> writeLogToFile(LogEntry logEntry) async {
@@ -20,8 +22,7 @@ class LogsUtils{
   }
 
   static Future<Directory> _getLogDirectory() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final logDir = Directory('${directory.path}/logs');
+    final logDir = Directory(await PathProxyUtils.getLogsDirectory());
     if (!await logDir.exists()) {
       await logDir.create(recursive: true);
     }
