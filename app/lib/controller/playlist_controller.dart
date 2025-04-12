@@ -180,53 +180,32 @@ class PlaylistController extends StateNotifier<PlaylistState> {
   Future<void> _setAudio(AudioInfo audioInfo, bool play) async {
     await pause();
 
-    ref
-        .read(lyricsControllerProvider.notifier)
+    ref.read(lyricsControllerProvider.notifier)
         .parseLyrics(await LyricsUtils.getAudioLyrics(ref, audioInfo));
-
-    final Map<AudioSourceTypeEnum, Future<bool> Function()> sourceHandlers = {
-      AudioSourceTypeEnum.local: () async =>
-          await _setAudioByLocal(audioInfo, play),
-      AudioSourceTypeEnum.bili: () async =>
-          await _setAudioByBili(audioInfo, play),
-      AudioSourceTypeEnum.bili_music: () async =>
-          await _setAudioByBili(audioInfo, play), //暂时还走视频流
-      //TODO 走音频流
-      // AudioSourceType.bili_music: () async => await _setmusicByBili(audioInfo.bvid, audioInfo.cid),
-    };
 
     //获取本地音频
     if (audioInfo.audioCurrentType == AudioSourceTypeEnum.local) {
-      final handler = sourceHandlers[audioInfo.audioCurrentType];
-      if (handler != null) {
-        final success = await handler();
+        final success = await _setAudioByLocal(audioInfo, play);
         if (success) {
           return;
         }
-      }
     }
 
     //获取bili视频资源
     if (audioInfo.audioSourceType == AudioSourceTypeEnum.bili) {
-      final handler = sourceHandlers[audioInfo.audioSourceType];
-      if (handler != null) {
-        final success = await handler();
-        if (success) {
-          return;
-        } else {
-          await skipToNext();
-        }
+      final success = await await _setAudioByBili(audioInfo, play);
+      if (success) {
+        return;
+      } else {
+        await skipToNext();
       }
     }
 
     //获取bili音频资源
     if (audioInfo.audioSourceType == AudioSourceTypeEnum.bili_music) {
-      final handler = sourceHandlers[audioInfo.audioSourceType];
-      if (handler != null) {
-        final success = await handler();
-        if (success) {
-          return;
-        }
+      final success = await _setAudioByBili(audioInfo, play);
+      if (success) {
+        return;
       }
     }
   }
