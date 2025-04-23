@@ -8,6 +8,7 @@ import '../../controller/settings_controller.dart';
 import '../../model/dto/player/player_position_data.dart';
 import '../../util/audio_handler.dart';
 import '../../util/time_utils.dart';
+import '../audio_visual/wave_form_visualizer_widget.dart';
 import '../custom_slider.dart';
 
 class CurrentPlaylistProgressBarWidget extends ConsumerWidget {

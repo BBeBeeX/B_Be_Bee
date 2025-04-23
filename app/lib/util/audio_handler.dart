@@ -21,13 +21,11 @@ import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CustomAudioHandler extends BaseAudioHandler {
-  static WidgetRef? _ref;
   static bool enableAnimations = true;
   static bool enableMessageBar = true;
   static int fadeInOutTime = 0;
   static bool hasFadeInOut = true;
   static double currentVolume = 1;
-  static bool enableAudioVisual = false;
 
   CustomAudioHandler._privateConstructor() {
     _setupEventSubscriptions();
@@ -53,11 +51,9 @@ class CustomAudioHandler extends BaseAudioHandler {
   static AudioPlayer get player => _player;
 
   static setRef(WidgetRef ref) {
-    _ref = ref;
     enableMessageBar = ref.watch(settingsProvider).enableMessageBar;
     enableAnimations = ref.watch(settingsProvider).enableAnimations;
     fadeInOutTime = ref.watch(settingsProvider).fadeInOutTime;
-    enableAudioVisual = ref.watch(settingsProvider).isEnableAudioVisual;
     currentVolume = ref.watch(playlistControllerProvider).volume;
     final settingValue = ref.read(settingsProvider);
 
@@ -261,20 +257,6 @@ class CustomAudioHandler extends BaseAudioHandler {
     }
   }
 
-  Future<void> _handleVisualizer(PlayerState? state) async {
-    if (enableAudioVisual) {
-      if (state != null &&
-          state.playing &&
-          state.processingState != ProcessingState.idle &&
-          state.processingState != ProcessingState.completed) {
-        await _player.startVisualizer(
-            enableWaveform: true, enableFft: true, captureRate: 25000);
-      } else {
-        await _player.stopVisualizer();
-      }
-    }
-  }
-
   void _setupEventSubscriptions() {
     _playbackEventSubscription =
         _player.playbackEventStream.listen(_handlePlaybackEvent);
@@ -284,11 +266,6 @@ class CustomAudioHandler extends BaseAudioHandler {
         _player.currentIndexStream.listen(_handleCurrentSongIndexChanged);
 
     _player.positionStream.listen(_handleRemainingTime);
-
-    if (checkPlatform(
-        [TargetPlatform.iOS, TargetPlatform.android, TargetPlatform.macOS])) {
-      _player.playerStateStream.listen(_handleVisualizer);
-    }
   }
 
   void updatePlaybackState({bool isLoading = false}) {

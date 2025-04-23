@@ -29,6 +29,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../util/ffmpeg_utils.dart';
 import '../util/native/taskbar_helper.dart';
+import '../widget/audio_visual/audio_visual_controller.dart';
 
 final _logger = Logger('Init');
 
@@ -124,6 +125,8 @@ Future<void> postInit(Ref ref) async {
       _logger.warning('Setting windows thumbnail toolbar failed', e);
     }
   }
+
+  ref.read(audioVisualControllerProvider.notifier).initializeAudioCapture();
 
 
   bool hasInitialShare = false;

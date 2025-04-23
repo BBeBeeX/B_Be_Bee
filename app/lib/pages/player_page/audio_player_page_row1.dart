@@ -12,6 +12,7 @@ import '../../model/dto/player/player_position_data.dart';
 import '../../provider/seek_dragging_provider.dart';
 import '../../util/audio_handler.dart';
 import '../../util/time_utils.dart';
+import '../../widget/audio_visual/audio_visual.dart';
 import '../../widget/bottom_sheet/open_playlist_bottom_sheet.dart';
 import '../../widget/img/network_image.dart';
 import '../../widget/marquee_custom.dart';
@@ -189,7 +190,11 @@ class AudioPlayerPageRow1 extends ConsumerWidget {
               ),
 
 
-              const SizedBox(height: 240),
+              // const SizedBox(height: 240),
+          SizedBox(
+              height: 240,
+            child: AudioVisual(),
+          ),
 
           Padding(
             padding:

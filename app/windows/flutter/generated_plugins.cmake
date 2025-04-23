@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  audio_capture
   bitsdojo_window_windows
   connectivity_plus
   file_selector_windows

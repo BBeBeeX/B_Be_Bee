@@ -27,6 +27,11 @@ import 'package:path/path.dart' as path;
 import '../model/enum/audio_player_style_enum.dart';
 import '../model/enum/contrast_color_enum.dart';
 import '../model/enum/proxy_type_enum.dart';
+import '../widget/audio_visual/params/fft_painter_params.dart';
+import '../widget/audio_visual/params/fft_params.dart';
+import '../widget/audio_visual/params/model_params.dart';
+import '../widget/audio_visual/params/shader_params.dart';
+import '../widget/audio_visual/params/waveform_painter_params.dart';
 import 'native/channel/path_proxy_utils.dart';
 import 'native/path_utils.dart';
 
@@ -122,7 +127,12 @@ class HiveHelper {
       ..registerAdapter(ContrastColorEnumAdapter()) //12
       ..registerAdapter(ProxyTypeEnumAdapter()) //13
       ..registerAdapter(AudioPlayerStyleEnumAdapter()) //13
-      ..registerAdapter(PlayStatisticsAdapter()); //17
+      ..registerAdapter(PlayStatisticsAdapter()) //17
+      ..registerAdapter(ModelParamsAdapter()) //20
+      ..registerAdapter(FftParamsAdapter()) //21
+      ..registerAdapter(FftPainterParamsAdapter()) //22
+      ..registerAdapter(WaveformPainterParamsAdapter()) //23
+      ..registerAdapter(ShaderParamAdapter()); //24
 
     _box = await Hive.openBox(_commonBoxName);
     _collectsBox = await Hive.openBox<CollectPlaylist>(_collectsBoxName);

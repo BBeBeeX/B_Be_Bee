@@ -25,6 +25,7 @@ dependencies:
   vibration: ^3.1.3
   text_scroll: ^0.2.0
   fftea: ^1.5.0+1
+  shader_buffers: ^1.1.1
 
   #路由
   routerino: ^0.8.0
@@ -94,14 +95,14 @@ dependencies:
   audio_service: ^0.18.17
   media_kit_libs_linux: 1.1.3
   media_kit_libs_windows_audio: 1.0.9
-#  media_kit_libs_android_audio: 1.3.5
-#  media_kit_libs_ios_audio: 1.1.4
-#  media_kit_libs_macos_audio: 1.1.4
-#  ffmpeg_kit_flutter: ^6.0.3 # 文件格式转换
   ffmpeg_helper:
     git:
       url: https://github.com/BBeBeeX/ffmpeg_helper.git
       ref: 61986a490e9fc73b27bcac83fe6dbc87c7db1792
+  audio_capture:
+    git:
+      url: https://github.com/BBeBeeX/audio_capture.git
+      ref: main
 
 
 # windows
@@ -142,6 +143,14 @@ flutter:
     - assets/web/
     - assets/CHANGELOG.md
     - assets/icons/
-
+  shaders:
+    - assets/shaders/2d_led_spectrum.frag
+    - assets/shaders/frequency_visualization.frag
+    - assets/shaders/sound_eclipse_rpm.frag
+    - assets/shaders/audio_wave_form.frag
+    - assets/shaders/sound_sinus_wave.frag
+    - assets/shaders/audio_visualizer_raymarching.frag
+    - assets/shaders/sound_grid.frag
+    - assets/shaders/smoke_rings.frag
 flutter_gen:
   line_length: 150

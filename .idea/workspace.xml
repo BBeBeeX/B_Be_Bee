@@ -4,14 +4,48 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b7b044f-c108-45e9-b882-a4545bdfd288" name="Changes" comment="fix: network proxy;">
+    <list default="true" id="2d5fa208-1eb9-49cb-b6e5-aa700adc4da9" name="Changes" comment="fix: path_utils remove about ffmpeg path;">
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/2d_led_spectrum.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/audio_visualizer_raymarching.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/audio_waterfall.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/audio_waterfall_bufferA.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/audio_wave_form.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/common/common_header.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/common/main_shadertoy.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/frequency_visualization.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/smoke_rings.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/sound_eclipse_rpm.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/sound_grid.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/assets/shaders/sound_sinus_wave.frag" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/audio_visual.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/painter/bars_painter.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/painter/fft_painter.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/painter/spectrum_painter.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/painter/wave_form2_painter.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/painter/wave_form_painter.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/params/fft_painter_params.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/params/fft_params.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/params/model_params.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/params/shader_params.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/params/waveform_painter_params.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/shaders/shader.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/shaders/shaders.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/utils/bmp_header.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/utils/painter_data_manager.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/widget/audio_visual/waveform.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/controller/home_page_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/home_page_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/controller/home_page_recommend_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/home_page_recommend_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/controller/main_page_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/controller/main_page_controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/pages/bili/bili_upper_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/pages/bili/bili_upper_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/pages/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/widget/home_page_recommend_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/home_page_recommend_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/config/init.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/config/init.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/pages/player_page/audio_player_page_row1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/pages/player_page/audio_player_page_row1.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/util/audio_handler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/util/audio_handler.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/util/hive_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/util/hive_helper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_progress_bar_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/widget/audio_player/current_playlist_progress_bar_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/windows/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/windows/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/app/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/app/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,89 +58,124 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Reverssss"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Reverssss&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:BBeBeeX/B_Be_Bee.git",
-    "accountId": "e58aad4e-27f9-480e-9d31-69a509e9a47b"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:BBeBeeX/B_Be_Bee.git&quot;,
+    &quot;accountId&quot;: &quot;e58aad4e-27f9-480e-9d31-69a509e9a47b&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
-  <component name="ProjectId" id="2vAGxkDTdUWAUzkX5H4QOwBs0lY" />
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2vDfJVOGDXXwcc0FjathCUdbXD1" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/eqTrainer-master&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\Desktop\B_Be_Bee\app\windows" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5b7b044f-c108-45e9-b882-a4545bdfd288" name="Changes" comment="" />
-      <created>1743580714043</created>
+      <changelist id="2d5fa208-1eb9-49cb-b6e5-aa700adc4da9" name="Changes" comment="" />
+      <created>1743684494161</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1743580714043</updated>
+      <updated>1743684494161</updated>
     </task>
-    <task id="LOCAL-00001" summary="feat add tooltips;&#10;feat add pad layout;&#10;feat add proxy;&#10;feat add play statistics page;&#10;fix smooth the progress of the playback bar;&#10;fix adapt player page font color;&#10;fix modify the download ffmpeg add download_manager_page.dart;">
+    <task id="LOCAL-00001" summary="fix: main_page style;&#10;release: 0.1.1;">
       <option name="closed" value="true" />
-      <created>1743588523928</created>
+      <created>1743700467571</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1743588523928</updated>
+      <updated>1743700467571</updated>
     </task>
-    <task id="LOCAL-00002" summary="release: 0.1.0">
+    <task id="LOCAL-00002" summary="fix: fix some small problem;">
       <option name="closed" value="true" />
-      <created>1743588721353</created>
+      <created>1743785612792</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1743588721353</updated>
+      <updated>1743785612792</updated>
     </task>
-    <task id="LOCAL-00003" summary="fix: download_manager_page.dart do not display uninitialized interfaces after initialization;">
+    <task id="LOCAL-00003" summary="feat: fix player page layout;">
       <option name="closed" value="true" />
-      <created>1743598463062</created>
+      <created>1743950623909</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1743598463062</updated>
+      <updated>1743950623909</updated>
     </task>
-    <task id="LOCAL-00004" summary="fix: network proxy;">
+    <task id="LOCAL-00004" summary="fix: audio_player_page_row1.dart if lyrics empty and slider value limit;&#10;fix: contains ffmpeg compressed files;&#10;fix: tray manager;&#10;fix: taskbar;">
       <option name="closed" value="true" />
-      <created>1743609057360</created>
+      <created>1744463688552</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1743609057360</updated>
+      <updated>1744463688552</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix: playlist_controller.dart;">
+      <option name="closed" value="true" />
+      <created>1744463869910</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1744463869910</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix: path_utils remove about ffmpeg path;">
+      <option name="closed" value="true" />
+      <created>1744464085586</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1744464085586</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat add tooltips;&#10;feat add pad layout;&#10;feat add proxy;&#10;feat add play statistics page;&#10;fix smooth the progress of the playback bar;&#10;fix adapt player page font color;&#10;fix modify the download ffmpeg add download_manager_page.dart;" />
-    <MESSAGE value="release: 0.1.0" />
-    <MESSAGE value="fix: download_manager_page.dart do not display uninitialized interfaces after initialization;" />
-    <MESSAGE value="fix: network proxy;" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: network proxy;" />
+    <MESSAGE value="fix: main_page style;&#10;release: 0.1.1;" />
+    <MESSAGE value="fix: fix some small problem;" />
+    <MESSAGE value="feat: fix player page layout;" />
+    <MESSAGE value="fix: audio_player_page_row1.dart if lyrics empty and slider value limit;&#10;fix: contains ffmpeg compressed files;&#10;fix: tray manager;&#10;fix: taskbar;" />
+    <MESSAGE value="fix: playlist_controller.dart;" />
+    <MESSAGE value="fix: path_utils remove about ffmpeg path;" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: path_utils remove about ffmpeg path;" />
   </component>
 </project>
